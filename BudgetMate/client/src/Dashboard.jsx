@@ -9,6 +9,9 @@ const Dashboard = () => {
             <Link to="/income">
                 <button>Go to Income Input</button>
             </Link>
+            <Link to="/fetch-income">
+                <button>View Income</button>
+            </Link>
         </div>
     );
 };

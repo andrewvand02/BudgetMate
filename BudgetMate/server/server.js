@@ -10,11 +10,29 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 
+let incomeStore = {};
+
+// Route to handle income submission
 app.post('/api/income', (req, res) => {
-    const { income } = req.body;
-    // Probably put into storage here, still need to validate if user input is valid
-    console.log(`Income received: ${income}`);
-    res.json({ message: 'Income recorded successfully!' });
+    const { userId, incomeEntries } = req.body;
+    
+    // Store the income for a specific user (e.g., 'user1' for demo purposes)
+    incomeStore[userId] = incomeEntries;
+
+    res.json({ message: 'Income stored successfully', incomeEntries });
+});
+
+// Route to retrieve the stored income
+app.get('/api/income/:userId', (req, res) => {
+    const { userId } = req.params;
+    const incomeEntries = incomeStore[userId];
+    
+    // Return the income data if available
+    if (incomeEntries) {
+        res.json({ incomeEntries });
+    } else {
+        res.status(404).json({ message: 'No income data found' });
+    }
 });
 
 app.listen(8080, () => {
