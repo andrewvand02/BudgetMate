@@ -1,6 +1,6 @@
-/* FetchIncome.css */
+/* FetchExpense.css */
 
-.income-container {
+.expense-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,18 +8,18 @@
     padding: 20px;
 }
 
-.income-container h1 {
+.expense-container h1 {
     color: #ffffff;
     font-size: 2rem;
     margin-bottom: 20px;
 }
 
-.income-container ul {
+.expense-container ul {
     list-style: none;
     padding: 0;
 }
 
-.income-container li {
+.expense-container li {
     background-color: #696969;
     padding: 10px;
     margin: 5px 0;
@@ -30,7 +30,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.income-container p {
+.expense-container p {
     font-size: 1.2rem;
     color: #777;
 }

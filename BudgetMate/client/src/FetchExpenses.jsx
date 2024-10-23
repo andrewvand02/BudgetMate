@@ -10,7 +10,7 @@ const FetchExpenses = () => {
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
-                const userId = 'user1'; // Hardcoded for demo, you can use actual user id if needed
+                const userId = 'user1'; // Hardcoded for demo
                 const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`);
                 setExpenseEntries(response.data.expenseEntries);
             } catch (error) {
@@ -22,7 +22,7 @@ const FetchExpenses = () => {
     }, []);
 
     return (
-        <div className="income-container">
+        <div className="expense-container">
             <h1>Your Expenses</h1>
             {expenseEntries.length > 0 ? (
                 <ul>

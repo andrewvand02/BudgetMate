@@ -16,7 +16,7 @@ let incomeStore = {};
 app.post('/api/income', (req, res) => {
     const { userId, incomeEntries } = req.body;
     
-    // Store the income for a specific user (e.g., 'user1' for demo purposes)
+    // Store the income for a specific user 
     incomeStore[userId] = incomeEntries;
 
     res.json({ message: 'Income stored successfully', incomeEntries });
