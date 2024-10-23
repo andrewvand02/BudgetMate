@@ -9,7 +9,7 @@ const corsOptions={
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-
+let expensesData = {};
 let incomeStore = {};
 
 // Route to handle income submission
@@ -34,6 +34,26 @@ app.get('/api/income/:userId', (req, res) => {
         res.status(404).json({ message: 'No income data found' });
     }
 });
+
+app.post('/api/expenses', (req, res) => {
+    const { userId, expenseEntries } = req.body;
+
+    // Initialize user data if it doesn't exist
+    if (!expensesData[userId]) {
+        expensesData[userId] = [];
+    }
+
+    // Store the expenses
+    expensesData[userId].push(...expenseEntries);
+    res.json({ message: 'Expenses saved successfully!' });
+});
+
+app.get('/api/expenses/:userId', (req, res) => {
+    const { userId } = req.params;
+    const userExpenses = expensesData[userId] || [];
+    res.json({ expenseEntries: userExpenses });
+});
+
 
 app.listen(8080, () => {
     console.log("Server started on port 8080");

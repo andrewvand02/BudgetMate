@@ -12,6 +12,12 @@ const Dashboard = () => {
             <Link to="/fetch-income">
                 <button>View Income</button>
             </Link>
+            <Link to="/expenses">
+                <button>Input Expenses</button>
+             </Link>
+            <Link to="/fetch-expenses">
+                <button>View Expenses</button>
+            </Link>
         </div>
     );
 };
