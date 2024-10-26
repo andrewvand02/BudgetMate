@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Dashboard = () => {
     return (
         <div>
-            <h1>Dashboard</h1>
+            <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
                 <button>Go to Income Input</button>
