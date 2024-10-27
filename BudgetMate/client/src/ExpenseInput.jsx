@@ -4,34 +4,34 @@ import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 
 const ExpenseInput = () => {
-    const [expenseEntries, setExpenseEntries] = useState([{ category: '', amount: '', frequency: 'weekly' }]);
-    const navigate = useNavigate();
+    const [expenseEntries, setExpenseEntries] = useState([{ category: '', amount: '', frequency: 'weekly' }]); 
+    const navigate = useNavigate(); // Init navigate, which is used to go back to Dashboard later 
 
     const handleAddEntry = () => {
-        setExpenseEntries([...expenseEntries, { category: '', amount: '', frequency: 'weekly' }]);
+        setExpenseEntries([...expenseEntries, { category: '', amount: '', frequency: 'weekly' }]); //Add expense, the "..." denotes spread, which keeps the previous entries while adding naother one, default value for frequency is "weekly"
     };
 
     const handleRemoveEntry = (index) => {
-        const updatedEntries = [...expenseEntries];
-        updatedEntries.splice(index, 1);
-        setExpenseEntries(updatedEntries);
+        const updatedEntries = [...expenseEntries]; //Copy the current list of expenses
+        updatedEntries.splice(index, 1); //Remove the entry at the given index
+        setExpenseEntries(updatedEntries); //Set the expenseEntries as the upadted one with the removal. 
     };
 
     const handleInputChange = (index, field, value) => {
-        const updatedEntries = [...expenseEntries];
-        updatedEntries[index][field] = value;
-        setExpenseEntries(updatedEntries);
+        const updatedEntries = [...expenseEntries]; // Create a copy of current list of expenses
+        updatedEntries[index][field] = value; //Update the given index/category witht the value
+        setExpenseEntries(updatedEntries); //Set the expenseEntries as our newly updated entries
     };
 
     const handleExpenseSubmit = async (e) => {
         e.preventDefault();
         try {
             const userId = 'user1'; // Hardcoded for demo
-            const response = await axios.post('http://localhost:8080/api/expenses', { userId, expenseEntries });
-            alert(response.data.message);
+            const response = await axios.post('http://localhost:8080/api/expenses', { userId, expenseEntries }); //Send to backend
+            alert(response.data.message); //Alert user of success/unsuccess
             navigate('/');
         } catch (error) {
-            console.error('Error submitting expenses:', error);
+            console.error('Error submitting expenses:', error); //Error catching stuff
         }
     };
 
