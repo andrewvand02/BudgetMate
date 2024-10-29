@@ -1,36 +1,48 @@
-/* FetchExpense.css */
-
-.expense-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+.expense-container ul {
+    list-style-type: none; /* Remove default bullets */
+    padding: 0; /* Remove default padding */
 }
 
-.expense-container h1 {
-    color: #ffffff;
-    font-size: 2rem;
+.expense-container li {
+    padding: 8px; /* Add padding for better spacing */
+    border-bottom: 1px solid #ddd; /* Separate entries with a line */
+    font-size: 16px; /* Adjust font size for readability */
+    color: #333; /* Ensure text color is visible */
+}
+
+.expense-container li:last-child {
+    border-bottom: none; /* Remove bottom border on the last item */
+}
+
+
+.weekly-expenses {
     margin-bottom: 20px;
 }
 
-.expense-container ul {
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day-column {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.day-column h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.day-column ul {
     list-style: none;
     padding: 0;
 }
 
-.expense-container li {
-    background-color: #696969;
-    padding: 10px;
-    margin: 5px 0;
-    width: 100%;
-    max-width: 400px;
+.day-column p {
+    color: #888;
     text-align: center;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.expense-container p {
-    font-size: 1.2rem;
-    color: #777;
+    margin-top: 10px;
 }

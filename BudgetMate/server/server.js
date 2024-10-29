@@ -1,8 +1,9 @@
-const express =require("express");
+// Import necessary libraries
+const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require('body-parser');
-const corsOptions={
+const corsOptions = {
     origin: ["http://localhost:5173"],
 };
 
@@ -12,22 +13,17 @@ app.use(bodyParser.json());
 let expensesData = {};
 let incomeStore = {};
 
-// Route to handle income submission
+// Route to handle income submission (Unchanged)
 app.post('/api/income', (req, res) => {
     const { userId, incomeEntries } = req.body;
-    
-    // Store the income for a specific user 
     incomeStore[userId] = incomeEntries;
-
     res.json({ message: 'Income stored successfully', incomeEntries });
 });
 
-// Route to retrieve the stored income
+// Route to retrieve stored income (Unchanged)
 app.get('/api/income/:userId', (req, res) => {
     const { userId } = req.params;
     const incomeEntries = incomeStore[userId];
-    
-    // Return the income data if available
     if (incomeEntries) {
         res.json({ incomeEntries });
     } else {
@@ -35,28 +31,39 @@ app.get('/api/income/:userId', (req, res) => {
     }
 });
 
+// Route to handle expense submission
 app.post('/api/expenses', (req, res) => {
     const { userId, expenseEntries } = req.body;
 
-    // Initialize user data if it doesn't exist
     if (!expensesData[userId]) {
         expensesData[userId] = [];
     }
 
-    // Store the expenses
-    expensesData[userId].push(...expenseEntries);
+    expenseEntries.forEach(entry => {
+        const { name, category, amount, frequency } = entry;
+
+        // Validate required fields (excluding `date` which will be handled automatically)
+        if (!name || !category || !amount || !frequency) {
+            return res.status(400).json({ message: 'Invalid expense entry. Please include name, category, amount, and frequency.' });
+        }
+
+        // Automatically assign the current date for daily expenses
+        const date = frequency === 'daily' ? new Date().toISOString().split('T')[0] : null;
+
+        // Save the expense entry with the necessary fields
+        expensesData[userId].push({ name, category, amount, frequency, date });
+    });
+
     res.json({ message: 'Expenses saved successfully!' });
 });
 
+// Route to retrieve the stored expenses for a user (Unchanged)
 app.get('/api/expenses/:userId', (req, res) => {
     const { userId } = req.params;
     const userExpenses = expensesData[userId] || [];
     res.json({ expenseEntries: userExpenses });
 });
 
-
 app.listen(8080, () => {
     console.log("Server started on port 8080");
-
-})
-
+});

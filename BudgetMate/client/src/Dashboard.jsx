@@ -7,7 +7,7 @@ const Dashboard = () => {
             <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
-                <button>Go to Income Input</button>
+                <button>Income Input</button>
             </Link>
             <Link to="/fetch-income">
                 <button>View Income</button>
