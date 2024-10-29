@@ -15,11 +15,24 @@ const Budget = () => {
     };
 
     useEffect(() => {
-        // Fetch actual expenses from the backend
+        // Fetch actual expenses from the backend and aggregate by category
         const fetchActualExpenses = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/expenses/actual');
-                setActualExpenses(response.data); // Example format: { Rent: 700, Groceries: 300, Entertainment: 150, Utilities: 130 }
+                const userId = 'user1'; // Hardcoded user ID for demo purposes.
+                const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`);
+                const expenses = response.data.expenseEntries;
+
+                // Aggregate expenses by category, ensuring `amount` is treated as a number
+                const aggregatedExpenses = expenses.reduce((acc, entry) => {
+                    const { category, amount, frequency } = entry;
+                    if (frequency === 'daily') { // Only add daily expenses
+                        acc[category] = (acc[category] || 0) + Number(amount); // Convert `amount` to a number here
+                    }
+                    return acc;
+                }, {});
+
+                setActualExpenses(aggregatedExpenses);
+
             } catch (error) {
                 console.error('Error fetching actual expenses:', error);
             }
@@ -51,9 +64,9 @@ const Budget = () => {
 
                         return [
                             `Category: ${category}`,
-                            `Budgeted: $${budgetedAmount}`,
-                            `Spent: $${spentAmount}`,
-                            `Remaining: $${remainingAmount > 0 ? remainingAmount : 0}`,
+                            `Budgeted: $${budgetedAmount.toLocaleString()}`,
+                            `Spent: $${spentAmount.toLocaleString()}`,
+                            `Remaining: $${remainingAmount > 0 ? remainingAmount.toLocaleString() : 0}`,
                         ];
                     },
                 },
