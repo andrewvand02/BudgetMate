@@ -18,9 +18,6 @@ const Dashboard = () => {
             <Link to="/fetch-expenses">
                 <button>View Expenses</button>
             </Link>
-            <Link to="/budget">
-                <button>Budget</button>
-            </Link>
         </div>
     );
 };
