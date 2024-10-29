@@ -1,51 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
-import './FetchIncome.css';
+import React, { useState, useEffect } from 'react'; // Importing React and necessary hooks
+import axios from 'axios'; // Importing axios to handle HTTP requests
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
+import './FetchIncome.css'; // Importing CSS file for styling
 
 const FetchIncome = () => {
+    // State to hold income entries
     const [incomeEntries, setIncomeEntries] = useState([]);
-    const navigate = useNavigate(); // Initialize the navigate hook
+    const navigate = useNavigate(); // Initializing the navigate function for navigation
 
-    // Fetch the income from the backend when the component mounts
+    // useEffect to fetch income data when the component mounts
     useEffect(() => {
+        // Function to fetch income data from the backend
         const fetchIncome = async () => {
             try {
-                const userId = 'user1'; // Hardcoded for demo, you can use actual user id if needed
+                const userId = 'user1'; // Hardcoded user ID for demo, replace with actual user ID as needed
+                // Fetching income data for the user from the backend
                 const response = await axios.get(`http://localhost:8080/api/income/${userId}`);
+                // Setting the income entries state with the response data
                 setIncomeEntries(response.data.incomeEntries);
             } catch (error) {
+                // Logging any error that occurs during fetch
                 console.error('Error fetching income:', error);
             }
         };
 
-        fetchIncome();
+        fetchIncome(); // Calling fetchIncome function to retrieve data on component mount
     }, []);
 
-    // Function to navigate back to the dashboard
+    // Function to handle navigation back to the dashboard
     const goBackToDashboard = () => {
-        navigate('/');  // Redirect to the dashboard route ("/")
+        navigate('/'); // Redirects to the dashboard route ('/')
     };
 
     return (
-        <div className="income-container">
-            <h1>Your Weekly Income Breakdown</h1>
-            {incomeEntries.length > 0 ? (
-                <ul>
-                    {incomeEntries.map((entry, index) => (
-                        <li key={index}>
-                            {entry.category}: ${entry.amount}
+        <div className="income-container"> {/* Main container for income component */}
+            <h1>Your Weekly Income Breakdown</h1> {/* Heading for income breakdown display */}
+            {incomeEntries.length > 0 ? ( // Check if income entries are available
+                <ul> {/* Unordered list for displaying income entries */}
+                    {incomeEntries.map((entry, index) => ( // Mapping over income entries array
+                        <li key={index}> {/* List item for each income entry */}
+                            {entry.category}: ${entry.amount} {/* Displaying category and amount */}
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p>No income data available.</p>
+                <p>No income data available.</p> // Message displayed if no income entries are available
             )}
-            <button onClick={goBackToDashboard} className="back-button">
-                Back to Dashboard
+            <button onClick={goBackToDashboard} className="back-button"> {/* Button to go back to dashboard */}
+                Back to Dashboard {/* Button label */}
             </button>
         </div>
     );
 };
 
-export default FetchIncome;
+export default FetchIncome; // Exporting FetchIncome component for use in other parts of the application
