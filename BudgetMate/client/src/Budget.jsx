@@ -2,16 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Budget = () => {
+    const [budgetEntries, setBudgetEntries] = useState([{category: '', amount:''}]);
     const [actualExpenses, setActualExpenses] = useState({});
-    const budgetData = {
-        Rent: 800,
-        Groceries: 400,
-        Entertainment: 200,
-        Utilities: 150,
+    const validBudgetEntries = budgetEntries.filter(entry => entry.category && entry.amount);
+    const categoryOptions = {
+        weekly: ["Groceries", "Restaurant/Takeout", "Home Supplies", "Personal Care", "Transportation", "Entertainment", "Clothing", "Hobbies", "Pets", "Other"]
+    };
+    const navigate = useNavigate();
+
+    const handleAddEntry = () => {
+        let entry = setBudgetEntries([...budgetEntries, {category: '', amount: ''}]);
+    };
+
+    const handleRemoveEntry = (index) => {
+        const updatedEntries = [...budgetEntries];
+        updatedEntries.splice(index, 1);
+        setBudgetEntries(updatedEntries);
+    };
+
+    const handleInputChange = (index, field, value) => {
+        const updatedEntries = [...budgetEntries];
+        updatedEntries[index][field] = value;
+        setBudgetEntries(updatedEntries);
+    };
+
+    const handleBudgetSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const userId = 'user1';
+            console.log(budgetEntries);
+            const response = await axios.post('http://localhost:8080/api/budget', { userId, budgetEntries });
+            alert(response.data.message);
+        } catch (error) {
+            console.error('Error submitting budgets:', error);
+            alert('There was an error submitting your budgets. Please try again.')
+        }
     };
 
     useEffect(() => {
@@ -41,13 +71,24 @@ const Budget = () => {
         fetchActualExpenses();
     }, []);
 
+    const emptyData = {
+        labels: ['Empty'],
+        datasets: [
+            {
+                label: 'No Data',
+                data: [1],
+                backgroundColor: ['#e0e0e0']
+            }
+        ]
+    };
+
     const data = {
-        labels: Object.keys(budgetData),
+        labels: validBudgetEntries.map(entry => entry.category),
         datasets: [
             {
                 label: 'Budget',
-                data: Object.values(budgetData),
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                data: validBudgetEntries.map(entry => parseFloat(entry.amount)),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] // Need to add more colors
             },
         ],
     };
@@ -74,7 +115,71 @@ const Budget = () => {
         },
     };
 
-    return <Doughnut data={data} options={options} />;
+    return (
+        <div className='budgetContainer'>
+            <h1>Your Weekly Budget</h1>
+
+                <div className='budgetInputDiv'>
+                    <form onSubmit={handleBudgetSubmit}>
+                        {budgetEntries.map((entry, index) => (
+                            <div key={index} style={{ marginBottom: '10px' }}>
+                                <select
+                                    value={entry.category}
+                                    onChange={(e) => handleInputChange(index, 'category', e.target.value)}
+                                    required
+                                >
+                                    <option value="">Select Category</option>
+                                    {categoryOptions.weekly.map((category, idx) => (
+                                        <option key={idx} value={category}>{category}</option>
+                                    ))}
+                                </select>
+
+                                <input
+                                    type="number"
+                                    placeholder="Amount"
+                                    value={entry.amount}
+                                    onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
+                                    required
+                                />
+
+                                {budgetEntries.length > 1 && (
+                                    <button type="button" onClick={() => handleRemoveEntry(index)}>
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+
+                        <button type="button" onClick={handleAddEntry}>
+                            Add Another Budget
+                        </button>
+
+                        <button type="submit">
+                                Submit Budget
+                        </button>
+                    </form>
+                </div>
+            
+            <div className='chartDiv'>
+                {validBudgetEntries.length > 0 ? (<Doughnut data={data} options={options} />) : (
+                    <Doughnut data={emptyData} />
+                )}
+            </div>
+
+            <div className='budgetInfoDiv'>
+                <p>[BUDGET INFO WILL BE HERE]</p>
+            </div>
+
+            {/* Button to return to dashboard without submitting */}
+            <button 
+                type="button" 
+                onClick={() => navigate('/')} 
+                style={{ marginTop: '20px' }}>
+                Back to Dashboard
+            </button>
+        </div>
+    );
+
 };
 
 export default Budget;

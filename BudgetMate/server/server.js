@@ -12,6 +12,25 @@ app.use(bodyParser.json());
 
 let expensesData = {};
 let incomeStore = {};
+let budgetData = {};
+
+// Route to get budget submission
+app.post('/api/budget', (req, res) => {
+    const { userId, budgetEntries } = req.body;
+    budgetData[userId] = budgetEntries;
+    res.json({ message: 'Budget stored successfully', budgetEntries});
+});
+
+// Route to get stored budget
+app.get('/api/budget/:userId', (req, res) => {
+    const { userId } = req.params;
+    const budgetEntries = budgetData[userId];
+    if (budgetEntries) {
+        res.json({ budgetEntries });
+    } else {
+        res.status(404).json({ message: 'No budget data found' });
+    }
+});
 
 // Route to handle income submission (Unchanged)
 app.post('/api/income', (req, res) => {
