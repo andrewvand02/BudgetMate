@@ -70,7 +70,24 @@ const Budget = () => {
 
         fetchActualExpenses();
     }, []);
+    useEffect(() => {
+        // Function to fetch expenses from the server.
+        const fetchBudgetInfo = async () => {
+            try {
+                const userId = 'user1'; // Hardcoded user ID for demo purposes.
+                // Fetching expense data for the user from the backend.
+                const response = await axios.get(`http://localhost:8080/api/budget/${userId}`);
+                
+                const budget = response.data.budgetEntries; // Getting the array of expense entries from response data.                
+                setBudgetEntries(budget); // Storing the grouped expenses in state.
+            } catch (error) {
+                // Logging any errors that occur during fetch.
+                console.error('Error fetching budget info:', error);
+            }
+        };
 
+        fetchBudgetInfo(); // Calling fetch function when component mounts.
+    }, []);
     const emptyData = {
         labels: ['Empty'],
         datasets: [
