@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; // Importing React and the useState hook to manage component state.
 import axios from 'axios'; // Importing axios for making HTTP requests to the backend.
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom to programmatically navigate between routes.
+import './ExpenseInput.css'
 
 const ExpenseInput = () => {
     // Initializing state for expense entries with one default entry.
