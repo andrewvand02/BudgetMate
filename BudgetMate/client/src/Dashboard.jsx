@@ -5,7 +5,6 @@ const Dashboard = () => {
     
     return (
         <div>
-            <button ></button>
             <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
