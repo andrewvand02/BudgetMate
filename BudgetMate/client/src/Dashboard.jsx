@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Dashboard.css'
 
 const Dashboard = () => {
     return (
         <div>
+            
             <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">

@@ -1,0 +1,8 @@
+/* Dashboard.css */
+
+div {
+    background-color: rgba(247, 44, 44, 0.7);
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    border: 1px solid rgb(49, 47, 47);
+}
