@@ -119,6 +119,7 @@ const Budget = () => {
             } else {
                 setSelectedCategory(null);
             }
+ 
         },
     };
     
