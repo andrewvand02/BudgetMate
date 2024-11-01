@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Dashboard.css';
+import budget from './assets/budget.png';
 
 const Dashboard = () => {
-    
+
     return (
         <div>
+            <img src={budget} alt="logo">
+            </img>
             <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
@@ -21,7 +25,7 @@ const Dashboard = () => {
                 <button className="button type1">
                     <span className="btn-txt">Input Expenses</span>
                 </button>
-             </Link>
+            </Link>
             <Link to="/fetch-expenses">
                 <button className="button type1">
                     <span className="btn-txt">View Expenses</span>
