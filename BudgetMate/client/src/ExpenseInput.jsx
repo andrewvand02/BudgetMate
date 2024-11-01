@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; // Importing React and the useState hook to manage component state.
 import axios from 'axios'; // Importing axios for making HTTP requests to the backend.
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom to programmatically navigate between routes.
-import './ExpenseInput.css'
+import './ExpenseInput.css';
 
 const ExpenseInput = () => {
     // Initializing state for expense entries with one default entry.
@@ -61,14 +61,17 @@ const ExpenseInput = () => {
             <form onSubmit={handleExpenseSubmit}> {/* Form element with submission handling */}
                 {expenseEntries.map((entry, index) => ( // Mapping over the array of expense entries
                     <div key={index} style={{ marginBottom: '10px' }}> {/* Individual entry container */}
-                        <input
-                            type="text" // Text input for the expense name
-                            placeholder="Expense Name" // Placeholder text for the input
-                            value={entry.name} // Current value of the input, tied to state
-                            onChange={(e) => handleInputChange(index, 'name', e.target.value)} // Handling change for the name input
-                            required // Makes this field required
-                        />
+                        <div className='pt_Cat'>
+                            <input
+                                type="text" // Text input for the expense name
+                                placeholder="Expense Name" // Placeholder text for the input
+                                value={entry.name} // Current value of the input, tied to state
+                                onChange={(e) => handleInputChange(index, 'name', e.target.value)} // Handling change for the name input
+                                required // Makes this field required
+                            />
+                        </div>
                         <select
+                            className='select-pt-Cat'
                             value={entry.frequency} // Current value for frequency, tied to state
                             onChange={(e) => handleInputChange(index, 'frequency', e.target.value)} // Handling frequency selection change
                         >
@@ -76,6 +79,7 @@ const ExpenseInput = () => {
                             <option value="monthly">Monthly</option> {/* Monthly frequency option */}
                         </select>
                         <select
+                            className='select-pt-Cat'
                             value={entry.category} // Current value for category, tied to state
                             onChange={(e) => handleInputChange(index, 'category', e.target.value)} // Handling category selection change
                             required // Makes this field required
@@ -85,30 +89,34 @@ const ExpenseInput = () => {
                                 <option key={idx} value={category}>{category}</option> // Creating an option for each category
                             ))}
                         </select>
-                        <input
-                            type="number" // Number input for the expense amount
-                            placeholder="Amount" // Placeholder text for the input
-                            value={entry.amount} // Current value of the input, tied to state
-                            onChange={(e) => handleInputChange(index, 'amount', e.target.value)} // Handling change for the amount input
-                            required // Makes this field required
-                        />
+                        <div className='pt_Quant'>
+                            <input
+                                type="number" // Number input for the expense amount
+                                placeholder="Amount" // Placeholder text for the input
+                                value={entry.amount} // Current value of the input, tied to state
+                                onChange={(e) => handleInputChange(index, 'amount', e.target.value)} // Handling change for the amount input
+                                required // Makes this field required
+                            />
+                        </div>
                         {expenseEntries.length > 1 && ( // Conditional rendering of the remove button if there are multiple entries
-                            <button type="button" onClick={() => handleRemoveEntry(index)}> {/* Removing entry on click */}
+                            <button className="button type1" type="button" onClick={() => handleRemoveEntry(index)}> {/* Removing entry on click */}
                                 Remove
                             </button>
                         )}
                     </div>
                 ))}
-                <button type="button" onClick={handleAddEntry}> {/* Button to add another expense entry */}
-                    Add Another Expense
+                <button className="button type1" type="button" onClick={handleAddEntry}> {/* Button to add another expense entry */}
+                 <span className="btn-txt">Add Expense</span>
                 </button>
-                <button type="submit">Submit Expenses</button> {/* Button to submit the form */}
+                <button className="button type1" type="submit">
+                <span className="btn-txt">Submit Expenses</span></button> {/* Button to submit the form */}
             </form>
-            <button 
+            <button
+                className="button type1" 
                 type="button" 
                 onClick={() => navigate('/')} // Navigating back to the dashboard on click 
                 style={{ marginTop: '20px' }}> {/* Adding some margin to the button */}
-                Back to Dashboard {/* Button label */}
+                <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
         </div>
     );

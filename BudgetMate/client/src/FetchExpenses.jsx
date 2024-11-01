@@ -95,10 +95,11 @@ const FetchExpenses = () => {
                 <p>No expense data available.</p> // Message displayed if there are no weekly expenses
             )}
             <button
+                className='button type1'
                 type="button"
                 onClick={() => navigate('/')} // Navigating back to the dashboard on button click
                 style={{ marginTop: '20px' }}> {/* Adding margin to the button */}
-                Back to Dashboard {/* Button label */}
+                <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
         </div>
     );

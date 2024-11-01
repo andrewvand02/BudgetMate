@@ -1,29 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Dashboard.css'; // imports the styles from the dashboard's css file
-import budget from './assets/budget.png';
 
 const Dashboard = () => {
+    
     return (
         <div>
-            <img src={budget} alt="logo">
-            </img>
+            <button ></button>
             <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
-                <button>Income Input</button>
+                <button className="button type1">
+                    <span className="btn-txt">Income Input</span>
+                </button>
             </Link>
             <Link to="/fetch-income">
-                <button>View Income</button>
+                <button className="button type1">
+                    <span className="btn-txt">View Income</span>
+                </button>
             </Link>
             <Link to="/expenses">
-                <button>Input Expenses</button>
+                <button className="button type1">
+                    <span className="btn-txt">Input Expenses</span>
+                </button>
              </Link>
             <Link to="/fetch-expenses">
-                <button>View Expenses</button>
+                <button className="button type1">
+                    <span className="btn-txt">View Expenses</span>
+                </button>
             </Link>
             <Link to="/budget">
-                <button>Budget</button>
+                <button className="button type1">
+                    <span className="btn-txt">Budget</span>
+                </button>
             </Link>
         </div>
     );

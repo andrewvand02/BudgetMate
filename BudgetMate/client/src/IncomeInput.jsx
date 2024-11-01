@@ -47,46 +47,54 @@ const IncomeInput = () => {
             <form onSubmit={handleIncomeSubmit}>
                 {incomeEntries.map((entry, index) => (
                     <div key={index} style={{ marginBottom: '10px' }}>
-                        <input
-                            type="text"
-                            placeholder="Income Category"
-                            value={entry.category}
-                            onChange={(e) => handleInputChange(index, 'category', e.target.value)}
-                            required
-                            style={{ marginRight: '10px' }}
-                        />
-                        <input
-                            type="number"
-                            placeholder="Amount"
-                            value={entry.amount}
-                            onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
-                            required
-                            style={{ marginRight: '10px' }}
-                        />
+                        <div className='pt_Cat'>
+                            <input
+                                type="text"
+                                placeholder="Income Category"
+                                value={entry.category}
+                                onChange={(e) => handleInputChange(index, 'category', e.target.value)}
+                                required
+                                style={{ marginRight: '10px' }}
+                            />
+                        </div>
+                        <div className='pt_Quant'>
+                            <input
+                                type="number"
+                                placeholder="Amount"
+                                value={entry.amount}
+                                onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
+                                required
+                                style={{ marginRight: '10px' }}
+                            />
+                        </div>
                         {incomeEntries.length > 1 && (
                             <button 
+                                className='button type1'
                                 type="button" 
                                 onClick={() => handleRemoveEntry(index)} 
                                 style={{ marginLeft: '5px' }}>
-                                Remove
+                                <span className="btn-txt">Remove</span>
                             </button>
                         )}
                     </div>
                 ))}
                 <div style={{ marginTop: '20px' }}>
-                    <button type="button" onClick={handleAddEntry} style={{ marginRight: '10px' }}>
-                        Add Another Income Category
+                    <button className='button type1' type="button" onClick={handleAddEntry} style={{ marginRight: '10px' }}>
+                        <span className="btn-txt">Add Another Income Category</span>
                     </button>
-                    <button type="submit">Submit Income</button>
+                    <button className='button type1' type="submit">
+                        <span className="btn-txt">Submit Income</span>
+                    </button>
                 </div>
             </form>
 
             {/* Button to return to dashboard without submitting */}
             <button 
+                className='button type1'
                 type="button" 
                 onClick={() => navigate('/')} 
                 style={{ marginTop: '20px' }}>
-                Back to Dashboard
+                <span className="btn-txt">Dashboard</span> 
             </button>
         </div>
     );
