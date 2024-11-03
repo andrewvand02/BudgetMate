@@ -1,0 +1,9 @@
+/* ExpenseInput.css */
+
+form {
+    display: block;
+    flex-flow: column nowrap;
+    padding: 3em;
+    margin-bottom: 1em;
+    border: 1px solid #e4d3c5;
+}

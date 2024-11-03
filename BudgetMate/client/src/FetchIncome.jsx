@@ -38,7 +38,7 @@ const FetchIncome = () => {
             {incomeEntries.length > 0 ? ( // Check if income entries are available
                 <ul> {/* Unordered list for displaying income entries */}
                     {incomeEntries.map((entry, index) => ( // Mapping over income entries array
-                        <li key={index}> {/* List item for each income entry */}
+                        <li className='inc_amount' key={index}> {/* List item for each income entry */}
                             {entry.category}: ${entry.amount} {/* Displaying category and amount */}
                         </li>
                     ))}
@@ -46,8 +46,8 @@ const FetchIncome = () => {
             ) : (
                 <p>No income data available.</p> // Message displayed if no income entries are available
             )}
-            <button onClick={goBackToDashboard} className="back-button"> {/* Button to go back to dashboard */}
-                Back to Dashboard {/* Button label */}
+            <button onClick={goBackToDashboard} className='button type1'> {/* Button to go back to dashboard */}
+            <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
         </div>
     );
