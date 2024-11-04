@@ -12,11 +12,12 @@ const Budget = () => {
     const [actualExpenses, setActualExpenses] = useState({});
     const [selectedCategory, setSelectedCategory] = useState(null); // Added useState for selectedCategory
     const validBudgetEntries = budgetEntries.filter(entry => entry.category && entry.amount);
+    const [minimizeInputSection, setMinimizeInputSection] = useState(false);
+    const navigate = useNavigate();
 
     const categoryOptions = {
         weekly: ["Groceries", "Restaurant/Takeout", "Home Supplies", "Personal Care", "Transportation", "Entertainment", "Clothing", "Hobbies", "Pets", "Other"]
     };
-    const navigate = useNavigate();
 
     const handleAddEntry = () => {
         setBudgetEntries([...budgetEntries, { category: '', amount: '' }]);
@@ -40,6 +41,7 @@ const Budget = () => {
             const userId = 'user1';
             const response = await axios.post('http://localhost:8080/api/budget', { userId, budgetEntries });
             alert(response.data.message);
+            setMinimizeInputSection(true);
         } catch (error) {
             console.error('Error submitting budgets:', error);
             alert('There was an error submitting your budgets. Please try again.');
@@ -110,12 +112,22 @@ const Budget = () => {
                 const budgetedAmount = data.datasets[0].data[index];
                 const spentAmount = actualExpenses[category] || 0;
                 const remainingAmount = budgetedAmount - spentAmount;
+                const exceededBudget = spentAmount - budgetedAmount;
+
+                if (spentAmount > budgetedAmount) {
+                    alert(`You have exceeded your budget for ${category}. You have spent $${exceededBudget} over.`)
+                };
+
+                if (spentAmount == budgetedAmount) {
+                    alert(`You have reached your budget for ${category}.`)
+                };
     
                 setSelectedCategory({
                     category,
                     budgetedAmount: budgetedAmount.toLocaleString(),
                     spentAmount: spentAmount.toLocaleString(),
-                    remainingAmount: remainingAmount > 0 ? remainingAmount.toLocaleString() : 0,
+                    remainingAmount: remainingAmount > 0 ? remainingAmount.toLocaleString() : remainingAmount,
+                    exceededBudget,
                 });
             } else {
                 setSelectedCategory(null);
@@ -128,46 +140,55 @@ const Budget = () => {
         <div className="budgetContainer">
             <h1>Your Weekly Budget</h1>
 
-            <div className="budgetInputDiv">
-                <form onSubmit={handleBudgetSubmit}>
-                    {budgetEntries.map((entry, index) => (
-                        <div key={index} style={{ marginBottom: '10px' }}>
-                            <select
-                                value={entry.category}
-                                onChange={(e) => handleInputChange(index, 'category', e.target.value)}
-                                required
-                            >
-                                <option value="">Select Category</option>
-                                {categoryOptions.weekly.map((category, idx) => (
-                                    <option key={idx} value={category}>{category}</option>
-                                ))}
-                            </select>
+            <button 
+                onClick={() => setMinimizeInputSection(!minimizeInputSection)}
+                style={{ marginBottom: '10px'}}
+            >
+                {minimizeInputSection ? 'Show Budget Input' : 'Hide Budget Input'}
+            </button>
 
-                            <input
-                                type="number"
-                                placeholder="Amount"
-                                value={entry.amount}
-                                onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
-                                required
-                            />
+            {!minimizeInputSection && (
+                <div className="budgetInputDiv">
+                    <form onSubmit={handleBudgetSubmit}>
+                        {budgetEntries.map((entry, index) => (
+                            <div key={index} style={{ marginBottom: '10px' }}>
+                                <select
+                                    value={entry.category}
+                                    onChange={(e) => handleInputChange(index, 'category', e.target.value)}
+                                    required
+                                >
+                                    <option value="">Select Category</option>
+                                    {categoryOptions.weekly.map((category, idx) => (
+                                        <option key={idx} value={category}>{category}</option>
+                                    ))}
+                                </select>
 
-                            {budgetEntries.length > 1 && (
-                                <button type="button" onClick={() => handleRemoveEntry(index)}>
-                                    Remove
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                                <input
+                                    type="number"
+                                    placeholder="Amount"
+                                    value={entry.amount}
+                                    onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
+                                    required
+                                />
 
-                    <button type="button" onClick={handleAddEntry}>
-                        Add Another Budget
-                    </button>
+                                {budgetEntries.length > 1 && (
+                                    <button type="button" onClick={() => handleRemoveEntry(index)}>
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
+                        ))}
 
-                    <button type="submit">
-                        Submit Budget
-                    </button>
-                </form>
-            </div>
+                        <button type="button" onClick={handleAddEntry}>
+                            Add Another Budget
+                        </button>
+
+                        <button type="submit">
+                            Submit Budget
+                        </button>
+                    </form>
+                </div>
+            )}
 
             <div style={{ display: 'flex', marginTop: '20px' }}>
                 <Doughnut data={data} options={options} />
