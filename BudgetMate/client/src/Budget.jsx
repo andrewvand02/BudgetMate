@@ -13,6 +13,7 @@ const Budget = () => {
     const [selectedCategory, setSelectedCategory] = useState(null); // Added useState for selectedCategory
     const validBudgetEntries = budgetEntries.filter(entry => entry.category && entry.amount);
     const [minimizeInputSection, setMinimizeInputSection] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
     const categoryOptions = {
@@ -144,7 +145,8 @@ const Budget = () => {
             <button 
                 onClick={() => setMinimizeInputSection(!minimizeInputSection)}
                 style={{ marginBottom: '10px'}}
-            >
+                className={isDarkMode ? 'dark' : 'light'}
+            >   
                 {minimizeInputSection ? 'Show Budget Input' : 'Hide Budget Input'}
             </button>
 
@@ -173,18 +175,19 @@ const Budget = () => {
                                 />
 
                                 {budgetEntries.length > 1 && (
-                                    <button type="button" onClick={() => handleRemoveEntry(index)}>
+                                    <button type="button" onClick={() => handleRemoveEntry(index)} className={isDarkMode ? 'dark' : 'light'}>
                                         Remove
                                     </button>
                                 )}
                             </div>
                         ))}
 
-                        <button type="button" onClick={handleAddEntry}>
+                        <button type="button" onClick={handleAddEntry} className={isDarkMode ? 'dark' : 'light'}>
                             Add Another Budget
                         </button>
 
-                        <button type="submit">
+                        <button type="submit" className={isDarkMode ? 'dark' : 'light'}>
+                        
                             Submit Budget
                         </button>
                     </form>
@@ -195,7 +198,7 @@ const Budget = () => {
                 <Doughnut data={data} options={options} />
 
                 {selectedCategory && (
-                    <div style={{ marginLeft: '20px', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
+                    <div className={`tooltip ${isDarkMode ? 'dark' : 'light' }`}>
                         <p><strong>Category:</strong> {selectedCategory.category}</p>
                         <p><strong>Budgeted:</strong> ${selectedCategory.budgetedAmount}</p>
                         <p><strong>Spent:</strong> ${selectedCategory.spentAmount}</p>
@@ -206,6 +209,7 @@ const Budget = () => {
 
             <button
                 type="button"
+                className={isDarkMode ? 'dark' : 'light'}
                 onClick={() => navigate('/')}
                 style={{ marginTop: '20px' }}
             >

@@ -1,1 +1,55 @@
-/*Budget.css* TODO: Add changes to Budget UI /
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Light mode styles */
+.light {
+    background-color: #f0f0f0; /* Light background */
+    color: #333; /* Dark text */
+}
+
+.light button {
+    background-color: #36A2EB; /* Light blue for buttons */
+    color: white; /* White text for buttons */
+}
+
+.light button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+/* Dark mode styles */
+.dark {
+    background-color: #333; /* Dark background */
+    color: #f0f0f0; /* Light text */
+}
+
+.dark button {
+    background-color: #FF6384; /* Light red for buttons */
+    color: white; /* White text for buttons */
+}
+
+.dark button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+
+.tooltip {
+    margin-left: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.tooltip.light {
+    background-color: #f5f5f5;
+    color: #242424;
+}
+
+.tooltip.dark {
+    background-color: #333333;
+    color: #FFFFFF;
+}
