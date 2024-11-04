@@ -1,0 +1,4 @@
+# Expense
+# userId, name, category, amount, date
+1,QuikTrip,Transportation,43.45,2024-11-02
+1,Walmart,Grocery,165.53,2024-11-03
