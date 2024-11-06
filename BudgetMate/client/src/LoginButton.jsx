@@ -7,10 +7,6 @@ import "./LoginButton.css";
 const goBackToDashboard = () => {
     navigate('/'); // Redirects to the dashboard route ('/')
 };
-
-$('.message a').click(function () {
-    $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
-});
 const LoginButton = () => {
     return (
         <div class="login-page">
@@ -27,7 +23,6 @@ const LoginButton = () => {
                     <input type="password" placeholder="password" />
                     <button className="login-button"><span className='btn-txt'>Login</span></button>
                     <p class="message">Not registered? <a href="#">Create an account</a></p>
-
                 </form>
             </div>
             <button onClick={goBackToDashboard} className='button type1'> {/* Button to go back to dashboard */}
