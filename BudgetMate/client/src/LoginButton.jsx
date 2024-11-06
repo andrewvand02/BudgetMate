@@ -1,13 +1,18 @@
 // LoginButton.jsx
 import React from 'react';
 //import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
 import "./LoginButton.css";
 
-// Function to handle navigation back to the dashboard
-const goBackToDashboard = () => {
-    navigate('/'); // Redirects to the dashboard route ('/')
-};
+
 const LoginButton = () => {
+    const navigate = useNavigate(); // Initializing the navigate function for navigation
+
+    // Function to handle navigation back to the dashboard
+    const goBackToDashboard = () => {
+        navigate('/'); // Redirects to the dashboard route ('/')
+    };
+    
     return (
         <div class="login-page">
             <div class="form">
