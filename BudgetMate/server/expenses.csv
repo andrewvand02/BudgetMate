@@ -1,0 +1,22 @@
+userId,name,category,amount,frequency,date
+user1,Weekly Groceries,Groceries,54.75,daily,2024-10-28
+user1,Gas for Car,Transportation,15.25,daily,2024-10-29
+user1,Dog Food,Pets,12.50,daily,2024-10-29
+user1,Coffee at Cafe,Restaurant/Takeout,4.50,daily,2024-10-30
+user1,Laundry Detergent,Home Supplies,8.99,daily,2024-10-30
+user1,Shampoo,Personal Care,5.75,daily,2024-10-31
+user1,Lunch with Friends,Restaurant/Takeout,20.00,daily,2024-10-31
+user1,Streaming Subscription,Entertainment,9.99,daily,2024-11-01
+user1,Movie Ticket,Entertainment,12.00,daily,2024-11-01
+user1,Book,Hobbies,15.99,daily,2024-11-02
+user1,Socks,Clothing,6.50,daily,2024-11-02
+user1,Art Supplies,Hobbies,10.00,daily,2024-11-03
+user1,Household Cleaner,Home Supplies,3.99,daily,2024-11-03
+user1,Treats for Pet,Pets,5.00,daily,2024-11-04
+user1,Breakfast at Diner,Restaurant/Takeout,8.75,daily,2024-11-04
+user1,Bus Fare,Transportation,2.50,daily,2024-11-05
+user1,Toothpaste,Personal Care,3.45,daily,2024-11-05
+user1,Band T-Shirt,Clothing,18.50,daily,2024-11-06
+user1,Notebook,Hobbies,4.25,daily,2024-11-06
+user1,Snacks,Groceries,7.99,daily,2024-11-07
+user1,Water Bottle,Other,2.99,daily,2024-11-07
