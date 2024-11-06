@@ -21,7 +21,9 @@ const LoginButton = () => {
                 <form class="login-form">
                     <input type="text" placeholder="username" />
                     <input type="password" placeholder="password" />
-                    <button className="login-button"><span className='btn-txt'>Login</span></button>
+                    <button>
+                        <span className='btn-txt'>Login</span>
+                    </button>
                     <p class="message">Not registered? <a href="#">Create an account</a></p>
                 </form>
             </div>
