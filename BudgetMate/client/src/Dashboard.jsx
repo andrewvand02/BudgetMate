@@ -36,6 +36,11 @@ const Dashboard = () => {
                     <span className="btn-txt">Budget</span>
                 </button>
             </Link>
+            <Link to="/login">
+                <button className="login-button">
+                    <span className='btn-txt'>Login</span>
+                </button>
+            </Link>
         </div>
     );
 };

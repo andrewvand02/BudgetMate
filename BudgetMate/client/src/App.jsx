@@ -7,6 +7,7 @@ import FetchIncome from './FetchIncome';
 import ExpenseInput from './ExpenseInput';
 import FetchExpenses from './FetchExpenses';
 import Budget from './Budget';
+import LoginButton from './LoginButton';
 import './App.css';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
                 <Route path="/expenses" element={<ExpenseInput />} />
                 <Route path="/fetch-expenses" element={<FetchExpenses />} />
                 <Route path="/budget" element={<Budget />} />
+                <Route path="/login" element={<LoginButton/>} />
             </Routes>
         </Router>
     );
