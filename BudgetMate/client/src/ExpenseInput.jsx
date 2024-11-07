@@ -92,6 +92,7 @@ const ExpenseInput = () => {
                         <div className='pt_Quant'>
                             <input
                                 type="number" // Number input for the expense amount
+                                min="1" // Minimum amount, can't have user input $0 or less
                                 placeholder="Amount" // Placeholder text for the input
                                 value={entry.amount} // Current value of the input, tied to state
                                 onChange={(e) => handleInputChange(index, 'amount', e.target.value)} // Handling change for the amount input
