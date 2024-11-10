@@ -56,20 +56,33 @@ const Budget = () => {
                 const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`);
                 const expenses = response.data.expenseEntries;
     
-                // Calculate the start of the current calendar week (most recent Sunday)
+                // Get today's date
                 const today = new Date();
+    
+                // Get the current day of the week (0 for Sunday, 6 for Saturday)
+                const currentDayOfWeek = today.getDay();
+    
+                // Calculate the start of the week (Sunday)
                 const startOfWeek = new Date(today);
-                startOfWeek.setDate(today.getDate() - today.getDay()); // Sets to the most recent Sunday
+                startOfWeek.setDate(today.getDate() - currentDayOfWeek); // Set to last Sunday
     
-                // Aggregate expenses from the start of the week to today
-                const aggregatedExpenses = expenses.reduce((acc, entry) => {
-                    const { category, amount, date, frequency } = entry;
-                    const entryDate = new Date(date); // Ensure `date` is parsed as Date object
+                // Calculate the end of the week (Saturday)
+                const endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to next Saturday
     
-                    // Check if the entry is within the current week and is daily
-                    if (frequency === 'daily' && entryDate >= startOfWeek && entryDate <= today) {
-                        acc[category] = (acc[category] || 0) + Number(amount);
-                    }
+                // Filter expenses that are within the current week
+                const filteredExpenses = expenses.filter((entry) => {
+                    const entryDate = new Date(entry.date);
+                    return (
+                        entry.frequency === 'daily' &&
+                        entryDate >= startOfWeek && entryDate <= endOfWeek
+                    );
+                });
+    
+                // Aggregate the filtered expenses by category
+                const aggregatedExpenses = filteredExpenses.reduce((acc, entry) => {
+                    const { category, amount } = entry;
+                    acc[category] = (acc[category] || 0) + Number(amount);
                     return acc;
                 }, {});
     
@@ -81,6 +94,8 @@ const Budget = () => {
     
         fetchActualExpenses();
     }, []);
+    
+    
     
 
     useEffect(() => {

@@ -1,8 +1,8 @@
 userId,name,category,amount,frequency,date
-user1,Weekly Groceries,Groceries,54.75,daily,2024-10-28
-user1,Gas for Car,Transportation,15.25,daily,2024-10-29
+user1,Groceries,Groceries,54.75,daily,2024-10-28
+user1,Gas,Transportation,15.25,daily,2024-10-29
 user1,Dog Food,Pets,12.50,daily,2024-10-29
-user1,Coffee at Cafe,Restaurant/Takeout,4.50,daily,2024-10-30
+user1,Coffee,Restaurant/Takeout,4.50,daily,2024-10-30
 user1,Laundry Detergent,Home Supplies,8.99,daily,2024-10-30
 user1,Shampoo,Personal Care,5.75,daily,2024-10-31
 user1,Lunch with Friends,Restaurant/Takeout,20.00,daily,2024-10-31
@@ -13,10 +13,31 @@ user1,Socks,Clothing,6.50,daily,2024-11-02
 user1,Art Supplies,Hobbies,10.00,daily,2024-11-03
 user1,Household Cleaner,Home Supplies,3.99,daily,2024-11-03
 user1,Treats for Pet,Pets,5.00,daily,2024-11-04
-user1,Breakfast at Diner,Restaurant/Takeout,8.75,daily,2024-11-04
+user1,Breakfast,Restaurant/Takeout,8.75,daily,2024-11-04
 user1,Bus Fare,Transportation,2.50,daily,2024-11-05
 user1,Toothpaste,Personal Care,3.45,daily,2024-11-05
 user1,Band T-Shirt,Clothing,18.50,daily,2024-11-06
 user1,Notebook,Hobbies,4.25,daily,2024-11-06
 user1,Snacks,Groceries,7.99,daily,2024-11-07
 user1,Water Bottle,Other,2.99,daily,2024-11-07
+user1,Weekly Groceries,Groceries,58.45,daily,2024-11-08
+user1,Gas Refill,Transportation,14.75,daily,2024-11-09
+user1,Pet Grooming,Pets,20.00,daily,2024-11-09
+user1,Takeout Dinner,Restaurant/Takeout,18.50,daily,2024-11-10
+user1,Paper Towels,Home Supplies,4.99,daily,2024-11-10
+user1,Face Wash,Personal Care,6.50,daily,2024-11-11
+user1,Lunch Date,Restaurant/Takeout,22.00,daily,2024-11-11
+user1,Online Movie Rental,Entertainment,5.99,daily,2024-11-12
+user1,Museum Entry,Entertainment,10.00,daily,2024-11-12
+user1,Magazine,Hobbies,3.99,daily,2024-11-13
+user1,Jacket,Clothing,32.50,daily,2024-11-13
+user1,Board Game,Hobbies,25.00,daily,2024-11-14
+user1,Cleaning Spray,Home Supplies,4.29,daily,2024-11-14
+user1,Pet Treats,Pets,6.00,daily,2024-11-15
+user1,Brunch,Restaurant/Takeout,10.75,daily,2024-11-15
+user1,Train Fare,Transportation,3.00,daily,2024-11-16
+user1,Body Lotion,Personal Care,4.75,daily,2024-11-16
+user1,T-Shirt,Clothing,10.50,daily,2024-11-17
+user1,Sketchbook,Hobbies,6.25,daily,2024-11-17
+user1,Fruit Basket,Groceries,9.99,daily,2024-11-18
+user1,Bottle of Water,Other,1.50,daily,2024-11-18
