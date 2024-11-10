@@ -96,7 +96,7 @@ button:focus-visible {
 }
 
 .button:hover {
-  box-shadow: 1px 1px 50px #252525;
+  box-shadow: 1px 1px 10px #252525;
   color: #fff;
   border: none;
 }
@@ -386,7 +386,7 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .button:hover{
-    box-shadow: 1px 1px 50px #616161;
+    box-shadow: 1px 1px 10px #616161;
     color: #0c0000;
     background-color: #f1ebeb;
   }

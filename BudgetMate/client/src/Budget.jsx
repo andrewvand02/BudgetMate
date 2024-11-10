@@ -178,6 +178,7 @@ const Budget = () => {
 
                                 <input
                                     type="number"
+                                    min="1"
                                     placeholder="Amount"
                                     value={entry.amount}
                                     onChange={(e) => handleInputChange(index, 'amount', e.target.value)}

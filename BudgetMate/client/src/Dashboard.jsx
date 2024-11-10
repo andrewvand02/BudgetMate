@@ -7,7 +7,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <img src={budget} alt="logo">
+            <img class="logo" src={budget} alt="logo">
             </img>
             <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>

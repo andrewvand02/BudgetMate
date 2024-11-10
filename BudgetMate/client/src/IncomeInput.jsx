@@ -60,6 +60,7 @@ const IncomeInput = () => {
                         <div className='pt_Quant'>
                             <input
                                 type="number"
+                                min="1" // Minimum amount, can't have user input $0 or less
                                 placeholder="Amount"
                                 value={entry.amount}
                                 onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
