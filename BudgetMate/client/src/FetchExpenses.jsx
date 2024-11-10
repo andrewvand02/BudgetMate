@@ -3,6 +3,8 @@ import axios from 'axios'; // Importing axios to handle HTTP requests.
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom for navigation.
 import './FetchExpenses.css'; // Importing CSS file for styling.
 
+import { Link } from 'react-router-dom';
+
 const FetchExpenses = () => {
     // State to hold expenses grouped by week.
     const [weeklyExpenses, setWeeklyExpenses] = useState([]);
@@ -101,6 +103,12 @@ const FetchExpenses = () => {
                 style={{ marginTop: '20px' }}> {/* Adding margin to the button */}
                 <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
+            {/* Link to navigate to the expenses breakdown page */}
+            <Link to="/breakdown-expenses">
+                <button className="button type1">
+                    <span className="btn-txt">Expenses Breakdown</span>
+                </button>
+            </Link>
         </div>
     );
 };

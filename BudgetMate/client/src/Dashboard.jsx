@@ -31,6 +31,11 @@ const Dashboard = () => {
                     <span className="btn-txt">View Expenses</span>
                 </button>
             </Link>
+            <Link to="/breakdown-expenses">
+                <button className="button type1">
+                    <span className="btn-txt">Expenses Breakdown</span>
+                </button>
+            </Link>
             <Link to="/budget">
                 <button className="button type1">
                     <span className="btn-txt">Budget</span>

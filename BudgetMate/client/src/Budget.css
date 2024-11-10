@@ -39,7 +39,7 @@ button {
 
 .tooltip {
     margin-left: 20px;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
 }
@@ -52,4 +52,22 @@ button {
 .tooltip.dark {
     background-color: #333333;
     color: #FFFFFF;
+}
+
+.spent-amount {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Display a red dot when the user exceeds the budget, next to where it says, "Spent" */
+.exceeded-budget-indicator {
+    position: absolute;
+    top: -5px; 
+    left: -10px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    z-index: 1;
 }

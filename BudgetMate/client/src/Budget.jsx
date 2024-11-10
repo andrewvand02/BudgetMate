@@ -5,9 +5,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Budget.css';
 
+// Registering necessary chart.js elements
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Budget = () => {
+    // State for storing budget entries and actual expenses
     const [budgetEntries, setBudgetEntries] = useState([{ category: '', amount: '' }]);
     const [actualExpenses, setActualExpenses] = useState({});
     const [selectedCategory, setSelectedCategory] = useState(null); // Added useState for selectedCategory
@@ -16,26 +18,31 @@ const Budget = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
+    // List of available budget categories
     const categoryOptions = {
         weekly: ["Groceries", "Restaurant/Takeout", "Home Supplies", "Personal Care", "Transportation", "Entertainment", "Clothing", "Hobbies", "Pets", "Other"]
     };
 
+    // Handler to add a new budget entry input field
     const handleAddEntry = () => {
         setBudgetEntries([...budgetEntries, { category: '', amount: '' }]);
     };
 
+    // Handler to remove a budget entry
     const handleRemoveEntry = (index) => {
         const updatedEntries = [...budgetEntries];
         updatedEntries.splice(index, 1);
         setBudgetEntries(updatedEntries);
     };
 
+    // Handler for input changes in budget entries
     const handleInputChange = (index, field, value) => {
         const updatedEntries = [...budgetEntries];
         updatedEntries[index][field] = value;
         setBudgetEntries(updatedEntries);
     };
 
+    // Handler for submitting budget data to the server
     const handleBudgetSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -49,6 +56,7 @@ const Budget = () => {
         }
     };
 
+    // Fetch actual expenses from server and filter by current week
     useEffect(() => {
         const fetchActualExpenses = async () => {
             try {
@@ -93,11 +101,9 @@ const Budget = () => {
         };
     
         fetchActualExpenses();
-    }, []);
-    
-    
-    
+    }, []); 
 
+    // Fetch budget entries from the server
     useEffect(() => {
         const fetchBudgetInfo = async () => {
             try {
@@ -112,6 +118,7 @@ const Budget = () => {
         fetchBudgetInfo();
     }, []);
 
+    // Data for Doughnut chart
     const data = {
         labels: validBudgetEntries.map(entry => entry.category),
         datasets: [
@@ -123,6 +130,7 @@ const Budget = () => {
         ],
     };
 
+    // Options for Doughnut chart with custom tooltip
     const options = {
         plugins: {
             tooltip: {
@@ -140,6 +148,7 @@ const Budget = () => {
                 const remainingAmount = budgetedAmount - spentAmount;
                 const exceededBudget = spentAmount - budgetedAmount;
 
+                /* // Notify user if they execeed/reached the budget
                 if (spentAmount > budgetedAmount) {
                     alert(`You have exceeded your budget for ${category}. You have spent $${exceededBudget} over.`)
                 };
@@ -147,7 +156,9 @@ const Budget = () => {
                 if (spentAmount == budgetedAmount) {
                     alert(`You have reached your budget for ${category}.`)
                 };
+                */
     
+                // Set selected category with budget details
                 setSelectedCategory({
                     category,
                     budgetedAmount: budgetedAmount.toLocaleString(),
@@ -156,7 +167,7 @@ const Budget = () => {
                     exceededBudget,
                 });
             } else {
-                setSelectedCategory(null);
+                setSelectedCategory(null); // Clear selected category if clicked outside
             }
  
         },
@@ -167,6 +178,7 @@ const Budget = () => {
         <div className="budgetContainer">
             <h1>Your Weekly Budget</h1>
 
+            {/* Toggle button for budget input section */}
             <button 
                 onClick={() => setMinimizeInputSection(!minimizeInputSection)}
                 style={{ marginBottom: '10px'}}
@@ -175,11 +187,13 @@ const Budget = () => {
                 {minimizeInputSection ? 'Show Budget Input' : 'Hide Budget Input'}
             </button>
 
+            {/* Budget input section */}
             {!minimizeInputSection && (
                 <div className="budgetInputDiv">
                     <form onSubmit={handleBudgetSubmit}>
                         {budgetEntries.map((entry, index) => (
                             <div key={index} style={{ marginBottom: '10px' }}>
+                                {/* Category selection dropdown */}
                                 <select
                                     value={entry.category}
                                     onChange={(e) => handleInputChange(index, 'category', e.target.value)}
@@ -190,7 +204,8 @@ const Budget = () => {
                                         <option key={idx} value={category}>{category}</option>
                                     ))}
                                 </select>
-
+                                
+                                {/* Budget amount input */}
                                 <input
                                     type="number"
                                     min="1"
@@ -200,6 +215,7 @@ const Budget = () => {
                                     required
                                 />
 
+                                {/* Remove entry button */}
                                 {budgetEntries.length > 1 && (
                                     <button type="button" onClick={() => handleRemoveEntry(index)} className={isDarkMode ? 'dark' : 'light'}>
                                         Remove
@@ -208,31 +224,40 @@ const Budget = () => {
                             </div>
                         ))}
 
+                        {/* Add and submit budget buttons */}
                         <button type="button" onClick={handleAddEntry} className={isDarkMode ? 'dark' : 'light'}>
                             Add Another Budget
                         </button>
 
                         <button type="submit" className={isDarkMode ? 'dark' : 'light'}>
-                        
                             Submit Budget
                         </button>
                     </form>
                 </div>
             )}
 
+            {/* Doughnut chart displaying budget data */}
             <div style={{ display: 'flex', marginTop: '20px' }}>
-                <Doughnut data={data} options={options} />
+                <Doughnut className="doughnut" data={data} options={options} />
 
+                {/* Tooltip showing selected category details */}
                 {selectedCategory && (
                     <div className={`tooltip ${isDarkMode ? 'dark' : 'light' }`}>
                         <p><strong>Category:</strong> {selectedCategory.category}</p>
                         <p><strong>Budgeted:</strong> ${selectedCategory.budgetedAmount}</p>
-                        <p><strong>Spent:</strong> ${selectedCategory.spentAmount}</p>
+                        {/* Check if the user's expenses exceed their budget, use CSS to notify user by adding a red dot next to 'Spent' */}
+                        <p className="spent-amount">
+                            <strong>Spent:</strong> ${selectedCategory.spentAmount}
+                            {selectedCategory.exceededBudget > 0 && (
+                                <span className="exceeded-budget-indicator"></span>
+                            )}
+                        </p>
                         <p><strong>Remaining:</strong> ${selectedCategory.remainingAmount}</p>
                     </div>
                 )}
             </div>
 
+            {/* Button to navigate back to Dashboard */}
             <button
                 type="button"
                 className={isDarkMode ? 'dark' : 'light'}
