@@ -55,23 +55,33 @@ const Budget = () => {
                 const userId = 'user1';
                 const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`);
                 const expenses = response.data.expenseEntries;
-
+    
+                // Calculate the start of the current calendar week (most recent Sunday)
+                const today = new Date();
+                const startOfWeek = new Date(today);
+                startOfWeek.setDate(today.getDate() - today.getDay()); // Sets to the most recent Sunday
+    
+                // Aggregate expenses from the start of the week to today
                 const aggregatedExpenses = expenses.reduce((acc, entry) => {
-                    const { category, amount, frequency } = entry;
-                    if (frequency === 'daily') {
+                    const { category, amount, date, frequency } = entry;
+                    const entryDate = new Date(date); // Ensure `date` is parsed as Date object
+    
+                    // Check if the entry is within the current week and is daily
+                    if (frequency === 'daily' && entryDate >= startOfWeek && entryDate <= today) {
                         acc[category] = (acc[category] || 0) + Number(amount);
                     }
                     return acc;
                 }, {});
-
+    
                 setActualExpenses(aggregatedExpenses);
             } catch (error) {
                 console.error('Error fetching actual expenses:', error);
             }
         };
-
+    
         fetchActualExpenses();
     }, []);
+    
 
     useEffect(() => {
         const fetchBudgetInfo = async () => {
