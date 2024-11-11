@@ -137,7 +137,7 @@ const Budget = () => {
                 enabled: false,
             },// Disable default tooltips
         },
-        onClick: (event, chartElement) => {
+        onClick: async (event, chartElement) => {
             console.log("Chart clicked:", chartElement); // Add this to see if an element is detected
     
             if (chartElement && chartElement.length > 0) { // Check that chartElement is defined
@@ -159,6 +159,18 @@ const Budget = () => {
                 */
     
                 // Set selected category with budget details
+                if (exceededBudget > 0) {
+                    try {
+                        const userEmail = 'budgetmateproject@gmail.com'; // Replace with actual user email from the frontend
+                        await axios.post('http://localhost:8080/api/send-budget-alert', {
+                            userEmail,
+                            category,
+                            exceededBudget,
+                        });
+                    } catch (error) {
+                        console.error('Error sending email:', error);
+                    }
+                }
                 setSelectedCategory({
                     category,
                     budgetedAmount: budgetedAmount.toLocaleString(),
