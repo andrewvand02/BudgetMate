@@ -64,7 +64,7 @@
   } 
   form .message {
     margin: 15px 0 0;
-    color: #b3b3b3;
+    color: #818181;
     font-size: 12px;
   }
   .form .message a {
@@ -119,6 +119,10 @@
         background-color: #757acc;
         box-shadow: 1px 1px 50px #616161;
     }
+
+    input{
+      color: #000000;
+    }
 }
 
 @media (prefers-color-scheme: light)
@@ -133,4 +137,5 @@
         background-color: #646cff;
         box-shadow: 1px 1px 50px #616161;
     }
+    
 }
