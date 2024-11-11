@@ -15,7 +15,35 @@ const BreakdownExpenses = () => {
     const [actualExpenses, setActualExpenses] = useState({}); // Stores the weekly categorized expenses
     const [allCategories, setAllCategories] = useState([]); // List of all unique expense categories 
     const [lineChartData, setLineChartData] = useState({}); // Data for the line chart visualization
+    const [recentIncome, setRecentIncome] = useState(null);            // Stores the most recent income amount
+    const [weeklySpendingData, setWeeklySpendingData] = useState([]);  // Stores spending data for each of the last 4 weeks
+    const [totalExpensesLast4Weeks, setTotalExpensesLast4Weeks] = useState(0);  // Stores total expenses for the last 4 weeks
     const navigate = useNavigate(); // Hook for redirecting to different routes
+
+    // useEffect hook to fetch income data, get the most recent income entry
+    useEffect(() => {
+        const fetchIncome = async () => {
+            try {
+                const userId = 'user1';
+                const response = await axios.get(`http://localhost:8080/api/income/${userId}`);
+                const incomeEntries = response.data.incomeEntries;
+
+                // Log the income entries to verify what's being fetched
+                console.log("Fetched income entries:", incomeEntries);
+
+                // Find the most recent income entry based on the date
+                if (incomeEntries.length > 0) {
+                    const latestIncome = incomeEntries[0].amount; // Get the latest Income, which is the first and only income entry
+                    setRecentIncome(latestIncome);
+                    console.log("Latest income amount:", latestIncome);
+                }
+            } catch (error) {
+                console.error('Error fetching income:', error);
+            }
+        };
+
+        fetchIncome();
+    }, []);
 
     // useEffect hook to fetch expenses data when component mounts
     useEffect(() => {
@@ -51,13 +79,24 @@ const BreakdownExpenses = () => {
                 setAllCategories([...categoriesSet]); // Convert the Set to an array
                 setSelectedWeek(Object.keys(weeklyCategoryExpenses)[0]); // Set the first week as the default selection
                 generateLineChartData(expenses); // Prepare line chart data
+                setWeeklySpendingData(generateWeeklySpending(expenses));
             } catch (error) {
                 console.error('Error fetching actual expenses:', error); // Log any errors to the console
             }
         };
 
-        fetchActualExpenses(); // Call the function to fetch data
-    }, []);
+        // Fetch expenses if recentIncome is set
+        if (recentIncome !== null) fetchActualExpenses();
+    }, [recentIncome]);
+
+    // Update total expenses whenever weeklySpendingData changes
+    useEffect(() => {
+        const totalExpenses = weeklySpendingData.reduce(
+            (total, item) => total + item.amount,
+            0
+        );
+        setTotalExpensesLast4Weeks(totalExpenses);
+    }, [weeklySpendingData]);
 
     // Helper function to format date into weekly ranges (e.g., "Week of MM/DD - MM/DD")
     const getWeekRange = (date) => {
@@ -71,8 +110,66 @@ const BreakdownExpenses = () => {
         const startString = startOfWeek.toLocaleDateString();
         const endString = endOfWeek.toLocaleDateString();
     
-        return `Week of ${startString} - ${endString}`; // Return the formatted week range
+        return `${startString} - ${endString}`; // Return the formatted week range
     };  
+
+    const generateWeeklySpending = (expenses) => {
+        const dateSpending = {};
+        expenses.forEach((expense) => {
+            const date = new Date(expense.date).toISOString().split('T')[0];
+            dateSpending[date] = (dateSpending[date] || 0) + Number(expense.amount);
+        });
+
+        const lastFourWeeks = {};
+        Object.keys(dateSpending).forEach((date) => {
+            const weekRange = getWeekRange(new Date(date));
+            lastFourWeeks[weekRange] = (lastFourWeeks[weekRange] || 0) + dateSpending[date];
+        });
+
+        // Limit to the last 4 weeks
+        const recentWeeks = Object.keys(lastFourWeeks).slice(-4);
+        return recentWeeks.map((week) => ({ week, amount: lastFourWeeks[week] }));
+    };
+
+    // Data and configuration for the "Total Expenses vs Income" bar chart
+    const comparisonChartData = {
+        labels: ['Total Expenses (Last 4 Weeks)', 'Income'],
+        datasets: [
+            {
+                label: 'Amount',
+                data: [totalExpensesLast4Weeks, recentIncome],
+                backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(75, 192, 75, 0.7)'], // Red for expenses, green for income
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 75, 1)'],
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const comparisonChartOptions = {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: {
+                display: false,
+                //text: 'Total Expenses vs Income (Last 4 Weeks)',
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context) => {
+                        const label = context.label || '';
+                        const value = context.raw || 0;
+                        return `${label}: $${value.toFixed(2)}`;
+                    },
+                },
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { callback: (value) => `$${value}` },
+            },
+        },
+    };
     
     const [selectedWeek, setSelectedWeek] = useState(Object.keys(actualExpenses)[0] || ""); // State for the currently selected week
 
@@ -235,6 +332,11 @@ const BreakdownExpenses = () => {
         <div>
             {/* Main title for the Expenses Breakdown section */}
             <h1>Your Expenses Breakdown</h1>
+
+            <div style={{ marginTop: '40px' }}>
+                <h2>Total Expenses vs Income (Last 4 Weeks)</h2>
+                <Bar data={comparisonChartData} options={comparisonChartOptions} />
+            </div>
 
             <div>
                 {/* Subsection for weekly expenses selection */}
