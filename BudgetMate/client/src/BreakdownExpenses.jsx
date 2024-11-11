@@ -12,25 +12,26 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 
 const BreakdownExpenses = () => {
     // Define state variables to store fetched data, selected options, and chart data
-    const [actualExpenses, setActualExpenses] = useState({});
-    const [allCategories, setAllCategories] = useState([]);
-    const [lineChartData, setLineChartData] = useState({});
-    const navigate = useNavigate();
+    const [actualExpenses, setActualExpenses] = useState({}); // Stores the weekly categorized expenses
+    const [allCategories, setAllCategories] = useState([]); // List of all unique expense categories 
+    const [lineChartData, setLineChartData] = useState({}); // Data for the line chart visualization
+    const navigate = useNavigate(); // Hook for redirecting to different routes
 
     // useEffect hook to fetch expenses data when component mounts
     useEffect(() => {
         const fetchActualExpenses = async () => {
             try {
                 const userId = 'user1'; // Set userId to fetch data for
-                const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`);
-                const expenses = response.data.expenseEntries;
+                const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`); // Fetch expenses data from the API
+                const expenses = response.data.expenseEntries; // Extract expense entries from the API response
 
                 // Collect unique categories and organize expenses by weekly range
                 const categoriesSet = new Set();
+                // Initialize an object to accumulate weekly categorized expenses
                 const weeklyCategoryExpenses = expenses.reduce((acc, entry) => {
-                    const date = new Date(entry.date);
-                    const weekRange = getWeekRange(date);
-                    const { category, amount } = entry;
+                    const date = new Date(entry.date); // Convert the entry date to a Date object
+                    const weekRange = getWeekRange(date); // Get the formatted week range for the date
+                    const { category, amount } = entry; // Destructure category and amount from the entry
 
                     categoriesSet.add(category); // Add category to set
     
@@ -47,40 +48,41 @@ const BreakdownExpenses = () => {
 
                 // Update state with expenses, categories, and initialize the selected week
                 setActualExpenses(weeklyCategoryExpenses);
-                setAllCategories([...categoriesSet]);
-                setSelectedWeek(Object.keys(weeklyCategoryExpenses)[0]);
+                setAllCategories([...categoriesSet]); // Convert the Set to an array
+                setSelectedWeek(Object.keys(weeklyCategoryExpenses)[0]); // Set the first week as the default selection
                 generateLineChartData(expenses); // Prepare line chart data
             } catch (error) {
-                console.error('Error fetching actual expenses:', error);
+                console.error('Error fetching actual expenses:', error); // Log any errors to the console
             }
         };
 
-        fetchActualExpenses();
+        fetchActualExpenses(); // Call the function to fetch data
     }, []);
 
     // Helper function to format date into weekly ranges (e.g., "Week of MM/DD - MM/DD")
     const getWeekRange = (date) => {
-        const startOfWeek = new Date(date);
-        startOfWeek.setDate(date.getDate() - date.getDay());
+        const startOfWeek = new Date(date); // Create a new Date object for the start of the week
+        startOfWeek.setDate(date.getDate() - date.getDay()); // Set to the start of the week (Sunday)
     
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-    
+        const endOfWeek = new Date(startOfWeek); // Create a new Date object for the end of the week
+        endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to the end of the week (Saturday)
+        
+        // Format the start and end dates as strings
         const startString = startOfWeek.toLocaleDateString();
         const endString = endOfWeek.toLocaleDateString();
     
-        return `Week of ${startString} - ${endString}`;
+        return `Week of ${startString} - ${endString}`; // Return the formatted week range
     };  
     
-    const [selectedWeek, setSelectedWeek] = useState(Object.keys(actualExpenses)[0] || "");
+    const [selectedWeek, setSelectedWeek] = useState(Object.keys(actualExpenses)[0] || ""); // State for the currently selected week
 
     // Configuration for bar chart showing category expenses for the selected week
     const barChartData = {
-        labels: allCategories,
+        labels: allCategories, // Labels are the unique expense categories
         datasets: [{
-            axis: 'y',
-            label: `Expenses for ${selectedWeek}`,
-            data: allCategories.map(category => actualExpenses[selectedWeek]?.[category] || 0),
+            axis: 'y', // Display bars horizontally
+            label: `Expenses for ${selectedWeek}`, // Dynamic label showing the selected week
+            data: allCategories.map(category => actualExpenses[selectedWeek]?.[category] || 0), // Expense data for each category
             fill: false,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -93,7 +95,7 @@ const BreakdownExpenses = () => {
                 'rgba(90, 90, 200, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(201, 203, 207, 0.2)'
-            ],
+            ], // Array of background colors for the bars
             borderColor: [
                 'rgba(255, 99, 132)',
                 'rgba(255, 120, 90)',
@@ -105,39 +107,42 @@ const BreakdownExpenses = () => {
                 'rgba(90, 90, 200)',
                 'rgba(153, 102, 255)',
                 'rgba(201, 203, 207)'
-            ],
-            borderWidth: 1
+            ], // Array of border colors for the bars
+            borderWidth: 1 // Border width for the bars
         }]
     };
 
+    // Options for configuring the bar chart display
     const barChartOptions = {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
+        indexAxis: 'y', // Display the chart horizontally
+        responsive: true, // Make the chart responsive
+        plugins: { // Position the legend at the top
             legend: {
-                position: 'top',
+                position: 'top', 
             },
-            title: {
+            title: { // Display the chart title
                 display: true,
-                text: "Category Breakdown",
-            },
+                text: "Category Breakdown", 
+            }, // Display chart title
             tooltip: {
                 callbacks: {
                     label: function(context) {
                         const label = context.dataset.label || '';
                         const value = context.raw;  
-                        return `${label}: $${value.toFixed(2)}`; 
+                        return `${label}: $${value.toFixed(2)}`; // Format tooltip text
                     }
                 }
-            },
+            }, 
         },
         scales: {
+            // Configure x-axis
             x: {
                 beginAtZero: true,
                 ticks: {
                     callback: (value) => `$${value}`, 
                 },
             },
+            // Configure y-axis
             y: {
                 ticks: {
                     autoSkip: false, 
@@ -148,8 +153,8 @@ const BreakdownExpenses = () => {
 
     // Generate line chart data based on daily, weekly, or monthly spending trends
     const generateLineChartData = (expenses) => {
-        const dates = expenses.map(exp => new Date(exp.date));
-        const daysRange = (Math.max(...dates) - Math.min(...dates)) / (1000 * 3600 * 24);
+        const dates = expenses.map(exp => new Date(exp.date)); // Extract dates from expenses and convert them to Date objects
+        const daysRange = (Math.max(...dates) - Math.min(...dates)) / (1000 * 3600 * 24); // Calculate the date range in days (difference between max and min dates)
 
         const dateSpending = {}; // Store spending by date
 
@@ -159,66 +164,67 @@ const BreakdownExpenses = () => {
             dateSpending[date] = (dateSpending[date] || 0) + Number(expense.amount);
         });
 
-        let labels = [];
-        let data = [];
+        let labels = []; // Array for chart labels
+        let data = []; // Array for chart data
         
         // Select labels and data depending on date range
         if (daysRange <= 7) { // Daily range
-            labels = Object.keys(dateSpending);
-            data = Object.values(dateSpending);
+            labels = Object.keys(dateSpending); // Use dates as labels
+            data = Object.values(dateSpending); // Use spending amounts as data
         } else if (daysRange <= 30) { // Weekly range
-            const weeklySpending = {};
-            Object.keys(dateSpending).forEach((date) => {
-                const weekRange = getWeekRange(new Date(date));
-                weeklySpending[weekRange] = (weeklySpending[weekRange] || 0) + dateSpending[date];
+            const weeklySpending = {}; // Object to store accumulated spending by week
+            Object.keys(dateSpending).forEach((date) => { // Aggregate spending by weekly range
+                const weekRange = getWeekRange(new Date(date)); // Get formatted week range
+                weeklySpending[weekRange] = (weeklySpending[weekRange] || 0) + dateSpending[date]; // Sum weekly spending
             });
-            labels = Object.keys(weeklySpending);
-            data = Object.values(weeklySpending);
+            labels = Object.keys(weeklySpending); // Use weekly ranges as labels
+            data = Object.values(weeklySpending); // Use aggregated weekly spending as data
         } else { // Monthly range
-            const monthlySpending = {};
-            Object.keys(dateSpending).forEach((date) => {
-                const monthYear = new Date(date).toLocaleDateString('default', { year: 'numeric', month: 'long' });
-                monthlySpending[monthYear] = (monthlySpending[monthYear] || 0) + dateSpending[date];
+            const monthlySpending = {}; // Object to store accumulated spending by month
+            Object.keys(dateSpending).forEach((date) => { // Aggregate spending by month
+                const monthYear = new Date(date).toLocaleDateString('default', { year: 'numeric', month: 'long' }); // Format as 'Month Year'
+                monthlySpending[monthYear] = (monthlySpending[monthYear] || 0) + dateSpending[date]; // Sum monthly spending
             });
-            labels = Object.keys(monthlySpending);
-            data = Object.values(monthlySpending);
+            labels = Object.keys(monthlySpending); // Use months as labels
+            data = Object.values(monthlySpending); // Use aggregated monthly spending as data
         }
 
         // Set line chart data in state
         setLineChartData({
-            labels,
+            labels, // Set the labels (dates, weeks, or months)
             datasets: [{
-                label: "Total Spending",
-                data,
-                fill: false,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                tension: 0.1,
+                label: "Total Spending", // Dataset label
+                data, // Set the data (spending amounts)
+                fill: false, // Do not fill the area under the line
+                borderColor: 'rgba(75, 192, 192, 1)', // Line color
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Point background color
+                tension: 0.1, // Set line tension for a smoother curve
             }]
         });
     };
 
+    // Configuration object for the line chart options
     const lineChartOptions = {
-        responsive: true,
+        responsive: true, // Make the chart responsive
         plugins: {
             tooltip: {
-                callbacks: {
+                callbacks: {// Format the tooltip label
                     label: function(context) {
-                        const value = context.raw;
-                        return `Total Spending: $${value.toFixed(2)}`; 
+                        const value = context.raw; // Get the raw data value
+                        return `Total Spending: $${value.toFixed(2)}`; // Format as currency with two decimal places
                     }
                 }
             },
             legend: {
-                position: 'top',
+                position: 'top', // Position the legend at the top of the chart
             },
         },
         scales: {
             y: {
-                beginAtZero: true,
+                beginAtZero: true, // Ensure y-axis starts at zero
                 ticks: {
-                    callback: function(value) {
-                        return `$${value}`; 
+                    callback: function(value) { // Format y-axis tick labels as currency
+                        return `$${value}`; // Format value as currency
                     }
                 }
             }
