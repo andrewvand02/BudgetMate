@@ -138,8 +138,22 @@ const BreakdownExpenses = () => {
             {
                 label: 'Amount',
                 data: [totalExpensesLast4Weeks, recentIncome],
-                backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(75, 192, 75, 0.7)'], // Red for expenses, green for income
-                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 75, 1)'],
+                backgroundColor: [
+                    'rgba(55, 219, 238, 0.66)', // Blue for expenses
+                    totalExpensesLast4Weeks < recentIncome 
+                        ? 'rgba(75, 192, 75, 0.7)' // Green if in good standing
+                        : totalExpensesLast4Weeks > recentIncome
+                            ? 'rgba(255, 99, 132, 0.7)' // Red if overspending
+                            : 'rgba(248, 248, 30, 0.69)' // Yellow if total expenses are equal to income
+                ],
+                borderColor: [
+                    'rgba(55, 219, 238, 0.66)',
+                    totalExpensesLast4Weeks < recentIncome 
+                        ? 'rgba(75, 192, 75, 1)' 
+                        : totalExpensesLast4Weeks > recentIncome
+                            ? 'rgba(255, 99, 132, 1)'
+                            : 'rgba(248, 248, 30, 1)' // Yellow border if equal
+                ],
                 borderWidth: 1,
             },
         ],
@@ -151,7 +165,6 @@ const BreakdownExpenses = () => {
             legend: { display: false },
             title: {
                 display: false,
-                //text: 'Total Expenses vs Income (Last 4 Weeks)',
             },
             tooltip: {
                 callbacks: {
@@ -268,7 +281,7 @@ const BreakdownExpenses = () => {
         if (daysRange <= 7) { // Daily range
             labels = Object.keys(dateSpending); // Use dates as labels
             data = Object.values(dateSpending); // Use spending amounts as data
-        } else if (daysRange <= 30) { // Weekly range
+        } else if (daysRange <= 28) { // Weekly range
             const weeklySpending = {}; // Object to store accumulated spending by week
             Object.keys(dateSpending).forEach((date) => { // Aggregate spending by weekly range
                 const weekRange = getWeekRange(new Date(date)); // Get formatted week range
@@ -333,36 +346,51 @@ const BreakdownExpenses = () => {
             {/* Main title for the Expenses Breakdown section */}
             <h1>Your Expenses Breakdown</h1>
 
-            <div style={{ marginTop: '40px' }}>
-                <h2>Total Expenses vs Income (Last 4 Weeks)</h2>
-                <Bar data={comparisonChartData} options={comparisonChartOptions} />
-            </div>
+            <div className='charts-container'>
+                <div className='comparison-container' style={{ marginTop: '40px' }}>
+                    <h2>Total Expenses vs Income</h2>
+                    <Bar data={comparisonChartData} options={comparisonChartOptions} />
 
-            <div>
-                {/* Subsection for weekly expenses selection */}
-                <h2>Weekly Expenses</h2>
-                <label>Select a Week: </label>
-
-                {/* Dropdown menu for selecting a specific week from available data */}
-                <select onChange={(e) => setSelectedWeek(e.target.value)} value={selectedWeek}>
-                    {Object.keys(actualExpenses).map((week, index) => (
-                        <option key={index} value={week}>{week}</option>
-                    ))}
-                </select>
-                
-                {/* Bar chart displaying expenses by category for the selected week */}
-                <Bar data={barChartData} options={barChartOptions} />  
-            </div>
-
-            {/* Conditional rendering of line chart if lineChartData is available */}
-            {lineChartData.labels && lineChartData.labels.length > 0 && (
-                <div style={{ marginTop: '40px' }}>
-                    <h2>Spending Trend</h2>
-
-                    {/* Line chart displaying the spending trend over time (daily, weekly, or monthly) */}
-                    <Line data={lineChartData} options={lineChartOptions} />
+                    {/* Conditional message based on spending standing */}
+                    {
+                        totalExpensesLast4Weeks < recentIncome ? (
+                            <p>You're in good standing!</p>
+                        ) : totalExpensesLast4Weeks > recentIncome ? (
+                            <p>You're spending <span>${(totalExpensesLast4Weeks - recentIncome).toFixed(2)}</span> more than your monthly income.</p>
+                        ) : (
+                            <p>Your spending matches your income exactly.</p>
+                        )
+                    }
                 </div>
-            )}
+
+                <div className='category-container'>
+                    {/* Subsection for weekly expenses selection */}
+                    <h2>Weekly Expenses</h2>
+                    <label>Select a Week: </label>
+
+                    {/* Dropdown menu for selecting a specific week from available data */}
+                    <select onChange={(e) => setSelectedWeek(e.target.value)} value={selectedWeek}>
+                        {Object.keys(actualExpenses).map((week, index) => (
+                            <option key={index} value={week}>{week}</option>
+                        ))}
+                    </select>
+                    
+                    {/* Bar chart displaying expenses by category for the selected week */}
+                    <Bar data={barChartData} options={barChartOptions} />  
+                </div>
+
+                <div className='trend-container'>
+                    {/* Conditional rendering of line chart if lineChartData is available */}
+                    {lineChartData.labels && lineChartData.labels.length > 0 && (
+                        <div style={{ marginTop: '-10px' }}>
+                            <h2>Spending Trend</h2>
+
+                            {/* Line chart displaying the spending trend over time (daily, weekly, or monthly) */}
+                            <Line data={lineChartData} options={lineChartOptions} />
+                        </div>
+                    )}
+                </div>
+            </div>
 
             {/* Button to navigate back to the main dashboard */}
             <button
