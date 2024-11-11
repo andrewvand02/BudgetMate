@@ -45,7 +45,7 @@ const IncomeInput = () => {
 
     return (
         <div style={{ textAlign: 'center', margin: '20px' }}>
-            <h1>Enter Your Weekly Income</h1> {/* Header for the income entry form */}
+            <h1>Enter Your Monthly Income</h1> {/* Header for the income entry form */}
             <form onSubmit={handleIncomeSubmit}> {/* Form that handles income submission */}
                 {incomeEntries.map((entry, index) => (  // Loop through each income entry
                     <div key={index} style={{ marginBottom: '10px' }}>
