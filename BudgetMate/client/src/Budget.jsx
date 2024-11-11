@@ -10,13 +10,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Budget = () => {
     // State for storing budget entries and actual expenses
-    const [budgetEntries, setBudgetEntries] = useState([{ category: '', amount: '' }]);
-    const [actualExpenses, setActualExpenses] = useState({});
+    const [budgetEntries, setBudgetEntries] = useState([{ category: '', amount: '' }]); // Array of budget entries
+    const [actualExpenses, setActualExpenses] = useState({}); // Object to store actual expenses by category
     const [selectedCategory, setSelectedCategory] = useState(null); // Added useState for selectedCategory
-    const validBudgetEntries = budgetEntries.filter(entry => entry.category && entry.amount);
-    const [minimizeInputSection, setMinimizeInputSection] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const navigate = useNavigate();
+    const validBudgetEntries = budgetEntries.filter(entry => entry.category && entry.amount); // Filter valid entries with both category and amount
+    const [minimizeInputSection, setMinimizeInputSection] = useState(false); // State to toggle visibility of the input section
+    const [isDarkMode, setIsDarkMode] = useState(false); // State to manage dark mode styling
+    const navigate = useNavigate(); // Hook for navigating programmatically
 
     // List of available budget categories
     const categoryOptions = {
@@ -25,34 +25,34 @@ const Budget = () => {
 
     // Handler to add a new budget entry input field
     const handleAddEntry = () => {
-        setBudgetEntries([...budgetEntries, { category: '', amount: '' }]);
+        setBudgetEntries([...budgetEntries, { category: '', amount: '' }]); // Append a new empty entry to the array
     };
 
     // Handler to remove a budget entry
-    const handleRemoveEntry = (index) => {
-        const updatedEntries = [...budgetEntries];
-        updatedEntries.splice(index, 1);
-        setBudgetEntries(updatedEntries);
+    const handleRemoveEntry = (index) => { 
+        const updatedEntries = [...budgetEntries]; // Copy the current entries
+        updatedEntries.splice(index, 1); // Remove the entry at the specified index
+        setBudgetEntries(updatedEntries); // Update state with the new entries array
     };
 
     // Handler for input changes in budget entries
     const handleInputChange = (index, field, value) => {
-        const updatedEntries = [...budgetEntries];
-        updatedEntries[index][field] = value;
-        setBudgetEntries(updatedEntries);
+        const updatedEntries = [...budgetEntries]; // Copy current entries
+        updatedEntries[index][field] = value; // Update the specified field (category or amount)
+        setBudgetEntries(updatedEntries); // Update state with modified entries
     };
 
     // Handler for submitting budget data to the server
     const handleBudgetSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default form submission
         try {
-            const userId = 'user1';
-            const response = await axios.post('http://localhost:8080/api/budget', { userId, budgetEntries });
-            alert(response.data.message);
-            setMinimizeInputSection(true);
+            const userId = 'user1'; // Hardcoded user ID
+            const response = await axios.post('http://localhost:8080/api/budget', { userId, budgetEntries }); // POST request to server with budget data
+            alert(response.data.message); // Alert the user with response message
+            setMinimizeInputSection(true); // Minimize the input section after submission
         } catch (error) {
-            console.error('Error submitting budgets:', error);
-            alert('There was an error submitting your budgets. Please try again.');
+            console.error('Error submitting budgets:', error); // Log error to the console
+            alert('There was an error submitting your budgets. Please try again.'); // Display error message to user
         }
     };
 
@@ -60,9 +60,9 @@ const Budget = () => {
     useEffect(() => {
         const fetchActualExpenses = async () => {
             try {
-                const userId = 'user1';
-                const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`);
-                const expenses = response.data.expenseEntries;
+                const userId = 'user1'; // Hardcoded user ID
+                const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`); // GET request to fetch expenses
+                const expenses = response.data.expenseEntries; // Extract expense entries from response
     
                 // Get today's date
                 const today = new Date();
@@ -80,7 +80,7 @@ const Budget = () => {
     
                 // Filter expenses that are within the current week
                 const filteredExpenses = expenses.filter((entry) => {
-                    const entryDate = new Date(entry.date);
+                    const entryDate = new Date(entry.date); // Convert entry date to Date object
                     return (
                         entry.frequency === 'daily' &&
                         entryDate >= startOfWeek && entryDate <= endOfWeek
@@ -90,17 +90,17 @@ const Budget = () => {
                 // Aggregate the filtered expenses by category
                 const aggregatedExpenses = filteredExpenses.reduce((acc, entry) => {
                     const { category, amount } = entry;
-                    acc[category] = (acc[category] || 0) + Number(amount);
+                    acc[category] = (acc[category] || 0) + Number(amount); // Accumulate total amount per category
                     return acc;
                 }, {});
     
-                setActualExpenses(aggregatedExpenses);
+                setActualExpenses(aggregatedExpenses); // Update state with aggregated expenses
             } catch (error) {
-                console.error('Error fetching actual expenses:', error);
+                console.error('Error fetching actual expenses:', error); // Log error to the console
             }
         };
     
-        fetchActualExpenses();
+        fetchActualExpenses(); // Call the function to fetch expenses on component mount
     }, []); 
 
     // Fetch budget entries from the server
@@ -120,12 +120,12 @@ const Budget = () => {
 
     // Data for Doughnut chart
     const data = {
-        labels: validBudgetEntries.map(entry => entry.category),
+        labels: validBudgetEntries.map(entry => entry.category), // Use category names as labels
         datasets: [
             {
                 label: 'Budget',
-                data: validBudgetEntries.map(entry => parseFloat(entry.amount)),
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                data: validBudgetEntries.map(entry => parseFloat(entry.amount)), // Use amounts for data points
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] // Define colors for each segment
             },
         ],
     };
@@ -135,7 +135,7 @@ const Budget = () => {
         plugins: {
             tooltip: {
                 enabled: false,
-            },
+            },// Disable default tooltips
         },
         onClick: (event, chartElement) => {
             console.log("Chart clicked:", chartElement); // Add this to see if an element is detected
@@ -164,7 +164,7 @@ const Budget = () => {
                     budgetedAmount: budgetedAmount.toLocaleString(),
                     spentAmount: spentAmount.toLocaleString(),
                     remainingAmount: remainingAmount > 0 ? remainingAmount.toLocaleString() : remainingAmount,
-                    exceededBudget,
+                    exceededBudget, 
                 });
             } else {
                 setSelectedCategory(null); // Clear selected category if clicked outside
