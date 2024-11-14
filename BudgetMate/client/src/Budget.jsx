@@ -194,7 +194,7 @@ const Budget = () => {
             <button 
                 onClick={() => setMinimizeInputSection(!minimizeInputSection)}
                 style={{ marginBottom: '10px'}}
-                className={isDarkMode ? 'dark' : 'light'}
+                className={`${isDarkMode ? 'dark' : 'light'} button type1`}
             >   
                 {minimizeInputSection ? 'Show Budget Input' : 'Hide Budget Input'}
             </button>
@@ -206,7 +206,9 @@ const Budget = () => {
                         {budgetEntries.map((entry, index) => (
                             <div key={index} style={{ marginBottom: '10px' }}>
                                 {/* Category selection dropdown */}
+                                <div className='pt_Cat'></div>
                                 <select
+                                    className='select-pt-Cat'
                                     value={entry.category}
                                     onChange={(e) => handleInputChange(index, 'category', e.target.value)}
                                     required
@@ -218,18 +220,19 @@ const Budget = () => {
                                 </select>
                                 
                                 {/* Budget amount input */}
-                                <input
-                                    type="number"
-                                    min="1"
-                                    placeholder="Amount"
-                                    value={entry.amount}
-                                    onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
-                                    required
-                                />
-
+                                <div className='pt_Quant'>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        placeholder="Amount"
+                                        value={entry.amount}
+                                        onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
+                                        required
+                                    />
+                                </div>
                                 {/* Remove entry button */}
                                 {budgetEntries.length > 1 && (
-                                    <button type="button" onClick={() => handleRemoveEntry(index)} className={isDarkMode ? 'dark' : 'light'}>
+                                    <button type="button" onClick={() => handleRemoveEntry(index)} className={`${isDarkMode ? 'dark' : 'light'} button type1`}>
                                         Remove
                                     </button>
                                 )}
@@ -237,11 +240,11 @@ const Budget = () => {
                         ))}
 
                         {/* Add and submit budget buttons */}
-                        <button type="button" onClick={handleAddEntry} className={isDarkMode ? 'dark' : 'light'}>
+                        <button type="button" onClick={handleAddEntry} className={`${isDarkMode ? 'dark' : 'light'} button type1`}>
                             Add Another Budget
                         </button>
 
-                        <button type="submit" className={isDarkMode ? 'dark' : 'light'}>
+                        <button type="submit" className={`${isDarkMode ? 'dark' : 'light'} button type1`}>
                             Submit Budget
                         </button>
                     </form>
@@ -272,7 +275,7 @@ const Budget = () => {
             {/* Button to navigate back to Dashboard */}
             <button
                 type="button"
-                className={isDarkMode ? 'dark' : 'light'}
+                className={`${isDarkMode ? 'dark' : 'light'} button type1`}
                 onClick={() => navigate('/')}
                 style={{ marginTop: '20px' }}
             >
