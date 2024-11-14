@@ -279,7 +279,7 @@ const Budget = () => {
                 onClick={() => navigate('/')}
                 style={{ marginTop: '20px' }}
             >
-                Back to Dashboard
+                Dashboard
             </button>
         </div>
     );

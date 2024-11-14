@@ -51,6 +51,16 @@ const Dashboard = () => {
                     <span className='btn-txt'>Savings Goal</span>
                 </button>
             </Link>
+            <Link to="/help">
+                <button className='help-button'>
+                    <span className='btn-txt'>Help</span>
+                </button>
+            </Link>
+            <Link to="/tax-help">
+                <button className='button type1'>
+                    <span className='btn-txt'>Tax Help</span>
+                </button>
+            </Link>
         </div>
     );
 };

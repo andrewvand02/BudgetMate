@@ -119,6 +119,11 @@ const ExpenseInput = () => {
                 style={{ marginTop: '20px' }}> {/* Adding some margin to the button */}
                 <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
+            <button 
+                className='help-button'
+                onClick={() => setHelpModalOpen(true)}> {/* Button to open the help modal */}
+                <span className='btn-txt'>Help</span>
+            </button>
         </div>
     );
 };
