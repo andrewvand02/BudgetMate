@@ -7,5 +7,5 @@ div {
 }
 
 .logo {
-    width: 200px;
+    border: 2px solid rgb(15, 15, 15);
 }
