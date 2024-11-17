@@ -8,6 +8,8 @@ const fastCsv = require('fast-csv');
 const path = require('path');
 const nodemailer = require('nodemailer');
  //Import statements
+const twilio = require('twilio');
+const axios = require('axios');
 
 const corsOptions = { //For communicating with frontend
     origin: ["http://localhost:5173"],
@@ -20,6 +22,7 @@ let expensesData = {}; //Storage for expensesData
 let incomeStore = {}; //Storage for incomeStore
 let budgetData = {}; //Storage for budgetData
 let savingsGoals= {};//Storage for savingsGoal data
+
 
 // Function to load data from a CSV file into a data store
 const loadDataFromCSV = (filePath, dataStore) => {
@@ -109,6 +112,21 @@ app.post('/api/income', (req, res) => {
     
     // Send a JSON response indicating successful storage of income data
     res.json({ message: 'Income stored successfully', incomeEntries });
+});
+
+app.post('/api/send-sms', async (req, res) => {
+    const { to, message } = req.body;
+
+    try {
+        const sms = await client.messages.create({
+            body: message,
+            from: '+18556475096', // Replace with your Twilio number
+            to: to,
+        });
+        res.status(200).json({ success: true, message: 'SMS sent!', sms });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 // Route to retrieve stored income for a specific user (GET request)
@@ -258,47 +276,60 @@ app.get('/api/weekly-savings/:userId', (req, res) => {
 });
 
 
-// Create a transporter object using SMTP transport
+// Configure the transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // or another email service like SendGrid, Mailgun, etc.
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
-        user: 'placeholder', // Replace with your email
-        pass: 'placeholder', // Replace with your email password or app password
-    },
+        user: 'budgetmate581@gmail.com',
+        pass: 'ndjhkpttankprgap'
+    }
 });
 
-// Function to send a budget exceeded email alert
-const sendBudgetExceededEmail = (userEmail, category, exceededAmount) => {
-    // Create the email options (including recipient, subject, and message body)
-    const mailOptions = {
-        from: 'budgetmateproject@gmail.com', // Sender's email address (use a valid sender email)
-        to: userEmail, // User's email address (received from the frontend)
-        subject: `Budget Exceeded for ${category}`, // Subject of the email
-        text: `Dear user,\n\nYou have exceeded your budget for the category: ${category}.\nYou have spent an extra $${exceededAmount}.\n\nPlease review your spending.\n\nBest regards,\nBudget App Team`, // Email body content
-    };
-
-    // Send the email using the configured email transporter
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            // Log any errors that occur while sending the email
-            console.log('Error sending email:', error);
-        } else {
-            // Log a success message once the email is sent
-            console.log('Email sent: ' + info.response);
-        }
-    });
-};
-
-// Route to handle sending budget exceeded email alerts (POST request)
-app.post('/api/send-budget-alert', (req, res) => {
-    // Destructure the required data (userEmail, category, exceededAmount) from the request body
+// Route to handle sending a budget alert email
+app.post('/api/send-budget-alert', async (req, res) => {
     const { userEmail, category, exceededAmount } = req.body;
 
-    // Call the function to send the email alert
-    sendBudgetExceededEmail(userEmail, category, exceededAmount);
+    try {
+        // Send the budget alert email
+        await sendBudgetExceededEmail(userEmail, category, exceededAmount);
 
-    // Send a response back to the frontend to confirm the alert was sent
-    res.json({ message: 'Budget exceeded alert sent via email.' });
+        // Respond with success message
+        res.status(200).json({ message: 'Budget alert email sent successfully.' });
+    } catch (error) {
+        console.error('Error sending budget alert email:', error);
+
+        // Respond with error message
+        res.status(500).json({ message: 'Failed to send budget alert email.' });
+    }
+});
+
+// Function to send the budget exceeded email
+const sendBudgetExceededEmail = (userEmail, category, exceededAmount) => {
+    const mailOptions = {
+        to: userEmail,
+        subject: `Budget Exceeded for ${category}`,
+        html: exceededAmount
+    };
+
+    return transporter.sendMail(mailOptions);
+};
+
+app.get('/api/test-flask', async (req, res) => {
+    try {
+        // Make a POST request to the Flask backend
+        const response = await axios.post('http://localhost:5001/predict-expenses', {
+            // Send any required data; in this case, it can be empty or dummy data
+        });
+        console.log('Response from Flask:', response.data);
+
+        // Send Flask response back to the browser for verification
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error communicating with Flask:', error);
+        res.status(500).send('Failed to communicate with Flask backend.');
+    }
 });
 
 app.listen(8080, () => {
