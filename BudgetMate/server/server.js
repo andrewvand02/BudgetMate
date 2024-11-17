@@ -283,7 +283,7 @@ const transporter = nodemailer.createTransport({
     secure: true,
     auth: {
         user: 'budgetmate581@gmail.com',
-        pass: 'ndjhkpttankprgap'
+        pass: 'placeholder'
     }
 });
 
@@ -316,21 +316,51 @@ const sendBudgetExceededEmail = (userEmail, category, exceededAmount) => {
     return transporter.sendMail(mailOptions);
 };
 
-app.get('/api/test-flask', async (req, res) => {
+const sendDataToPythonBackend = async (userId, weeklyExpenses) => {
     try {
-        // Make a POST request to the Flask backend
-        const response = await axios.post('http://localhost:5001/predict-expenses', {
-            // Send any required data; in this case, it can be empty or dummy data
+        const response = await axios.post('http://localhost:5001/api/receive-expenses', {
+            userId,
+            weeklyExpenses
         });
-        console.log('Response from Flask:', response.data);
-
-        // Send Flask response back to the browser for verification
-        res.json(response.data);
+        console.log('Data sent to Python backend:', response.data);
     } catch (error) {
-        console.error('Error communicating with Flask:', error);
-        res.status(500).send('Failed to communicate with Flask backend.');
+        console.error('Error sending data to Python backend:', error.message);
     }
+};
+function getWeekNumber(date) {
+    const d = new Date(date);
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); // Adjust to Thursday in current week
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNumber = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return weekNumber;
+}
+
+
+app.get('/api/weekly-expenses/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    const expenseEntries = expensesData[userId] || [];
+
+    const groupedExpenses = expenseEntries.reduce((acc, entry) => {
+        const expenseDate = new Date(entry.date);
+        const year = expenseDate.getFullYear();
+        const week = getWeekNumber(expenseDate);
+        const category = entry.category;
+
+        if (!acc[year]) acc[year] = {};
+        if (!acc[year][week]) acc[year][week] = {};
+        if (!acc[year][week][category]) acc[year][week][category] = 0;
+
+        acc[year][week][category] += parseFloat(entry.amount);
+
+        return acc;
+    }, {});
+
+    await sendDataToPythonBackend(userId, groupedExpenses);
+
+    res.json({ weeklyExpenses: groupedExpenses });
 });
+
 
 app.listen(8080, () => {
     console.log("Server started on port 8080");
