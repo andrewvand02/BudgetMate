@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import './TaxHelp.css';
+import './TaxHelp.css'; // import styling for TaxHelp
 
 const TaxHelp = () => {
   const navigate = useNavigate();
