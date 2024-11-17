@@ -5,6 +5,7 @@ form {
     flex-flow: column nowrap;
     padding: 3em;
     margin-bottom: 1em;
-    border: 1px solid #e4d3c5;
+    /*border: 1px solid #e4d3c5;*/
+    box-shadow: 0 0px 10px rgba(179, 179, 179, 0.913);
     border-radius: 30px;
 }
