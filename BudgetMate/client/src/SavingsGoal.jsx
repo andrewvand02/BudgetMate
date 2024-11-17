@@ -181,7 +181,7 @@ const SavingsGoal = () => {
                 </button>
             </form>
             <button onClick={goBackToDashboard} className='button type1'>
-                <span className="btn-txt">Back to Dashboard</span> {/* Button to go back to the dashboard */}
+                <span className="btn-txt">Dashboard</span> {/* Button to go back to the dashboard */}
             </button>
         </div>
     );
