@@ -9,6 +9,7 @@ const Dashboard = () => {
         <div>
             <img class="logo" src={budget} alt="logo">
             </img>
+            <h1>BudgetMate</h1>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
                 <button className="button type1">
@@ -48,16 +49,6 @@ const Dashboard = () => {
             <Link to="/savings-goal">
                 <button className="button type1">
                     <span className='btn-txt'>Savings Goal</span>
-                </button>
-            </Link>
-            <Link to="/help">
-                <button className='help-button'>
-                    <span className='btn-txt'>Help</span>
-                </button>
-            </Link>
-            <Link to="/tax-help">
-                <button className='button type1'>
-                    <span className='btn-txt'>Tax Help</span>
                 </button>
             </Link>
         </div>

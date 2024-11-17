@@ -10,10 +10,6 @@ import BreakdownExpenses from './BreakdownExpenses';
 import Budget from './Budget';
 import LoginButton from './LoginButton';
 import SavingsGoal from './SavingsGoal';
-import Help from './Help';
-import TaxHelp from './TaxHelp';
-
-
 import './App.css';
 
 const App = () => {
@@ -29,8 +25,6 @@ const App = () => {
                 <Route path="/budget" element={<Budget />} />
                 <Route path="/login" element={<LoginButton/>} />
                 <Route path="/savings-goal" element={<SavingsGoal/>} />
-                <Route path="/help" element={<Help />} />
-                <Route path="/tax-help" element={<TaxHelp />} />
             </Routes>
         </Router>
     );

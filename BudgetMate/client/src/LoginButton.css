@@ -6,7 +6,7 @@
     /* Keeps the button fixed in place when scrolling */
     top: 20px;
     /* Distance from the top */
-    right: 109px;
+    right: 20px;
     /* Distance from the right */
     padding: 10px 20px;
     font-size: 16px;
@@ -15,12 +15,6 @@
     transition: all 0.3s ease-in-out;
     border: none;
     border-radius: 30px;
-    background-color: #030c14;
-    color: rgb(228, 222, 222);
-}
-.login-button:hover {
-  background-color: #646cff;
-  box-shadow: 1px 1px 50px #616161;
 }
 
 .login-page {
@@ -113,3 +107,35 @@
   .container .info span .fa {
     color: #EF3B3A;
   }
+
+@media (prefers-color-scheme: dark) {
+    .login-button {
+
+        background-color: #eff2f5;
+        color: rgb(7, 1, 1);
+    }
+
+    .login-button:hover {
+        background-color: #757acc;
+        box-shadow: 1px 1px 50px #616161;
+    }
+
+    input{
+      color: #000000;
+    }
+}
+
+@media (prefers-color-scheme: light)
+{
+    .login-button {
+
+        background-color: #030c14;
+        color: rgb(228, 222, 222);
+    }
+
+    .login-button:hover {
+        background-color: #646cff;
+        box-shadow: 1px 1px 50px #616161;
+    }
+    
+}
