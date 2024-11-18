@@ -60,6 +60,11 @@ const Dashboard = () => {
                     <span className='btn-txt'>Tax Help</span>
                 </button>
             </Link>
+            <Link to="/debt">
+                <button className='button type1'>
+                    <span className='btn-txt'>Debt</span>
+                </button>
+            </Link>
         </div>
     );
 };

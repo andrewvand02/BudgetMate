@@ -12,6 +12,7 @@ import LoginButton from './LoginButton';
 import SavingsGoal from './SavingsGoal';
 import Help from './Help';
 import TaxHelp from './TaxHelp';
+import Debt from './Debt';
 
 
 import './App.css';
@@ -31,6 +32,7 @@ const App = () => {
                 <Route path="/savings-goal" element={<SavingsGoal/>} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/tax-help" element={<TaxHelp />} />
+                <Route path="/debt" element={<Debt />} />
             </Routes>
         </Router>
     );
