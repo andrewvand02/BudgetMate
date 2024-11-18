@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; // Importing React and the useState hook to manage component state.
 import axios from 'axios'; // Importing axios for making HTTP requests to the backend.
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom to programmatically navigate between routes.
+import Mode from './Mode';
 import './ExpenseInput.css';
 
 const ExpenseInput = () => {
@@ -124,6 +125,7 @@ const ExpenseInput = () => {
                 onClick={() => navigate('/help')}> {/* Button to open the help modal */}
                 <span className='btn-txt'>Help</span>
             </button>
+            <Mode></Mode>
         </div>
     );
 };

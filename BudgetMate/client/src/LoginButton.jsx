@@ -2,6 +2,7 @@
 import React from 'react';
 //import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
+import Mode from './Mode';
 import "./LoginButton.css";
 
 
@@ -35,6 +36,7 @@ const LoginButton = () => {
             <button onClick={goBackToDashboard} className='button type1'> {/* Button to go back to dashboard */}
                 <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
+            <Mode></Mode>
         </div>
     );
 };

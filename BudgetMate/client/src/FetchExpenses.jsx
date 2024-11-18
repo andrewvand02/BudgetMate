@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; // Importing React, useState, and useEffect hooks.
 import axios from 'axios'; // Importing axios to handle HTTP requests.
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom for navigation.
+import Mode from './Mode';
 import './FetchExpenses.css'; // Importing CSS file for styling.
 
 import { Link } from 'react-router-dom';
@@ -110,6 +111,7 @@ const FetchExpenses = () => {
                     <span className="btn-txt">Expenses Breakdown</span>
                 </button>
             </Link>
+            <Mode></Mode>
         </div>
     );
 };

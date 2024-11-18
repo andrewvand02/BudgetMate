@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; // Importing React and necessary hooks
 import axios from 'axios'; // Importing axios to handle HTTP requests
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
+import Mode from './Mode';
 import './FetchIncome.css'; // Importing CSS file for styling
 
 const FetchIncome = () => {
@@ -49,6 +50,7 @@ const FetchIncome = () => {
             <button onClick={goBackToDashboard} className='button type1'> {/* Button to go back to dashboard */}
             <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
+            <Mode></Mode>
         </div>
     );
 };

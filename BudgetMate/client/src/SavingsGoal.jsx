@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; // Import React and necessary hooks
 import axios from 'axios'; // Import Axios for API requests
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for page navigation
+import Mode from './Mode';
 
 const SavingsGoal = () => {
     // Declare state variables to store the savings goal, dates, weekly savings, progress, and average weekly savings
@@ -183,6 +184,7 @@ const SavingsGoal = () => {
             <button onClick={goBackToDashboard} className='button type1'>
                 <span className="btn-txt">Dashboard</span> {/* Button to go back to the dashboard */}
             </button>
+            <Mode></Mode>
         </div>
     );
 };

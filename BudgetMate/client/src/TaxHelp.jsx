@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import './TaxHelp.css'; // import styling for TaxHelp
+import Mode from './Mode';
 
 const TaxHelp = () => {
   const navigate = useNavigate();
@@ -380,6 +381,7 @@ const TaxHelp = () => {
         </button>
       </div>
       </div>
+      <Mode></Mode>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement } from 'chart.js';
 import './BreakdownExpenses.css';
+import Mode from './Mode';
 import { Link } from 'react-router-dom';
 
 // Register Chart.js components needed for charts
@@ -407,6 +408,7 @@ const BreakdownExpenses = () => {
                     <span className="btn-txt">View Expenses</span>
                 </button>
             </Link>
+            <Mode></Mode>
         </div>
     );
 };

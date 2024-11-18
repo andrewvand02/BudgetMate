@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; // Import React and useState hook
 import axios from 'axios'; // Import axios for making HTTP requests
+import Mode from './Mode';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for page navigation
 
 const IncomeInput = () => {
@@ -104,6 +105,7 @@ const IncomeInput = () => {
                 style={{ marginTop: '20px' }}> 
                 <span className="btn-txt">Dashboard</span> {/* Button text */}
             </button>
+            <Mode></Mode>
         </div>
     );
 };
