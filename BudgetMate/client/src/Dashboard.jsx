@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 import './Dashboard.css';
 import './Mode.css';
 import Mode from './Mode';
-import budget from './assets/budget.png';
+import ImageSwitcher from "./ImageSwitcher";
+
 
 
 const Dashboard = () => {
 
     return (
         <div>
-            <img class="logo" src={budget} alt="logo">
-            </img>
+            {/* Use the ImageSwitcher component to dynamically handle light/dark images */}
+            <div className='image'><ImageSwitcher /></div>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
                 <button className="button type1">
