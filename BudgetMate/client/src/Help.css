@@ -1,90 +1,89 @@
 .info-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0 0px 50px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #333;
-    padding-bottom: 20px;
-  }
-  
-  h2 {
-    color: #5d5d5d;
-    margin-bottom: 10px;
-    padding-top: 20px;
-  }
-  
-  p, li {
-    line-height: 1.6;
-    color: #000000;
-    padding: 5px;
-  }
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 0px 50px rgba(0, 0, 0, 0.1);
+}
 
-  li {
-    padding-bottom: 20px;
-  }
- 
-  ol, ul {
-    padding-left: 20px;
-    list-style-type: none;
-  }
-  
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  .dashboard-button {
-    padding-top: 50px;
-  }
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+  padding-bottom: 20px;
+}
 
-  .back-btn {
-    margin: 4px;
-    position: fixed;
-    /* Keeps the button fixed in place when scrolling */
-    top: 20px;
-    /* Distance from the top */
-    right: 20px;
-    /* Distance from the right */
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    border: none;
-    border-radius: 30px;
-    background-color: #030c14;
-    color: rgb(228, 222, 222);
-  }
-  
-  .back-btn:hover {
-    background-color: #646cff;
-    box-shadow: 1px 1px 50px #616161;
-  }
+h2 {
+  color: #5d5d5d;
+  margin-bottom: 10px;
+  padding-top: 20px;
+}
 
-  @media (prefers-color-scheme: light) {
+p,
+li {
+  line-height: 1.6;
+  color: #000000;
+  padding: 5px;
+}
 
-  }
+li {
+  padding-bottom: 20px;
+}
 
-  @media (prefers-color-scheme: dark) {
-    .info-container{
-        box-shadow: 0 0px 30px rgba(255, 255, 255, 0.1);
-    }
+ol,
+ul {
+  padding-left: 20px;
+  list-style-type: none;
+}
 
-    p, li {
-        color: #8f8f8f;
-    }
+a {
+  color: #007bff;
+  text-decoration: none;
+}
 
-    h2 {
-        color: #929292;
-    }
-  }
+a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-button {
+  padding-top: 50px;
+}
+
+.back-btn {
+  margin: 4px;
+  position: fixed;
+  /* Keeps the button fixed in place when scrolling */
+  top: 20px;
+  /* Distance from the top */
+  right: 20px;
+  /* Distance from the right */
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  border-radius: 30px;
+  background-color: #030c14;
+  color: rgb(228, 222, 222);
+}
+
+.back-btn:hover {
+  background-color: #646cff;
+  box-shadow: 1px 1px 50px #616161;
+}
+
+
+
+[data-theme="dark"] .info-container {
+  box-shadow: 0 0px 30px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] p,
+li {
+  color: #8f8f8f;
+}
+
+[data-theme="dark"] h2 {
+  color: #929292;
+}

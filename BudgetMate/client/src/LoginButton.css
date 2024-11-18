@@ -141,6 +141,11 @@ form .message {
   color: #000000;
 }
 
+[data-theme="dark"] .message
+{
+  color: #030303;
+}
+
 [data-theme="light"] .login-button {
   background-color: #030c14;
   color: rgb(228, 222, 222);
@@ -149,4 +154,9 @@ form .message {
 [data-theme="light"] .login-button:hover {
   background-color: #646cff;
   box-shadow: 1px 1px 50px #616161;
+}
+
+[data-theme="light"] .log-on {
+  background-color: #000000;
+  color:rgb(255, 255, 255);
 }
