@@ -47,6 +47,30 @@
     padding-top: 50px;
   }
 
+  .back-btn {
+    margin: 4px;
+    position: fixed;
+    /* Keeps the button fixed in place when scrolling */
+    top: 20px;
+    /* Distance from the top */
+    right: 20px;
+    /* Distance from the right */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    border-radius: 30px;
+    background-color: #030c14;
+    color: rgb(228, 222, 222);
+  }
+  
+  .back-btn:hover {
+    background-color: #646cff;
+    box-shadow: 1px 1px 50px #616161;
+  }
+
   @media (prefers-color-scheme: light) {
 
   }
