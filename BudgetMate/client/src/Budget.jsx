@@ -3,6 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Mode from './Mode';
 import './Budget.css';
 
 // Registering necessary chart.js elements
@@ -281,6 +282,7 @@ const Budget = () => {
             >
                 Dashboard
             </button>
+            <Mode></Mode>
         </div>
     );
 };

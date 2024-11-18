@@ -18,6 +18,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -38,7 +39,7 @@ h1 {
   color: #242424;
 
   text-align: center;
-  font-family: 'lato',sans-serif;
+  font-family: 'lato', sans-serif;
   font-weight: 300;
   font-size: 70px;
   letter-spacing: 10px;
@@ -65,6 +66,7 @@ button {
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -88,7 +90,7 @@ button:focus-visible {
   font-weight: 600;
   letter-spacing: 4px;
   font-size: .75rem;
-  
+
 }
 
 .type1::after {
@@ -119,7 +121,7 @@ button:focus-visible {
 
 .inc_amount {
   color: white;
-  font-family: 'lato',sans-serif;
+  font-family: 'lato', sans-serif;
   letter-spacing: 2px;
 }
 
@@ -133,7 +135,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.pt_Cat{
+.pt_Cat {
   display: inline-block;
   position: relative;
   margin-bottom: 10px;
@@ -191,19 +193,23 @@ input[type="number"]::-webkit-outer-spin-button {
   height: 30px;
   text-align: center;
   padding: 0 15px;
-  appearance: none; /* Remove native styling */
-  -webkit-appearance: none; /* For Safari */
-  -moz-appearance: none; /* For Firefox */
+  appearance: none;
+  /* Remove native styling */
+  -webkit-appearance: none;
+  /* For Safari */
+  -moz-appearance: none;
+  /* For Firefox */
 }
 
 .select-pt-Cat::after {
-    font-size: 10px;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fafafa;
-    pointer-events: none; /* Prevent interaction with the arrow */
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fafafa;
+  pointer-events: none;
+  /* Prevent interaction with the arrow */
 }
 
 .help-button {
@@ -232,35 +238,197 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /*Keyframes*/
 @keyframes wiggle {
-  0%, 7% {
+
+  0%,
+  7% {
     transform: rotateZ(0);
   }
+
   15% {
     transform: rotateZ(-10deg);
   }
+
   20% {
     transform: rotateZ(5deg);
   }
+
   25% {
     transform: rotateZ(-5deg);
   }
+
   30% {
     transform: rotateZ(3deg);
   }
+
   35% {
     transform: rotateZ(-2deg);
   }
-  40%, 100% {
+
+  40%,
+  100% {
     transform: rotateZ(0);
   }
 }
 
-p {
-  font-family: 'lato',sans-serif;
+[data-theme="light"] p {
+  font-family: 'lato', sans-serif;
   font-weight: 500;
   font-size: 20px;
 
   background: -webkit-linear-gradient(rgb(116, 116, 116), #000000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] {
+  color: #ffffff;
+  background-color: #1a1a1a;
+
+}
+
+[data-theme="dark"] a:hover {
+  color: #747bff;
+}
+
+[data-theme="dark"] .button {
+  color: white;
+}
+
+[data-theme="dark"] button {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .button {
+  border: 2px solid #616161;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .inc_amount {
+  color: white;
+  font-family: 'lato', sans-serif;
+  letter-spacing: 2px;
+}
+
+[data-theme="dark"] .button:hover {
+  box-shadow: 1px 1px 10px #616161;
+  color: #0c0000;
+  background-color: #f1ebeb;
+}
+
+[data-theme="dark"] p {
+  font-family: 'lato', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #ffffffdf;
+}
+
+[data-theme="dark"] input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+[data-theme="dark"] input[type="number"]::-webkit-inner-spin-button,
+[data-theme="dark"] input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+[data-theme="dark"] .pt_Cat {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+[data-theme="dark"] .pt_Cat input {
+  color: #fafafa;
+  border-radius: 10px;
+  background-color: #56565652;
+  border: solid 1px #5f5f5f;
+  font-family: "lato", sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  width: auto;
+  height: 30px;
+  text-align: center;
+  padding: 0 15px 0 2px;
+  margin: 10px 10px;
+}
+
+[data-theme="dark"] .pt_Quant {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+[data-theme="dark"] .pt_Quant input {
+  color: #fafafa;
+  border-radius: 10px;
+  background-color: #56565652;
+  border: solid 1px #5f5f5f;
+  font-family: "lato", sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  padding: 0 15px 0 2px;
+  margin: 10px 10px;
+}
+
+[data-theme="dark"] .select-pt-Cat {
+  color: #fafafa;
+  border-radius: 10px;
+  background-color: #56565652;
+  border: solid 1px #5f5f5f;
+  font-family: "lato", sans-serif;
+  letter-spacing: 1.5px;
+  font-size: 15px;
+  font-weight: 300;
+  margin: 10px;
+  width: auto;
+  height: 30px;
+  text-align: center;
+  padding: 0 15px;
+  appearance: none;
+  /* Remove native styling */
+  -webkit-appearance: none;
+  /* For Safari */
+  -moz-appearance: none;
+  /* For Firefox */
+}
+
+[data-theme="dark"] .select-pt-Cat::after {
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fafafa;
+  pointer-events: none;
+  /* Prevent interaction with the arrow */
+}
+
+[data-theme="dark"] h1 {
+  color: #f5f5f5;
+
+  text-align: center;
+  font-family: 'lato', sans-serif;
+  font-weight: 300;
+  font-size: 70px;
+  letter-spacing: 10px;
+  background: -webkit-linear-gradient(rgb(170, 170, 170), #d8d8d8df);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .help-button {
+  background-color: #eff2f5;
+  color: rgb(7, 1, 1);
+}
+
+[data-theme="dark"] .help-button:hover {
+  background-color: #757acc;
+  box-shadow: 1px 1px 50px #616161;
 }

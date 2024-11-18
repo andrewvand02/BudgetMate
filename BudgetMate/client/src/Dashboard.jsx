@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
+import './Mode.css';
+import Mode from './Mode';
 import budget from './assets/budget.png';
+
 
 const Dashboard = () => {
 
@@ -60,6 +63,7 @@ const Dashboard = () => {
                     <span className='btn-txt'>Tax Help</span>
                 </button>
             </Link>
+            <Mode></Mode>
         </div>
     );
 };

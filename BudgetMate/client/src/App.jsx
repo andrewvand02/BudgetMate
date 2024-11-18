@@ -12,11 +12,13 @@ import LoginButton from './LoginButton';
 import SavingsGoal from './SavingsGoal';
 import Help from './Help';
 import TaxHelp from './TaxHelp';
+import Mode from './Mode';
 
 
 import './App.css';
 
 const App = () => {
+
     return (
         <Router>
             <Routes>
@@ -27,10 +29,11 @@ const App = () => {
                 <Route path="/fetch-expenses" element={<FetchExpenses />} />
                 <Route path="/breakdown-expenses" element={<BreakdownExpenses />} />
                 <Route path="/budget" element={<Budget />} />
-                <Route path="/login" element={<LoginButton/>} />
-                <Route path="/savings-goal" element={<SavingsGoal/>} />
+                <Route path="/login" element={<LoginButton />} />
+                <Route path="/savings-goal" element={<SavingsGoal />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/tax-help" element={<TaxHelp />} />
+                <Route path="/mode" element={<Mode />} />
             </Routes>
         </Router>
     );
