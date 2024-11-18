@@ -39,7 +39,7 @@ const SavingsGoal = () => {
                 if (savingsGoal && startDate && endDate) {
                     const weeksRemaining = getWeeksUntilDate(endDate); // Get the number of weeks until the end date
                     const potentialSavings = weeklySavings * weeksRemaining; // Calculate potential savings based on weekly savings
-                    setProgress(Math.min((potentialSavings / savingsGoal) * 100, 100)); // Calculate the progress percentage, ensuring it's capped at 100%
+                    setProgress(Math.min((weeklySavings / savingsGoal) * 100, 100)); // Calculate the progress percentage, ensuring it's capped at 100%
 
                     // Calculate the average weekly savings required to meet the goal
                     const averageWeeklySavingsRequired = savingsGoal / weeksRemaining;

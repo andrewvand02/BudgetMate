@@ -121,7 +121,7 @@ const ExpenseInput = () => {
             </button>
             <button 
                 className='help-button'
-                onClick={() => setHelpModalOpen(true)}> {/* Button to open the help modal */}
+                onClick={() => navigate('/help')}> {/* Button to open the help modal */}
                 <span className='btn-txt'>Help</span>
             </button>
         </div>

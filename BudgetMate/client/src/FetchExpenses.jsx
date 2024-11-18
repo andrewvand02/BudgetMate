@@ -103,6 +103,7 @@ const FetchExpenses = () => {
                 style={{ marginTop: '20px' }}> {/* Adding margin to the button */}
                 <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
+            
             {/* Link to navigate to the expenses breakdown page */}
             <Link to="/breakdown-expenses">
                 <button className="button type1">

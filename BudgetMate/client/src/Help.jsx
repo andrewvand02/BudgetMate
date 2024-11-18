@@ -8,6 +8,10 @@ const Help = () => {
     const goBackToDashboard = () => {
         navigate('/'); // Redirects to the dashboard route ('/')
     };
+    const goBack = () => {
+        navigate(-1); // Navigates back to the previous page in the browser history
+    };
+    
 
     return (
         <div className="help-container">
@@ -83,6 +87,10 @@ const Help = () => {
                     <span className="btn-txt">Dashboard</span> {/* Button to go back to the dashboard*/}
                 </button>
             </div>
+            
+            <button onClick={goBack} className='back-btn'>
+                <span className="btn-txt">Back</span>
+            </button>
         </div> 
         
     );
