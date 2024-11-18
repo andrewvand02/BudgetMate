@@ -8,8 +8,26 @@ const TaxHelp = () => {
   // State for the tax calculator
   const [income, setIncome] = useState('');
   const [filingStatus, setFilingStatus] = useState('single');
-  const [businessType, setBusinessType] = useState('none');
+  const [businessType, setBusinessType] = useState('none'); // Business type: 'none', 'llc', 'scorp', or 'c-corp'
   const [estimatedTax, setEstimatedTax] = useState(null);
+  const [salary, setSalary] = useState(''); // State for S-Corp salary input
+  const [previousNOL, setPreviousNOL] = useState(''); // State for previous NOL input
+  const [retainedEarnings, setRetainedEarnings] = useState(''); // State for retained earnings input
+  const [dividends, setDividends] = useState(''); // State for dividends paid input
+  const [showLLCInfo, setShowLLCInfo] = useState(false);
+  const [showSCorpInfo, setShowSCorpInfo] = useState(false);
+
+
+  const toggleLLCInfo = () => {
+    setShowLLCInfo((prevState) => !prevState);
+    event.target.blur();
+  };
+  
+  const toggleSCorpInfo = () => {
+    setShowSCorpInfo((prevState) => !prevState);
+    event.target.blur(); // Remove focus after click
+  };
+  
 
   const goBackToDashboard = () => {
     navigate('/');
@@ -26,27 +44,127 @@ const TaxHelp = () => {
     }
 
     // Individual Tax Calculation
-    if (businessType === 'none') {
-      if (filingStatus === 'single') {
-        if (incomeValue <= 10000) tax = incomeValue * 0.1;
-        else if (incomeValue <= 40000) tax = 1000 + (incomeValue - 10000) * 0.12;
-        else tax = 4600 + (incomeValue - 40000) * 0.22;
-      } else if (filingStatus === 'married') {
-        if (incomeValue <= 20000) tax = incomeValue * 0.1;
-        else if (incomeValue <= 80000) tax = 2000 + (incomeValue - 20000) * 0.12;
-        else tax = 9200 + (incomeValue - 80000) * 0.22;
+    if (businessType === 'none') { // Check if the business type is 'none' (individual filer)
+      if (filingStatus === 'single') { // Check if the filing status is 'single'
+        if (incomeValue <= 10000) tax = incomeValue * 0.1; // If income is less than or equal to $10,000, apply a 10% tax rate
+        else if (incomeValue <= 40000) tax = 1000 + (incomeValue - 10000) * 0.12; // If income is between $10,001 and $40,000, apply a base tax of $1,000 plus 12% on the income exceeding $10,000
+        else tax = 4600 + (incomeValue - 40000) * 0.22; // If income is greater than $40,000, apply a base tax of $4,600 plus 22% on the income exceeding $40,000
+      } else if (filingStatus === 'married') { // Check if the filing status is 'married'
+        if (incomeValue <= 20000) tax = incomeValue * 0.1;  // If income is less than or equal to $20,000, apply a 10% tax rate
+        else if (incomeValue <= 80000) tax = 2000 + (incomeValue - 20000) * 0.12; // If income is between $20,001 and $80,000, apply a base tax of $2,000 plus 12% on the income exceeding $20,000
+        else tax = 9200 + (incomeValue - 80000) * 0.22;// If income is greater than $80,000, apply a base tax of $9,200 plus 22% on the income exceeding $80,000
       }
     }
 
     // Business Tax Calculation for LLC
     if (businessType === 'llc') {
-      tax = incomeValue * 0.15; // Simple example: 15% self-employment tax
+      const socialSecurityLimit = 160200; // Example limit for Social Security tax
+      const selfEmploymentTaxRate = 0.153; // 15.3% total self-employment tax
+      const qbiDeductionRate = 0.20; // 20% Qualified Business Income deduction
+
+      // Calculate the self-employment tax
+      let selfEmploymentTax = incomeValue * selfEmploymentTaxRate;
+
+      // Adjust Social Security portion if income exceeds the limit
+      if (incomeValue > socialSecurityLimit) {
+        const socialSecurityTax = socialSecurityLimit * 0.124; // 12.4% up to the limit
+        const medicareTax = incomeValue * 0.029; // 2.9% Medicare tax
+        selfEmploymentTax = socialSecurityTax + medicareTax;
+      }
+
+      // Calculate QBI deduction (20% of income)
+      const qbiDeduction = incomeValue * qbiDeductionRate;
+
+      // Subtract QBI deduction from income before calculating federal income tax
+      const taxableIncome = incomeValue - qbiDeduction;
+
+      // Apply self-employment tax and add it to federal income tax
+      tax = selfEmploymentTax + taxableIncome * 0.22; // Example: using a flat 22% federal tax rate for simplicity
     }
 
     // Business Tax Calculation for S-Corp
     if (businessType === 'scorp') {
-      tax = incomeValue * 0.1 + 1000; // Simple example: 10% tax rate + $1000 payroll tax
+      const salaryValue = parseFloat(salary);
+      if (isNaN(salaryValue) || salaryValue <= 0 || salaryValue > incomeValue) {
+        alert('Please enter a valid salary amount less than or equal to the total income.');
+        return;
+      }
+
+      const distribution = incomeValue - salaryValue;
+
+      // Payroll tax rates
+      const socialSecurityLimit = 160200; // Example limit for Social Security tax
+      const socialSecurityRate = 0.124; // 12.4% Social Security tax
+      const medicareRate = 0.029; // 2.9% Medicare tax
+      const additionalMedicareRate = 0.009; // 0.9% additional Medicare tax for high earners
+
+      // Calculate Social Security tax (up to the wage base limit)
+      let socialSecurityTax = Math.min(salaryValue, socialSecurityLimit) * socialSecurityRate;
+
+      // Calculate Medicare tax
+      let medicareTax = salaryValue * medicareRate;
+
+      // Apply additional Medicare tax for high earners (e.g., income over $200,000)
+      if (salaryValue > 200000) {
+        medicareTax += (salaryValue - 200000) * additionalMedicareRate;
+      }
+
+      // Total payroll taxes
+      const payrollTaxes = socialSecurityTax + medicareTax;
+
+      // Qualified Business Income (QBI) deduction (20% of distribution)
+      const qbiDeduction = distribution * 0.20;
+
+      // Calculate taxable income after QBI deduction
+      const taxableIncome = distribution - qbiDeduction;
+
+      // Federal income tax (using a simplified flat rate of 22% for demonstration purposes)
+      const federalIncomeTax = taxableIncome * 0.22;
+
+      // Total tax (payroll taxes on salary + federal income tax on distribution)
+      tax = payrollTaxes + federalIncomeTax;
     }
+
+    // Business Tax Calculation for C-Corp
+    if (businessType === 'c-corp') {
+      const corporateTaxRate = 0.21; // Federal corporate tax rate
+      const dividendTaxRate = 0.15; // Simplified dividend tax rate
+      const stateTaxRate = 0.05; // Example state tax rate
+      const accumulatedEarningsTaxRate = 0.20;
+    
+      // Parse additional inputs
+      const previousNOLValue = parseFloat(previousNOL) || 0;
+      const retainedEarningsValue = parseFloat(retainedEarnings) || 0;
+      const dividendsPaid = parseFloat(dividends) || 0;
+    
+      // Validate parsed inputs
+      if (previousNOLValue < 0 || retainedEarningsValue < 0 || dividendsPaid < 0) {
+        alert('Please enter valid non-negative amounts for NOL, retained earnings, and dividends.');
+        return;
+      }
+    
+      // Calculate state and federal corporate taxes
+      const stateTax = incomeValue * stateTaxRate;
+      const taxableIncome = Math.max(0, incomeValue - (previousNOLValue * 0.8));
+      const federalTax = taxableIncome * corporateTaxRate;
+      const totalCorporateTax = federalTax + stateTax;
+    
+      // Estimate dividend tax only if dividends are paid out
+      const dividendTax = dividendsPaid * dividendTaxRate;
+    
+      // Calculate potential accumulated earnings tax on excess retained earnings
+      const excessRetainedEarnings = Math.max(0, retainedEarningsValue - 250000);
+      const accumulatedEarningsTax = excessRetainedEarnings * accumulatedEarningsTaxRate;
+    
+      // Calculate final corporate tax including accumulated earnings tax
+      const finalCorporateTax = totalCorporateTax + accumulatedEarningsTax;
+    
+      // Log dividend tax separately (shareholder-level tax)
+      console.log(`Dividend Tax (Shareholder Level): ${dividendTax}`);
+    
+      // Set the estimated tax
+      tax = finalCorporateTax;
+    }    
 
     setEstimatedTax(tax.toFixed(2));
   };
@@ -87,7 +205,62 @@ const TaxHelp = () => {
               <option value="none">None (Individual)</option>
               <option value="llc">LLC</option>
               <option value="scorp">S-Corp</option>
+              <option value="c-corp">C-Corp</option>
             </select>
+            <div className='tex_sec'>
+              {businessType === 'scorp' && (
+                <label className="pt_Cat">
+                  <span className="lable_cal">Reasonable Salary: $</span>
+                  <input
+                    type="number"
+                    value={salary}
+                    onChange={(e) => setSalary(e.target.value)}
+                    placeholder="Salary amount"
+                    className="select-pt-Cat"
+                  />
+                </label>
+              )}
+            </div>
+            <div className='tax-sec'>
+              {businessType === 'c-corp' && (
+              <>
+                <label className="pt_Cat">
+                  <span className="lable_cal">Previous Net Operating Loss: $</span>
+                  <input
+                    type="number"
+                    value={previousNOL}
+                    onChange={(e) => setPreviousNOL(e.target.value)}
+                    placeholder="Previous NOL"
+                    className="select-pt-Cat"
+                  />
+                </label>
+
+                <label className="pt_Cat">
+                  <span className="lable_cal">Dividends Paid: $</span>
+                  <input
+                    type="number"
+                    value={dividends}
+                    onChange={(e) => setDividends(e.target.value)}
+                    placeholder="Dividends paid"
+                    className="select-pt-Cat"
+                  />
+                </label>
+
+                <label className="pt_Cat">
+                  <span className="lable_cal">Retained Earnings: $</span>
+                  <input
+                    type="number"
+                    value={retainedEarnings}
+                    onChange={(e) => setRetainedEarnings(e.target.value)}
+                    placeholder="Retained earnings"
+                    className="select-pt-Cat"
+                  />
+                </label>
+              </>
+            )}
+          </div>
+
+
           </label>
           <div className="tax-button">
           <button onClick={calculateTax} className="button type1">
@@ -97,8 +270,9 @@ const TaxHelp = () => {
             <div className="tax-result">
               <h3>Estimated Tax: ${estimatedTax}</h3>
               <p className="disclaimer">
-                *Disclaimer: This calculation is only an estimate and may not reflect the actual tax amount owed. Please consult a tax professional for accurate tax advice.
+                *Disclaimer: This calculation is only an estimate and may not reflect the actual tax amount owed. The salary amount for S-Corp should be a reasonable compensation. Please consult a tax professional for accurate tax advice.
               </p>
+
             </div>
           )}
         </div>
@@ -106,17 +280,66 @@ const TaxHelp = () => {
 
       <section>
         <h2>Business Tax Information</h2>
-        <h3>LLC Tax Information</h3>
-        <p>
-          LLCs are typically treated as pass-through entities for tax purposes. This means that the business income
-          is passed through to the owner's personal tax return, and the owner pays self-employment tax (typically 15.3%).
+        {/* LLC Tax Information Drop-down */}
+        <button 
+          className='toggle-header' 
+          onClick={toggleLLCInfo}>
+          LLC Tax Information {showLLCInfo ? '▲' : '▼'}
+        </button>
+        {showLLCInfo && (
+          <div className="tax-info-content">
+        <p >
+          LLCs (Limited Liability Companies) are typically treated as pass-through entities for tax purposes.
+          This means that the business income is passed through to the owner's personal tax return, and the owner
+          pays self-employment taxes on the income. The self-employment tax rate is 15.3%, which includes
+          Social Security (12.4%) and Medicare (2.9%). However, only the first $160,200 of income is subject to
+          the Social Security portion of the tax (for the 2024 tax year).
         </p>
+        <p>
+          LLC owners may also qualify for the Qualified Business Income (QBI) deduction, which allows for a
+          20% deduction on the business income before calculating federal income tax. This can significantly
+          reduce the taxable income. However, eligibility for the QBI deduction may be limited based on
+          income thresholds and the type of business.
+        </p>
+        <p>
+          Keep in mind that LLCs have flexibility in how they are taxed. By default, a single-member LLC is treated
+          as a sole proprietorship, while a multi-member LLC is treated as a partnership. LLCs can also choose
+          to be taxed as an S-Corp or C-Corp by filing an election with the IRS (Form 2553 or Form 8832).
+        </p>
+        </div>
+        )}
 
-        <h3>S-Corp Tax Information</h3>
+        {/* S-Corp Tax Information Drop-down */}
+        <button 
+          className='toggle-header'
+          onClick={toggleSCorpInfo}>
+          S-Corp Tax Information {showSCorpInfo ? '▲' : '▼'}
+        </button>
+        {showSCorpInfo && (
+          <div className="tax-info-content">
         <p>
-          S-Corps allow owners to receive both a salary and distribution of profits. The salary portion is subject to
-          payroll taxes, while distributions are not. However, reasonable compensation must be paid to avoid IRS scrutiny.
+          An S-Corp (S Corporation) offers a way for business owners to potentially reduce their self-employment tax liability.
+          In an S-Corp, owners (shareholders) can receive both a salary and a distribution of profits. The salary is subject
+          to payroll taxes, including Social Security and Medicare taxes, but the profit distributions are not subject
+          to self-employment taxes.
         </p>
+        <p>
+          The IRS requires S-Corp owners to take a "reasonable salary" for the work they perform. This salary is subject
+          to Social Security (12.4%) and Medicare (2.9%) taxes, up to the Social Security wage base limit of $160,200
+          (for the 2024 tax year). High earners may also be subject to an additional 0.9% Medicare tax on wages exceeding $200,000.
+        </p>
+        <p>
+          S-Corp owners can also take advantage of the Qualified Business Income (QBI) deduction, which allows for a 20% deduction
+          on the business income (excluding the salary portion). This deduction can help reduce the overall taxable income.
+          However, eligibility for the QBI deduction may be limited based on income levels and the type of business.
+        </p>
+        <p>
+          It's important to maintain proper documentation for salary payments and profit distributions, as the IRS may scrutinize
+          S-Corp filings to ensure reasonable compensation is paid. Failure to take a reasonable salary can result in penalties
+          and additional taxes.
+        </p>
+        </div>
+      )}
       </section>
 
       <section>
