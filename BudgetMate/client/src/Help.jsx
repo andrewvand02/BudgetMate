@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Help.css'
+import Mode from './Mode';
 
 const Help = () => {
     const navigate = useNavigate();// Initializing the navigate function for navigation
@@ -91,8 +92,8 @@ const Help = () => {
             <button onClick={goBack} className='back-btn'>
                 <span className="btn-txt">Back</span>
             </button>
+            <Mode></Mode>
         </div> 
-        
     );
 };
 
