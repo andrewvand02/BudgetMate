@@ -35,36 +35,42 @@ const FetchExpenses = () => {
     // Helper function to group expenses by week.
     const groupExpensesByWeek = (expenses) => {
         const groupedExpenses = {}; // Object to hold expenses by week.
-
+    
         expenses.forEach((expense) => {
-            const date = new Date(expense.date); // Creating a Date object from the expense date.
+            // Parse the expense date and adjust for local time zone explicitly.
+            const rawDate = new Date(expense.date);
+            const date = new Date(rawDate.getTime() + rawDate.getTimezoneOffset() * 60000);
             const weekRange = getWeekRange(date); // Getting the week range string for the date.
-
-            // Initializing the week range if not already present, with empty arrays for each day.
+    
+            // Initialize the week range if not already present, with empty arrays for each day.
             if (!groupedExpenses[weekRange]) {
                 groupedExpenses[weekRange] = Array(7).fill([]).map(() => []);
             }
-
-            const dayIndex = date.getDay(); // Getting the day of the week (0 = Sunday, 6 = Saturday).
-            // Adding the expense to the appropriate day in the week.
+    
+            const dayIndex = date.getDay(); // Correctly calculate the day of the week.
+            console.log(`Expense Date: ${expense.date}, Local Adjusted Date: ${date}, Day Index: ${dayIndex}`);
+    
+            // Add the expense to the appropriate day in the week.
             groupedExpenses[weekRange][dayIndex] = [...groupedExpenses[weekRange][dayIndex], expense];
         });
-
-        return groupedExpenses; // Returning the grouped expenses object.
+    
+        return groupedExpenses; // Return the grouped expenses object.
     };
-
-    // Helper function to get the date range for the week of a given date.
+    
+    // Helper function to calculate the week range for a given date.
     const getWeekRange = (date) => {
-        const startOfWeek = new Date(date); // Copying the original date.
-        startOfWeek.setDate(date.getDate() - date.getDay()); // Setting start date to the previous Sunday.
-        
-        const endOfWeek = new Date(startOfWeek); // Copying the start date.
-        endOfWeek.setDate(startOfWeek.getDate() + 6); // Setting end date to the following Saturday.
-
-        const startString = startOfWeek.toLocaleDateString(); // Converting start date to a string.
-        const endString = endOfWeek.toLocaleDateString(); // Converting end date to a string.
-
-        return `Week of ${startString} - ${endString}`; // Returning a string representation of the week range.
+        const startOfWeek = new Date(date);
+        const endOfWeek = new Date(date);
+    
+        // Adjust startOfWeek to the previous Sunday.
+        startOfWeek.setDate(date.getDate() - date.getDay());
+    
+        // Adjust endOfWeek to the following Saturday.
+        endOfWeek.setDate(date.getDate() + (6 - date.getDay()));
+    
+        // Format as a readable range string (e.g., "2024-11-17 - 2024-11-23").
+        const format = (d) => d.toISOString().split('T')[0];
+        return `${format(startOfWeek)} - ${format(endOfWeek)}`;
     };
 
     return (

@@ -58,7 +58,8 @@ const BreakdownExpenses = () => {
                 const categoriesSet = new Set();
                 // Initialize an object to accumulate weekly categorized expenses
                 const weeklyCategoryExpenses = expenses.reduce((acc, entry) => {
-                    const date = new Date(entry.date); // Convert the entry date to a Date object
+                    const rawDate = new Date(entry.date); // Convert the entry date to a Date object
+                    const date = new Date(rawDate.getTime() + rawDate.getTimezoneOffset() * 60000);
                     const weekRange = getWeekRange(date); // Get the formatted week range for the date
                     const { category, amount } = entry; // Destructure category and amount from the entry
 
