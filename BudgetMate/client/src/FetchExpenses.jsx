@@ -46,6 +46,7 @@ const FetchExpenses = () => {
             }
 
             const dayIndex = date.getDay(); // Getting the day of the week (0 = Sunday, 6 = Saturday).
+            console.log(dayIndex);
             // Adding the expense to the appropriate day in the week.
             groupedExpenses[weekRange][dayIndex] = [...groupedExpenses[weekRange][dayIndex], expense];
         });

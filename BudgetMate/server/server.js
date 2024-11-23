@@ -22,7 +22,7 @@ let expensesData = {}; //Storage for expensesData
 let incomeStore = {}; //Storage for incomeStore
 let budgetData = {}; //Storage for budgetData
 let savingsGoals= {};//Storage for savingsGoal data
-
+let spendPredictions = {}; //Storage for predicting next week's spending total
 
 // Function to load data from a CSV file into a data store
 const loadDataFromCSV = (filePath, dataStore) => {
@@ -322,11 +322,24 @@ const sendDataToPythonBackend = async (userId, weeklyExpenses) => {
             userId,
             weeklyExpenses
         });
+        spendPredictions[userId] = response.data;   // Store the data into the spendPredictions array
+        console.log(spendPredictions);
         console.log('Data sent to Python backend:', response.data);
     } catch (error) {
         console.error('Error sending data to Python backend:', error.message);
     }
 };
+
+app.get('api/receive-expenses/:userId', (req, res) => {
+    const { userId } = req.params;
+    const spendPredEntries = spendPredictions[userId]; 
+    if (spendPredEntries) {
+        res.json({ spendPredEntries });
+    } else {
+        res.status(404).json({ message: 'No spending predictions found' });
+    }
+});
+
 function getWeekNumber(date) {
     const d = new Date(date);
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); // Adjust to Thursday in current week
