@@ -11,6 +11,7 @@ def receive_expenses():
     """API endpoint to receive user expenses and predict the next week's spend."""
     data = request.json
     user_expenses = data.get('weeklyExpenses')
+    user_id = data.get("userId")
 
     # Prepare the data
     records = []
@@ -55,6 +56,7 @@ def receive_expenses():
         "mean_absolute_error": mae,
         "root_mean_squared_error": rmse,
         "predicted_next_week_spend": next_week_pred[0],
+        "user_id": user_id,
     })
 
 
