@@ -1,0 +1,4 @@
+userId,source,amount,interestRate,schedule,category,paymentAmount,totalRepaid
+user1,Ford,25000,6.45,monthly,Auto Loan,500,15000
+user1,Visa,750,2.4,biweekly,Credit Card,325,325
+user1,Toyota,21000,5.59,monthly,Auto Loan,500,0

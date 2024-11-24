@@ -78,6 +78,7 @@ const init = async () => {
     await loadDataFromCSV(path.join(__dirname, 'Data', 'Expense.csv'), expensesData); //load expenses
     await loadDataFromCSV(path.join(__dirname, 'Data', 'Income.csv'), incomeStore); //load income
     await loadDataFromCSV(path.join(__dirname, 'Data', 'Budget.csv'), budgetData); //load budget
+    await loadDataFromCSV(path.join(__dirname, 'Data', 'Debt.csv'), debtData); //load debt data
 };
 
 init();
@@ -211,6 +212,7 @@ app.post('/api/debt', (req, res) => {
     })
 
     // Save to CSV
+    saveDataToCSV(path.join(__dirname, 'Data', 'Debt.csv'), debtData);
 
     res.json({ message: 'Debt saved successfully!' });
 });
