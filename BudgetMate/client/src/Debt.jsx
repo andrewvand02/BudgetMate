@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Debt.css'
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'; // For Pie Chart
 
 const Debt = () => {
     const navigate = useNavigate();// Initializing the navigate function for navigation
@@ -10,6 +12,24 @@ const Debt = () => {
     };
 
     const [debtEntries, setDebtEntries] = useState([{ source: "", amount: "", interestRate: "", schedule: "", category: "", paymentAmount: "", totalRepaid: ""}])
+
+    // useEffect to fetch debt data when the component mounts
+    useEffect(() => {
+        // Function to fetch debt data from the backend
+        const fetchDebt = async () => {
+            try {
+                const userId = 'user1'; // Hardcoded user ID for demo, replace with actual user ID as needed
+                // Fetching debt data for the user from the backend
+                const response = await axios.get(`http://localhost:8080/api/debt/${userId}`);
+                // Setting the debt entries state with the response data
+                setIncomeEntries(response.data.debtEntries);
+            } catch (error) {
+                // Logging any error that occurs during fetch
+                console.error('Error fetching debt:', error);
+            }
+        };
+        fetchDebt();
+    }, []);
 
     const handleAddEntry = () => {
         setDebtEntries([...debtEntries, { source: "", amount: "", interestRate: "", schedule: "", category: "", paymentAmount: "", totalRepaid: ""}]);
@@ -41,6 +61,27 @@ const Debt = () => {
 
     const categoryOptions = {
         category: ["Credit Card", "Student Loan", "Auto Loan", "Home Loan", "Other"]
+    };
+
+    // Data for Pie chart
+    const data = {
+        labels: debtEntries.map(entry => entry.source), // Use source names as labels
+        datasets: [
+            {
+                label: 'Debt',
+                data: debtEntries.map(entry => parseFloat(entry.amount)), // Use amounts for data points
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] // Define colors for each segment
+            },
+        ],
+    };
+
+    // Options for Pie chart
+    const options = {
+        plugins: {
+            tooltip: {
+                enabled: false,
+            },// Disable default tooltips
+        },
     };
 
     return (
@@ -137,7 +178,7 @@ const Debt = () => {
                     </button>
                 </form>
             </div>
-            <div>
+            <div style={{ padding: '0.6em 1.2em', borderRadius: '8px' }}>
                 <h2>Your Debt</h2>
                 {/* Display all debts in a list/table */}
                 {debtEntries.length > 0 ? ( // Check if debt entries are available
@@ -151,8 +192,34 @@ const Debt = () => {
                 ) : (
                     <p>No debt data available.</p> // Message displayed if no debt entries are available
                 )}
+                {debtEntries.length > 0 ? (
+                    <table>
+                        <tr>
+                            <th>Source</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Interest Rate</th>
+                            <th>Schedule</th>
+                            <th>Category</th>
+                            <th>Amount per Payment</th>
+                            <th>Total Repaid</th>
+                        </tr>
+                        {debtEntries.map((entry, index) => ( // Mapping over debt entries array
+                            <tr key={index}> {/* List item for each debt entry */}
+                                <th>{entry.source}</th>
+                                <th>{entry.category}</th>
+                                <th>{entry.amount}</th>
+                            </tr>
+                        ))}
+                    </table>
+                ) : (
+                    <p>No debt data available.</p>
+                )}
+                
                 {/* Show a pie chart of debts */}
-                {/* Include percent progress for each debt in the list/table */}
+                <div style={{ display: 'flex', marginTop: '10px', width: '30vw', height: '30vw' }}>
+                    <Pie className="pie" data={data} options={options} />
+                </div>
             </div>
             <div className='dashboard-button'>
                 <button onClick={goBackToDashboard} className='button type1'>
