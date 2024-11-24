@@ -22,7 +22,7 @@ const Debt = () => {
                 // Fetching debt data for the user from the backend
                 const response = await axios.get(`http://localhost:8080/api/debt/${userId}`);
                 // Setting the debt entries state with the response data
-                setIncomeEntries(response.data.debtEntries);
+                setDebtEntries(response.data.debtEntries);
             } catch (error) {
                 // Logging any error that occurs during fetch
                 console.error('Error fetching debt:', error);
@@ -90,9 +90,18 @@ const Debt = () => {
                 <h2>Enter Your Debt</h2>
                 <form onSubmit={handleDebtSubmit}>
                     {debtEntries.map((entry, index) => (
-                        <div key={index} style={{ marginBottom: '10px' }}>
+                        <div key={index} style={{ marginBottom: '10px', backgroundColor: 'lightgrey' }}>
+                            <h3>Debt {index+1}</h3>
+                            <button
+                                style={{backgroundColor: '#f44336'}}
+                                onClick={() => handleRemoveEntry(index)}
+                            >
+                                Remove Debt Entry
+                            </button>
+                            <br></br>
                             {/*Allow users to input debt sources */}
                             <div className='pt_Cat'>
+                                Source
                                 <input
                                     type="text" // text input for debt source
                                     placeholder="Source of Debt" // placeholder text for input
@@ -103,6 +112,7 @@ const Debt = () => {
                             </div>
                             {/* Allow users to inpute debt amount */}
                             <div className='pt_Quant'>
+                                Debt Amount
                                 <input
                                     type="number"
                                     min="1"
@@ -114,6 +124,7 @@ const Debt = () => {
                             </div>
                             {/*Allow users to input interest rate for each debt*/}
                             <div className='pt_Quant'>
+                                Interest Rate (%)
                                 <input
                                     type="number"
                                     min="0"
@@ -125,6 +136,7 @@ const Debt = () => {
                                 />
                             </div>
                             {/*Allow users to input payment schedule for each debt*/}
+                            Schedule
                             <select
                                 className='select-pt-Cat'
                                 value={entry.schedule}
@@ -135,6 +147,7 @@ const Debt = () => {
                                 <option value="monthly">Monthly</option>
                             </select>
                             {/*Allow users to select category of debt*/}
+                            Category
                             <select
                                 className='select-pt-Cat'
                                 value={entry.category}
@@ -145,6 +158,7 @@ const Debt = () => {
                                 ))}
                             </select>
                             {/*Allow users to input amount paid per payment schedule*/}
+                            Amount per Payment
                             <div className='pt_Quant'>
                                 <input
                                     type="number"
@@ -158,6 +172,7 @@ const Debt = () => {
                             {/*Allow users to input the amount they've repaid so far.*/}
                             {/*This will probably be removed later, as ideally it will be calculated via the expenses.*/}
                             <div className='pt_Quant'>
+                                Amount Repaid
                                 <input
                                     type="number"
                                     min="0"
@@ -190,16 +205,18 @@ const Debt = () => {
                             <th>Schedule</th>
                             <th>Amount per Payment</th>
                             <th>Total Repaid</th>
+                            <th>Percent Repaid</th>
                         </tr>
                         {debtEntries.map((entry, index) => ( // Mapping over debt entries array
                             <tr key={index}> {/* List item for each debt entry */}
                                 <td>{entry.source}</td>
                                 <td>{entry.category}</td>
-                                <td>{entry.amount}</td>
-                                <td>{entry.interestRate}</td>
+                                <td>${entry.amount}</td>
+                                <td>{entry.interestRate}%</td>
                                 <td>{entry.schedule}</td>
-                                <td>{entry.paymentAmount}</td>
-                                <td>{entry.totalRepaid}</td>
+                                <td>${entry.paymentAmount}</td>
+                                <td>${entry.totalRepaid}</td>
+                                <td>{((entry.totalRepaid/entry.amount)*100).toFixed(0)}%</td>
                             </tr>
                         ))}
                     </table>
