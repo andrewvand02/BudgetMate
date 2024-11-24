@@ -204,7 +204,7 @@ app.post('/api/debt', (req, res) => {
     }
     debtEntries.forEach(entry => {
         const {source, amount, interestRate, schedule, category, paymentAmount, totalRepaid} = entry;
-        if (!source || !amount || !interestRate || !schedule || !category || !paymentAmount) {
+        if (!source || !amount || !interestRate || !schedule || !category || !paymentAmount || !totalRepaid) {
             return res.status(400).json({message: 'Invalid debt entry.'});
         }
         debtData[userId].push({ source, amount, interestRate, schedule, category, paymentAmount, totalRepaid });

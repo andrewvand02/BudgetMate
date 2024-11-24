@@ -109,9 +109,21 @@ const Debt = () => {
                                 <input
                                     type="number"
                                     min="0"
-                                    placeholder="paymentAmount"
+                                    placeholder="Payment Amount"
                                     value={entry.paymentAmount}
                                     onChange={(e) => handleInputChange(index, 'paymentAmount', e.target.value)}
+                                    required
+                                />
+                            </div>
+                            {/*Allow users to input the amount they've repaid so far.*/}
+                            {/*This will probably be removed later, as ideally it will be calculated via the expenses.*/}
+                            <div className='pt_Quant'>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    placeholder="Total Repaid"
+                                    value={entry.totalRepaid}
+                                    onChange={(e) => handleInputChange(index, 'totalRepaid', e.target.value)}
                                     required
                                 />
                             </div>
@@ -132,7 +144,7 @@ const Debt = () => {
                     <ul> {/* Unordered list for displaying income entries */}
                         {debtEntries.map((entry, index) => ( // Mapping over income entries array
                             <li key={index}> {/* List item for each income entry */}
-                                {entry.source} ({entry.category}): ${entry.amount} @ {entry.interestRate}%; ${entry.paymentAmount} {entry.schedule}; ${entry.totalRepaid} repaid ({entry.totalRepaid/entry.amount}%) {/* Displaying category and amount */}
+                                {entry.source} ({entry.category}): ${entry.amount} @ {entry.interestRate}%; ${entry.paymentAmount} {entry.schedule}; ${entry.totalRepaid} repaid ({(entry.totalRepaid/entry.amount)*100}%) {/* Displaying category and amount */}
                             </li>
                         ))}
                     </ul>
