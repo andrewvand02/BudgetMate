@@ -19,6 +19,7 @@ const BreakdownExpenses = () => {
     const [recentIncome, setRecentIncome] = useState(null);            // Stores the most recent income amount
     const [weeklySpendingData, setWeeklySpendingData] = useState([]);  // Stores spending data for each of the last 4 weeks
     const [totalExpensesLast4Weeks, setTotalExpensesLast4Weeks] = useState(0);  // Stores total expenses for the last 4 weeks
+    const [predictedNextWeekSpend, setPredictedNextWeekSpend] = useState(null); // Declare state to store next week's spending prediction
     const navigate = useNavigate(); // Hook for redirecting to different routes
 
     // useEffect hook to fetch income data, get the most recent income entry
@@ -343,6 +344,23 @@ const BreakdownExpenses = () => {
         }
     };
 
+    // useEffect to fetch the predicted value
+    useEffect(() => {
+        const fetchPrediction = async () => {
+            try {
+                const userId = 'user1';
+                const response = await axios.get(`http://localhost:8080/api/receive-expenses/${userId}`);
+                const { predicted_next_week_spend } = response.data;
+                setPredictedNextWeekSpend(predicted_next_week_spend);
+                console.log('Predicted next week spend:', predicted_next_week_spend);
+            } catch (error) {
+                console.error('Error fetching spending prediction:', error);
+            }
+        };
+
+        fetchPrediction();
+    }, []);
+
     return (
         <div>
             {/* Main title for the Expenses Breakdown section */}
@@ -390,6 +408,17 @@ const BreakdownExpenses = () => {
                             {/* Line chart displaying the spending trend over time (daily, weekly, or monthly) */}
                             <Line data={lineChartData} options={lineChartOptions} />
                         </div>
+                    )}
+                </div>
+
+                <div className='prediction-container'>
+                    {predictedNextWeekSpend !== null ? (
+                        <p>
+                            From your expenses, BudgetMate predicts that you will spend around
+                            <strong> ${predictedNextWeekSpend.toFixed(0)}</strong> next week.
+                        </p>
+                    ) : (
+                        <p>Loading prediction...</p>
                     )}
                 </div>
             </div>
