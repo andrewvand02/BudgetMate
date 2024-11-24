@@ -356,11 +356,11 @@ const sendDataToPythonBackend = async (userId, weeklyExpenses) => {
     }
 };
 
-app.get('api/receive-expenses/:userId', (req, res) => {
+app.get('/api/receive-expenses/:userId', (req, res) => {
     const { userId } = req.params;
     const spendPredEntries = spendPredictions[userId]; 
     if (spendPredEntries) {
-        res.json({ spendPredEntries });
+        res.json(spendPredEntries);
     } else {
         res.status(404).json({ message: 'No spending predictions found' });
     }
