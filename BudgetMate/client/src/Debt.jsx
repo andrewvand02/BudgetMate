@@ -128,6 +128,11 @@ const Debt = () => {
             <div>
                 <h2>Your Debt</h2>
                 {/* Display all debts in a list/table */}
+                {/*
+                {debtEntries.category.map((option, index) => ( 
+                    <option key={index} value={option}>{option}</option>
+                ))}
+                */}
                 {/* Show a pie chart of debts */}
                 {/* Include percent progress for each debt in the list/table */}
             </div>
