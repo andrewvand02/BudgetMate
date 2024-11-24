@@ -53,7 +53,6 @@ const Debt = () => {
             const userId = 'user1';
             const response = await axios.post('http://localhost:8080/api/debt', {userId, debtEntries });
             alert(response.data.message);
-            navigate('/');
         } catch (error) {
             console.error('Error submitting debts:', error);
         }
@@ -181,34 +180,26 @@ const Debt = () => {
             <div style={{ padding: '0.6em 1.2em', borderRadius: '8px' }}>
                 <h2>Your Debt</h2>
                 {/* Display all debts in a list/table */}
-                {debtEntries.length > 0 ? ( // Check if debt entries are available
-                    <ul> {/* Unordered list for displaying debt entries */}
-                        {debtEntries.map((entry, index) => ( // Mapping over debt entries array
-                            <li key={index}> {/* List item for each debt entry */}
-                                {entry.source} ({entry.category}): ${entry.amount} @ {entry.interestRate}%; ${entry.paymentAmount} {entry.schedule}; ${entry.totalRepaid} repaid ({(entry.totalRepaid/entry.amount)*100}%) {/* Displaying category and amount */}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No debt data available.</p> // Message displayed if no debt entries are available
-                )}
                 {debtEntries.length > 0 ? (
-                    <table>
+                    <table style={{width: '100%'}}>
                         <tr>
                             <th>Source</th>
                             <th>Category</th>
                             <th>Amount</th>
                             <th>Interest Rate</th>
                             <th>Schedule</th>
-                            <th>Category</th>
                             <th>Amount per Payment</th>
                             <th>Total Repaid</th>
                         </tr>
                         {debtEntries.map((entry, index) => ( // Mapping over debt entries array
                             <tr key={index}> {/* List item for each debt entry */}
-                                <th>{entry.source}</th>
-                                <th>{entry.category}</th>
-                                <th>{entry.amount}</th>
+                                <td>{entry.source}</td>
+                                <td>{entry.category}</td>
+                                <td>{entry.amount}</td>
+                                <td>{entry.interestRate}</td>
+                                <td>{entry.schedule}</td>
+                                <td>{entry.paymentAmount}</td>
+                                <td>{entry.totalRepaid}</td>
                             </tr>
                         ))}
                     </table>
