@@ -213,13 +213,14 @@ app.post('/api/debt', (req, res) => {
 
     // Save to CSV
     saveDataToCSV(path.join(__dirname, 'Data', 'Debt.csv'), debtData);
-
+    console.log(debtData);
     res.json({ message: 'Debt saved successfully!' });
 });
 
 app.get('/api/debt/:userId', (req, res) => {
     const {userId} = req.params;
     const userDebt = debtData[userId] || [];
+    console.log(userDebt);
     res.json({ debtEntries: userDebt});
 });
 

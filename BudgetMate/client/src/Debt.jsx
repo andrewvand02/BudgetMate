@@ -22,7 +22,7 @@ const Debt = () => {
                 // Fetching debt data for the user from the backend
                 const response = await axios.get(`http://localhost:8080/api/debt/${userId}`);
                 // Setting the debt entries state with the response data
-                setIncomeEntries(response.data.debtEntries);
+                setDebtEntries(response.data.debtEntries);
             } catch (error) {
                 // Logging any error that occurs during fetch
                 console.error('Error fetching debt:', error);
