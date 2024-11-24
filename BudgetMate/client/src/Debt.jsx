@@ -128,11 +128,17 @@ const Debt = () => {
             <div>
                 <h2>Your Debt</h2>
                 {/* Display all debts in a list/table */}
-                {/*
-                {debtEntries.category.map((option, index) => ( 
-                    <option key={index} value={option}>{option}</option>
-                ))}
-                */}
+                {debtEntries.length > 0 ? ( // Check if income entries are available
+                    <ul> {/* Unordered list for displaying income entries */}
+                        {debtEntries.map((entry, index) => ( // Mapping over income entries array
+                            <li key={index}> {/* List item for each income entry */}
+                                {entry.source} ({entry.category}): ${entry.amount} @ {entry.interestRate}%; ${entry.paymentAmount} {entry.schedule}; ${entry.totalRepaid} repaid ({entry.totalRepaid/entry.amount}%) {/* Displaying category and amount */}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No income data available.</p> // Message displayed if no income entries are available
+                )}
                 {/* Show a pie chart of debts */}
                 {/* Include percent progress for each debt in the list/table */}
             </div>

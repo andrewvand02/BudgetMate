@@ -197,7 +197,7 @@ app.get('/api/expenses/:userId', (req, res) => {
     res.json({ expenseEntries: userExpenses });
 });
 
-app.post('/api/debt/', (req, res) => {
+app.post('/api/debt', (req, res) => {
     const {userId, debtEntries } = req.body;
     if (!debtData[userId]) {
         debtData[userId] = [];
