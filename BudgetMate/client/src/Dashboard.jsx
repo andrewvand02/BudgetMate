@@ -65,6 +65,11 @@ const Dashboard = () => {
                 </button>
             </Link>
             <Mode></Mode>
+            <Link to="/debt">
+                <button className='button type1'>
+                    <span className='btn-txt'>Debt</span>
+                </button>
+            </Link>
         </div>
     );
 };

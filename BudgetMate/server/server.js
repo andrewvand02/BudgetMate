@@ -23,6 +23,8 @@ let incomeStore = {}; //Storage for incomeStore
 let budgetData = {}; //Storage for budgetData
 let savingsGoals= {};//Storage for savingsGoal data
 let spendPredictions = {}; //Storage for predicting next week's spending total
+let debtData = {}; // Storage for debtData
+
 
 // Function to load data from a CSV file into a data store
 const loadDataFromCSV = (filePath, dataStore) => {
@@ -193,6 +195,30 @@ app.get('/api/expenses/:userId', (req, res) => {
     
     // Return the user's expenses as a JSON response
     res.json({ expenseEntries: userExpenses });
+});
+
+app.post('/api/debt/', (req, res) => {
+    const {userId, debtEntries } = req.body;
+    if (!debtData[userId]) {
+        debtData[userId] = [];
+    }
+    debtEntries.forEach(entry => {
+        const {source, amount, interestRate, schedule, category, paymentAmount, totalRepaid} = entry;
+        if (!source || !amount || !interestRate || !schedule || !category || !paymentAmount || !totalRepaid) {
+            return res.status(400).json({message: 'Invalid debt entry.'});
+        }
+        debtData[userId].push({ source, amount, interestRate, schedule, category, paymentAmount, totalRepaid });
+    })
+
+    // Save to CSV
+
+    res.json({ message: 'Debt saved successfully!' });
+});
+
+app.get('/api/debt/:userId', (req, res) => {
+    const {userId} = req.params;
+    const userDebt = debtData[userId] || [];
+    res.json({ debtEntries: userDebt});
 });
 
 // Route to handle saving a user's savings goal (POST request)
