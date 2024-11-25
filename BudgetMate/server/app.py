@@ -9,21 +9,21 @@ app = Flask(__name__)
 @app.route('/api/receive-expenses', methods=['POST'])
 def receive_expenses():
     """API endpoint to receive user expenses and predict the next week's spend."""
-    data = request.json
-    user_expenses = data.get('weeklyExpenses')
-    user_id = data.get("userId")
+    data = request.json # get the data from node.js backend
+    user_expenses = data.get('weeklyExpenses') #extract weeklyExpenses
+    user_id = data.get("userId") #extract user id 
 
     # Prepare the data
     records = []
     for year, weeks in user_expenses.items():
         for week, categories in weeks.items():
-            total_spend = sum(categories.values())
+            total_spend = sum(categories.values()) #Add all the category totals together for the week
             records.append({
-                "Week": week,
-                "Total Spend": total_spend,
+                "Week": week, #Week number
+                "Total Spend": total_spend, #Total spent for that week
             })
 
-    df = pd.DataFrame(records)
+    df = pd.DataFrame(records) #DataFrame this data
 
     # Ensure sufficient data for training
     if len(df) < 2:
@@ -44,14 +44,14 @@ def receive_expenses():
 
     # Evaluate the model
     y_pred = model.predict(X_test)
-    mae = mean_absolute_error(y_test, y_pred)
-    rmse = mean_squared_error(y_test, y_pred, squared=False)
+    mae = mean_absolute_error(y_test, y_pred) #error info
+    rmse = mean_squared_error(y_test, y_pred, squared=False) #error info
 
     # Predict next week's spend (using the next week value as the feature)
     next_week_data = pd.DataFrame({"Week": [int(df["Week"].max()) + 1]})
-    next_week_pred = model.predict(next_week_data)
+    next_week_pred = model.predict(next_week_data) #Prediction data
 
-    return jsonify({
+    return jsonify({ #Return some info, including predicted for next week
         "message": "Model trained and prediction generated successfully!",
         "mean_absolute_error": mae,
         "root_mean_squared_error": rmse,

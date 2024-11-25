@@ -10,7 +10,7 @@ const nodemailer = require('nodemailer');
  //Import statements
 const twilio = require('twilio');
 const axios = require('axios');
-
+const cron = require('node-cron');
 const corsOptions = { //For communicating with frontend
     origin: ["http://localhost:5173"],
 };
@@ -24,8 +24,9 @@ let budgetData = {}; //Storage for budgetData
 let savingsGoals= {};//Storage for savingsGoal data
 let spendPredictions = {}; //Storage for predicting next week's spending total
 let debtData = {}; // Storage for debtData
-
-
+let taxData = {};
+let userEmails={};
+userEmails['user1'] = 'budgetmate581@gmail.com';
 // Function to load data from a CSV file into a data store
 const loadDataFromCSV = (filePath, dataStore) => {
     return new Promise((resolve, reject) => {  // Return a new promise to handle asynchronous operations
@@ -89,6 +90,24 @@ app.post('/api/budget', (req, res) => {
     budgetData[userId] = budgetEntries; //store in relation to userID
     saveDataToCSV(path.join(__dirname, 'Data', 'Budget.csv'), budgetData); // Save to CSV after update
     res.json({ message: 'Budget stored successfully', budgetEntries });//response back
+});
+
+// Route to set tax-date for user
+app.post('/api/tax-date', (req, res) => {
+    const { userId, taxDate } = req.body;
+    taxData[userId] = taxDate //Set taxData entry based on userId 
+    res.json({ message: 'Tax Date stored successfully', taxDate });//response back
+});
+
+// Route to get stored budget
+app.get('/api/tax-date/:userId', (req, res) => {
+    const { userId } = req.params; //required userID
+    const taxDate = taxData[userId]; //find taxData assiocated with userID
+    if (taxDate) {
+        res.json({ taxDate }); //if exist, send back to frontend
+    } else {
+        res.status(404).json({ message: 'No tax data found' }); //else, send message
+    }
 });
 
 // Route to get stored budget
@@ -345,6 +364,47 @@ const sendBudgetExceededEmail = (userEmail, category, exceededAmount) => {
     return transporter.sendMail(mailOptions);
 };
 
+cron.schedule('0 0 * * *', () => {
+    const currentTime = new Date();
+    
+    // Loop through each user and check if the tax date is within a week
+    Object.keys(taxData).forEach(userId => {
+        const taxDate = taxData[userId];
+        const userEmail = userEmails[userId];
+        
+        const taxDateObj = new Date(taxDate);
+        const oneWeekBefore = new Date(taxDateObj);
+        oneWeekBefore.setDate(taxDateObj.getDate() - 7);
+
+        // Check if the tax date is within a week from today
+        if (oneWeekBefore <= currentTime) {
+            sendTaxReminderEmail(userEmail, taxDate); //Send the 
+        }
+    });
+});
+
+
+const sendTaxReminderEmail = (userEmail, taxDate) => {
+    const mailOptions = {
+        to: userEmail, //to user email
+        subject: `Tax Reminder`, //subject 
+        html: `<p>Dear User,</p>
+               <p>This is a friendly reminder that your taxes are due on <strong>${taxDate}</strong>.</p> 
+               <p>Please ensure that all necessary preparations are made to avoid any penalties.</p>
+               <p>Thank you!</p>` //Message for user
+    };
+
+    // Send the reminder email
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending reminder email:', error);
+        } else {
+            console.log('Reminder email sent:', info.response);
+        }
+    });
+};
+
+
 const sendDataToPythonBackend = async (userId, weeklyExpenses) => {
     try {
         const response = await axios.post('http://localhost:5001/api/receive-expenses', {
@@ -352,10 +412,10 @@ const sendDataToPythonBackend = async (userId, weeklyExpenses) => {
             weeklyExpenses
         });
         spendPredictions[userId] = response.data;   // Store the data into the spendPredictions array
-        console.log(spendPredictions);
-        console.log('Data sent to Python backend:', response.data);
+        console.log(spendPredictions); //Debugging stuff
+        console.log('Data sent to Python backend:', response.data); //Message back
     } catch (error) {
-        console.error('Error sending data to Python backend:', error.message);
+        console.error('Error sending data to Python backend:', error.message); //Error message
     }
 };
 
@@ -384,23 +444,23 @@ app.get('/api/weekly-expenses/:userId', async (req, res) => {
     const expenseEntries = expensesData[userId] || [];
 
     const groupedExpenses = expenseEntries.reduce((acc, entry) => {
-        const expenseDate = new Date(entry.date);
-        const year = expenseDate.getFullYear();
-        const week = getWeekNumber(expenseDate);
-        const category = entry.category;
+        const expenseDate = new Date(entry.date); //Date for entry
+        const year = expenseDate.getFullYear(); //Get year from date
+        const week = getWeekNumber(expenseDate); //Get week number from date
+        const category = entry.category; //Get category of expense
 
         if (!acc[year]) acc[year] = {};
         if (!acc[year][week]) acc[year][week] = {};
-        if (!acc[year][week][category]) acc[year][week][category] = 0;
+        if (!acc[year][week][category]) acc[year][week][category] = 0; 
 
-        acc[year][week][category] += parseFloat(entry.amount);
+        acc[year][week][category] += parseFloat(entry.amount); //These lines just add up the expenses for the category for that week
 
         return acc;
     }, {});
 
-    await sendDataToPythonBackend(userId, groupedExpenses);
+    await sendDataToPythonBackend(userId, groupedExpenses); //Do the prediction
 
-    res.json({ weeklyExpenses: groupedExpenses });
+    res.json({ weeklyExpenses: groupedExpenses }); 
 });
 
 

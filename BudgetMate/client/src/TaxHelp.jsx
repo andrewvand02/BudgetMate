@@ -17,7 +17,7 @@ const TaxHelp = () => {
   const [dividends, setDividends] = useState(''); // State for dividends paid input
   const [showLLCInfo, setShowLLCInfo] = useState(false);
   const [showSCorpInfo, setShowSCorpInfo] = useState(false);
-
+  const [taxDate, setTaxDate] = useState('');
 
   const toggleLLCInfo = () => {
     setShowLLCInfo((prevState) => !prevState);
@@ -32,6 +32,9 @@ const TaxHelp = () => {
 
   const goBackToDashboard = () => {
     navigate('/');
+  };
+  const goToTaxReminder = () => {
+    navigate('/tax-reminder');
   };
 
   // Function to calculate estimated tax
@@ -278,7 +281,7 @@ const TaxHelp = () => {
           )}
         </div>
       </section>
-
+      
       <section>
         <h2>Business Tax Information</h2>
         {/* LLC Tax Information Drop-down */}
@@ -379,6 +382,11 @@ const TaxHelp = () => {
         <button onClick={goBackToDashboard} className="button type1">
           <span className="btn-txt">Dashboard</span>
         </button>
+        <div className="reminder-button">
+        <button onClick={goToTaxReminder} className="button type1">
+          <span className="btn-txt">Set a Tax Reminder</span>
+        </button>
+      </div>
       </div>
       </div>
       <Mode></Mode>
