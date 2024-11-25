@@ -4,6 +4,7 @@ import './Dashboard.css';
 import './Mode.css';
 import Mode from './Mode';
 import ImageSwitcher from "./ImageSwitcher";
+import NavBar from './NavBar';
 
 
 
@@ -12,6 +13,7 @@ const Dashboard = () => {
     return (
         <div>
             {/* Use the ImageSwitcher component to dynamically handle light/dark images */}
+            {NavBar()}
             <div className='image'><ImageSwitcher /></div>
             <p>Welcome to your financial tracker!</p>
             <Link to="/income">
