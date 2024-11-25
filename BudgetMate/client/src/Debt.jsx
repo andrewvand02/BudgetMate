@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Debt.css'
+import Mode from './Mode'; 
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'; // For Pie Chart
 
@@ -90,7 +91,7 @@ const Debt = () => {
                 <h2>Enter Your Debt</h2>
                 <form onSubmit={handleDebtSubmit}>
                     {debtEntries.map((entry, index) => (
-                        <div key={index} style={{ marginBottom: '10px', backgroundColor: 'lightgrey' }}>
+                        <div className='debtform' key={index} style={{ marginBottom: '10px', backgroundColor: 'rgb(134, 134, 134)' }}>
                             <h3>Debt {index+1}</h3>
                             <button
                                 style={{backgroundColor: '#f44336'}}
@@ -234,6 +235,7 @@ const Debt = () => {
                     <span className="btn-txt">Dashboard</span> {/* Button to go back to the dashboard*/}
                 </button>
             </div>
+            <Mode></Mode>
         </div>
     );
 };
