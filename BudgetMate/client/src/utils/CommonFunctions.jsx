@@ -11,37 +11,37 @@ import { useNavigate } from 'react-router-dom';
  * @param {string} userId The user ID to fetch data of.
  * @returns {Array} The requested data for the user.
  */
-const fetchData = async (requestedData, userId) => {
+export const fetchData = async (requestedData, userId) => {
     try {
-        const response = await axios.get('http://localhost:8080/api/${requestedData}/${userId}');
+        const response = await axios.get(`http://localhost:8080/api/${requestedData}/${userId}`);
         const dataToReturn = response.data.requestedData;
-        console.log("Fetched ${requestedData}:", dataToReturn);
+        console.log(`Fetched ${requestedData}:`, dataToReturn);
         return dataToReturn;
     } catch (error) {
-        console.error('Error fetching ${requestedData}:', error)
+        console.error(`Error fetching ${requestedData}:`, error)
     }
 };
 
-const handleAddEntry = () => {
+export const handleAddEntry = () => {
 
 };
 
-const handleRemoveEntry = () => {
+export const handleRemoveEntry = () => {
 
 };
 
-const handleInputChange = () => {
+export const handleInputChange = () => {
 
 };
 
-const handleDataSubmit = async (e) => {
+export const handleDataSubmit = async (e) => {
 
 };
 
 /**
  * Navigates the user back to the dashboard.
  */
-const goBackToDashboard = () => {
+export const goBackToDashboard = () => {
     const navigate = useNavigate();
     navigate('/');
 };
