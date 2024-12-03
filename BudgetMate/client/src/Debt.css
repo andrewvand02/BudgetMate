@@ -1,0 +1,60 @@
+.debtform {
+    background-color: white;
+    margin-bottom: 10px;
+}
+
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin: 4px;
+}
+
+  
+button:hover {
+    border-color: #ff3434;
+}
+  
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+  
+.removeButton {
+    height: 50px;
+    width: auto;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    border: 2px solid #252525;
+    overflow: hidden;
+    border-radius: 30px;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+}
+
+.removeButton:hover {
+    box-shadow: 1px 1px 10px #252525;
+    color: #fff;
+    border: none;
+    background-color: rgb(255, 54, 54);
+}
+
+[data-theme = "dark"] .removeButton:hover {
+    box-shadow: 1px 1px 10px #252525;
+    color: #fff;
+    border: none;
+    background-color: rgb(255, 54, 54);
+}
+
+[data-theme="dark"] .debtform {
+    background-color: rgb(49, 49, 49);
+    margin-bottom: 10px;
+}

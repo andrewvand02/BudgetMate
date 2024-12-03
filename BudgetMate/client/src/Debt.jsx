@@ -69,7 +69,7 @@ const Debt = () => {
         datasets: [
             {
                 label: 'Debt',
-                data: debtEntries.map(entry => parseFloat(entry.amount)), // Use amounts for data points
+                data: debtEntries.map(entry => parseFloat(entry.amount) || 0), // Use amounts for data points
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] // Define colors for each segment
             },
         ],
@@ -79,7 +79,6 @@ const Debt = () => {
     const options = {
         plugins: {
             tooltip: {
-                enabled: false,
             },// Disable default tooltips
         },
     };
@@ -91,10 +90,9 @@ const Debt = () => {
                 <h2>Enter Your Debt</h2>
                 <form onSubmit={handleDebtSubmit}>
                     {debtEntries.map((entry, index) => (
-                        <div className='debtform' key={index} style={{ marginBottom: '10px', backgroundColor: 'rgb(134, 134, 134)' }}>
+                        <div className='debtform' key={index}>
                             <h3>Debt {index+1}</h3>
-                            <button
-                                style={{backgroundColor: '#f44336'}}
+                            <button className='removeButton'
                                 onClick={() => handleRemoveEntry(index)}
                             >
                                 Remove Debt Entry
@@ -226,7 +224,7 @@ const Debt = () => {
                 )}
                 
                 {/* Show a pie chart of debts */}
-                <div style={{ display: 'flex', marginTop: '10px', width: '30vw', height: '30vw' }}>
+                <div style={{ display: "flex", marginTop: "10px", width: "30vw", height: "30vw" }}>
                     <Pie className="pie" data={data} options={options} />
                 </div>
             </div>
