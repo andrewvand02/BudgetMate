@@ -1,34 +1,34 @@
 /* Toggle switch styles (same as before) */
 .switch {
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    bottom: 40px;
-    position: fixed;
-    bottom: 20px;
-    /* Distance from the bottom of the screen */
-    right: 18px;
-    /* Distance from the right of the screen */
-    z-index: 1000;
-    /* Ensure it stays above other elements */
-    margin: 3em;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+	bottom: 40px;
+	position: fixed;
+	bottom: 20px;
+	/* Distance from the bottom of the screen */
+	right: 18px;
+	/* Distance from the right of the screen */
+	z-index: 1000;
+	/* Ensure it stays above other elements */
+	margin: 3em;
 }
 
 .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
 .slider {
-    position: absolute;
-    cursor: pointer;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
+	position: absolute;
+	cursor: pointer;
+	background-color: #ccc;
+	transition: 0.4s;
+	border-radius: 34px;
 }
 
-.theme{
+.theme {
 	position: relative;
 	display: inline-block;
 	width: 80px;
@@ -40,14 +40,14 @@
 	transition: ease-in .5s;
 }
 
-input[type="checkbox"]:checked ~ .theme{
+input[type="checkbox"]:checked~.theme {
 	background: #fff;
-    
+
 }
 
 /******* Before Start *******/
 
-.theme:before{
+.theme:before {
 	content: '';
 	position: absolute;
 	top: 2px;
@@ -60,14 +60,14 @@ input[type="checkbox"]:checked ~ .theme{
 	transform: translateX(0px);
 }
 
-input[type="checkbox"]:checked ~ .theme:before{
+input[type="checkbox"]:checked~.theme:before {
 	transform: translateX(-50px);
 }
 
 /******* Before End *******/
 /******* After Start *******/
 
-.theme:after{
+.theme:after {
 	content: '';
 	position: absolute;
 	top: 2px;
@@ -80,8 +80,35 @@ input[type="checkbox"]:checked ~ .theme:before{
 	transform: translateX(50px);
 }
 
-input[type="checkbox"]:checked ~ .theme:after{
+input[type="checkbox"]:checked~.theme:after {
 	transform: translateX(0px);
 }
 
 /******* After End *******/
+
+/*Icons*/
+/* General icon visibility */
+.icon {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 16px;
+	pointer-events: none;
+	transition: opacity 0.3s ease-in;
+  }
+  
+  /* Sun icon - light mode (default) */
+  [data-theme="dark"] .sun {
+	left: 11px; /* Adjust the position */
+	color: #ec8c0f; /* Sun color */
+	opacity: 1; /* Initially visible */
+  }
+  
+  /* Moon icon - dark mode */
+  [data-theme="light"] .moon {
+	right: 11px; /* Adjust the position */
+	color: #ffffff; /* Moon color */
+	opacity: 1; /* Initially hidden */
+  }
+  
+  
