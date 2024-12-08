@@ -7,7 +7,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import './BreakdownExpenses.css';
 import Mode from './Mode';
 import { Link } from 'react-router-dom';
-import { fetchData } from '../utils/CommonFunctions';
 
 // Register Chart.js components needed for charts
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement);
@@ -25,7 +24,7 @@ const BreakdownExpenses = () => {
 
     // useEffect hook to fetch income data, get the most recent income entry
     useEffect(() => {
-        /*const fetchIncome = async () => {
+        const fetchIncome = async () => {
             try {
                 const userId = 'user1';
                 const response = await axios.get(`http://localhost:8080/api/income/${userId}`);
@@ -45,13 +44,7 @@ const BreakdownExpenses = () => {
             }
         };
 
-        fetchIncome();*/
-        incomeEntries = fetchData('income', 'user1');
-        if (incomeEntries.length > 0) {
-            const latestIncome = incomeEntries[0].amount;
-            setRecentIncome(latestIncome);
-            console.log("Latest income amount:", latestIncome);
-        }
+        fetchIncome();
     }, []);
 
     // useEffect hook to fetch expenses data when component mounts
