@@ -17,6 +17,7 @@ const Budget = () => {
     const validBudgetEntries = budgetEntries.filter(entry => entry.category && entry.amount); // Filter valid entries with both category and amount
     const [minimizeInputSection, setMinimizeInputSection] = useState(false); // State to toggle visibility of the input section
     const [isDarkMode, setIsDarkMode] = useState(false); // State to manage dark mode styling
+    const [spendingSuggestions, setSpendingSuggestions] = useState('');
     const navigate = useNavigate(); // Hook for navigating programmatically
 
     // List of available budget categories
@@ -65,19 +66,21 @@ const Budget = () => {
                 const response = await axios.get(`http://localhost:8080/api/expenses/${userId}`); // GET request to fetch expenses
                 const expenses = response.data.expenseEntries; // Extract expense entries from response
     
-                // Get today's date
-                const today = new Date();
-    
-                // Get the current day of the week (0 for Sunday, 6 for Saturday)
-                const currentDayOfWeek = today.getDay();
-    
-                // Calculate the start of the week (Sunday)
-                const startOfWeek = new Date(today);
-                startOfWeek.setDate(today.getDate() - currentDayOfWeek); // Set to last Sunday
-    
-                // Calculate the end of the week (Saturday)
-                const endOfWeek = new Date(startOfWeek);
-                endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to next Saturday
+                     // Get today's date
+                  const today = new Date();
+
+                 // Get the current day of the week (0 for Sunday, 6 for Saturday)
+                  const currentDayOfWeek = today.getDay();
+
+                  // Calculate the start of the week (Sunday)
+                  const startOfWeek = new Date(today);
+                  startOfWeek.setDate(today.getDate() - currentDayOfWeek); // Set to last Sunday
+                  startOfWeek.setHours(0, 0, 0, 0); // Set to midnight (start of day)
+
+                  // Calculate the end of the week (Saturday)
+                 const endOfWeek = new Date(startOfWeek);
+                 endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to next Saturday
+                 endOfWeek.setHours(23, 59, 59, 999); // Set to just before midnight (end of day)
     
                 // Filter expenses that are within the current week
                 const filteredExpenses = expenses.filter((entry) => {
@@ -94,13 +97,12 @@ const Budget = () => {
                     acc[category] = (acc[category] || 0) + Number(amount); // Accumulate total amount per category
                     return acc;
                 }, {});
-    
                 setActualExpenses(aggregatedExpenses); // Update state with aggregated expenses
             } catch (error) {
                 console.error('Error fetching actual expenses:', error); // Log error to the console
             }
+            
         };
-    
         fetchActualExpenses(); // Call the function to fetch expenses on component mount
     }, []); 
 
@@ -118,6 +120,19 @@ const Budget = () => {
 
         fetchBudgetInfo();
     }, []);
+    useEffect(() => {
+        const fetchSpendingSuggestions = async () => {
+            try {
+                const userId = 'user1'; // Hardcoded user ID
+                const response = await axios.get(`http://localhost:8080/api/spending-suggestions/${userId}`); // Make API call
+                setSpendingSuggestions(response.data.GPTresponse); // Set suggestions in state
+            } catch (error) {
+                console.error('Error fetching spending suggestions:', error);
+            }
+        };
+    
+        fetchSpendingSuggestions(); // Fetch suggestions when component mounts
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     // Data for Doughnut chart
     const data = {
@@ -149,7 +164,7 @@ const Budget = () => {
                 const remainingAmount = budgetedAmount - spentAmount;
                 const exceededBudget = spentAmount - budgetedAmount;
 
-                /* // Notify user if they exceed/reached the budget
+                /* // Notify user if they execeed/reached the budget
                 if (spentAmount > budgetedAmount) {
                     alert(`You have exceeded your budget for ${category}. You have spent $${exceededBudget} over.`)
                 };
@@ -160,18 +175,7 @@ const Budget = () => {
                 */
     
                 // Set selected category with budget details
-                if (exceededBudget > 0) {
-                    try {
-                        const userEmail = 'budgetmateproject@gmail.com'; // Replace with actual user email from the frontend
-                        await axios.post('http://localhost:8080/api/send-budget-alert', {
-                            userEmail,
-                            category,
-                            exceededBudget,
-                        });
-                    } catch (error) {
-                        console.error('Error sending email:', error);
-                    }
-                }
+                
                 setSelectedCategory({
                     category,
                     budgetedAmount: budgetedAmount.toLocaleString(),
@@ -195,10 +199,11 @@ const Budget = () => {
             <button 
                 onClick={() => setMinimizeInputSection(!minimizeInputSection)}
                 style={{ marginBottom: '10px'}}
-                className={`${isDarkMode ? 'dark' : 'light'} button type1`}
+                className={isDarkMode ? 'dark' : 'light'}
             >   
                 {minimizeInputSection ? 'Show Budget Input' : 'Hide Budget Input'}
             </button>
+
 
             {/* Budget input section */}
             {!minimizeInputSection && (
@@ -207,9 +212,7 @@ const Budget = () => {
                         {budgetEntries.map((entry, index) => (
                             <div key={index} style={{ marginBottom: '10px' }}>
                                 {/* Category selection dropdown */}
-                                <div className='pt_Cat'></div>
                                 <select
-                                    className='select-pt-Cat'
                                     value={entry.category}
                                     onChange={(e) => handleInputChange(index, 'category', e.target.value)}
                                     required
@@ -221,19 +224,18 @@ const Budget = () => {
                                 </select>
                                 
                                 {/* Budget amount input */}
-                                <div className='pt_Quant'>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        placeholder="Amount"
-                                        value={entry.amount}
-                                        onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
-                                        required
-                                    />
-                                </div>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    placeholder="Amount"
+                                    value={entry.amount}
+                                    onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
+                                    required
+                                />
+
                                 {/* Remove entry button */}
                                 {budgetEntries.length > 1 && (
-                                    <button type="button" onClick={() => handleRemoveEntry(index)} className={`${isDarkMode ? 'dark' : 'light'} button type1`}>
+                                    <button type="button" onClick={() => handleRemoveEntry(index)} className={isDarkMode ? 'dark' : 'light'}>
                                         Remove
                                     </button>
                                 )}
@@ -241,14 +243,15 @@ const Budget = () => {
                         ))}
 
                         {/* Add and submit budget buttons */}
-                        <button type="button" onClick={handleAddEntry} className={`${isDarkMode ? 'dark' : 'light'} button type1`}>
+                        <button type="button" onClick={handleAddEntry} className={isDarkMode ? 'dark' : 'light'}>
                             Add Another Budget
                         </button>
 
-                        <button type="submit" className={`${isDarkMode ? 'dark' : 'light'} button type1`}>
+                        <button type="submit" className={isDarkMode ? 'dark' : 'light'}>
                             Submit Budget
                         </button>
                     </form>
+                <Mode></Mode>
                 </div>
             )}
 
@@ -276,14 +279,22 @@ const Budget = () => {
             {/* Button to navigate back to Dashboard */}
             <button
                 type="button"
-                className={`${isDarkMode ? 'dark' : 'light'} button type1`}
+                className={isDarkMode ? 'dark' : 'light'}
                 onClick={() => navigate('/')}
                 style={{ marginTop: '20px' }}
             >
-                Dashboard
+                Back to Dashboard
             </button>
-            <Mode></Mode>
+            <div className="spendingSuggestions">
+        <h2>Spending Suggestions</h2>
+        {spendingSuggestions ? (
+            <p>{spendingSuggestions}</p>
+            ) : (
+        <p>Loading spending suggestions...</p>
+         )}
         </div>
+        </div>
+        
     );
 };
 

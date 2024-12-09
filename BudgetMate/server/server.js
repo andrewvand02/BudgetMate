@@ -8,12 +8,20 @@ const fastCsv = require('fast-csv');
 const path = require('path');
 const nodemailer = require('nodemailer');
  //Import statements
-const twilio = require('twilio');
 const axios = require('axios');
 const cron = require('node-cron');
+require('dotenv').config();
+const { OpenAI } = require('openai');
+const moment = require('moment');
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
 const corsOptions = { //For communicating with frontend
     origin: ["http://localhost:5173"],
 };
+
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json()); //Parsing for reading responses
@@ -26,7 +34,8 @@ let spendPredictions = {}; //Storage for predicting next week's spending total
 let debtData = {}; // Storage for debtData
 let taxData = {};
 let userEmails={};
-userEmails['user1'] = 'budgetmate581@gmail.com';
+let weekTaxReminders={};
+weekTaxReminders['user1'] = 'budgetmate581@gmail.com';
 // Function to load data from a CSV file into a data store
 const loadDataFromCSV = (filePath, dataStore) => {
     return new Promise((resolve, reject) => {  // Return a new promise to handle asynchronous operations
@@ -331,7 +340,7 @@ const transporter = nodemailer.createTransport({
     secure: true,
     auth: {
         user: 'budgetmate581@gmail.com',
-        pass: 'placeholder'
+        pass: 'vqay fyfy unqk ctxi'
     }
 });
 
@@ -462,6 +471,47 @@ app.get('/api/weekly-expenses/:userId', async (req, res) => {
 
     res.json({ weeklyExpenses: groupedExpenses }); 
 });
+app.get('/api/spending-suggestions/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    // Assuming expensesData is an object with user IDs as keys and an array of expenses as values
+    const userExpenses = expensesData[userId] || [];
+
+    // Get the current week's Sunday (start) and Saturday (end) dates
+    const startOfWeek = moment().startOf('week'); // Sunday of the current week
+    const endOfWeek = moment().endOf('week'); // Saturday of the current week
+
+    // Filter expenses to include only those within the current week
+    const currentWeekExpenses = userExpenses.filter(expense => {
+        const expenseDate = moment(expense.date); // Assuming `expense.date` is in ISO 8601 format
+        return expenseDate.isBetween(startOfWeek, endOfWeek, null, '[]'); // Inclusive of start and end dates
+    });
+
+    try {
+        const GPTresponse = await analyzeExpenses(currentWeekExpenses); // Analyze filtered expenses
+        console.log(GPTresponse); // Log GPT's response for debugging
+        res.json({ GPTresponse });
+    } catch (error) {
+        console.error('Error fetching spending suggestions:', error);
+        res.status(500).json({ error: 'Failed to fetch spending suggestions.' });
+    }
+});
+async function analyzeExpenses(expenses) {
+    const prompt = `
+    Analyze the following expense data for unnecessary spending. Identify items that could be considered discretionary or excessive, and suggest actions to optimize spending: We are not looking at things like subscriptions or monthly bills. Be concise. Try not to make long response. Expenses labeled "daily" don't happen everyday, they are considered a 1 time expense. Do not suggest things like "1. Create a budget to track and limit discretionary expenses like dining out, entertainment, and hobby purchases." because this is embedded in a budget app already
+    ${JSON.stringify(expenses, null, 2)}
+    `;
+    try {
+        const response = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo', // You can use gpt-3.5-turbo for a cheaper model
+            messages: [{ role: 'user', content: prompt }],
+        });
+        return response.choices[0].message.content.trim();
+    } catch (error) {
+        console.error('Error during OpenAI API request:', error);
+        return 'Error analyzing expenses.';
+    }
+}
 
 
 app.listen(8080, () => {
