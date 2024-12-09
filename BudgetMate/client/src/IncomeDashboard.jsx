@@ -166,17 +166,19 @@ const IncomeDashboard = () => {
         {isFormExpanded && (
           <form onSubmit={handleIncomeSubmit}>
             {formEntries.map((entry, index) => (
-              <div key={index} className="pt_Cat'">
-                <input
-                  type="text"
-                  placeholder="Income Category"
-                  value={entry.category}
-                  onChange={(e) =>
-                    handleInputChange(index, "category", e.target.value)
-                  }
-                  required
-                  className="input-field category-field"
-                />
+              <div key={index} style={{ marginBottom: '10px' }}>
+                <div className="pt_Cat">
+                  <input
+                    type="text"
+                    placeholder="Income Category"
+                    value={entry.category}
+                    onChange={(e) =>
+                      handleInputChange(index, "category", e.target.value)
+                    }
+                    required
+                    className="input-field category-field"
+                  />
+                </div>
                 <div className="pt_Quant">
                   <input
                     type="number"
@@ -187,6 +189,7 @@ const IncomeDashboard = () => {
                       handleInputChange(index, "amount", e.target.value)
                     }
                     required
+                    className="input-field amount-fields"
                   />
                 </div>
                 {formEntries.length > 1 && (
