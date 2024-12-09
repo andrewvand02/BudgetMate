@@ -11,10 +11,10 @@ import { useNavigate } from 'react-router-dom';
  * @param {string} userId The user ID to fetch data of.
  * @returns {Array} The requested data for the user.
  */
-export const fetchData = async (requestedData, userId) => {
+export async function fetchData(requestedData, userId) {
     try {
         const response = await axios.get(`http://localhost:8080/api/${requestedData}/${userId}`);
-        const dataToReturn = response.data.requestedData;
+        const dataToReturn = await response.data.requestedData;
         console.log(`Fetched ${requestedData}:`, dataToReturn);
         return dataToReturn;
     } catch (error) {

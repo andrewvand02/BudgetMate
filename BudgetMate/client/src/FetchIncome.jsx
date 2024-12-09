@@ -3,6 +3,7 @@ import axios from 'axios'; // Importing axios to handle HTTP requests
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
 import Mode from './Mode';
 import './FetchIncome.css'; // Importing CSS file for styling
+import * as common from './utils/CommonFunctions.jsx';
 
 const FetchIncome = () => {
     // State to hold income entries
@@ -12,7 +13,7 @@ const FetchIncome = () => {
     // useEffect to fetch income data when the component mounts
     useEffect(() => {
         // Function to fetch income data from the backend
-        const fetchIncome = async () => {
+        /*const fetchIncome = async () => {
             try {
                 const userId = 'user1'; // Hardcoded user ID for demo, replace with actual user ID as needed
                 // Fetching income data for the user from the backend
@@ -25,7 +26,8 @@ const FetchIncome = () => {
             }
         };
 
-        fetchIncome(); // Calling fetchIncome function to retrieve data on component mount
+        fetchIncome(); // Calling fetchIncome function to retrieve data on component mount*/
+        setIncomeEntries(fetchData('income', 'user1'));
     }, []);
 
     // Function to handle navigation back to the dashboard
