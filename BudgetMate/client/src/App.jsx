@@ -15,6 +15,8 @@ import TaxHelp from './TaxHelp';
 import Mode from './Mode';
 import Debt from './Debt';
 import TaxReminder from './TaxReminder';
+import IncomeDashboard from "./IncomeDashboard";
+import ExpenseDashboard from "./ExpenseDashboard";
 
 import './App.css';
 
@@ -37,6 +39,8 @@ const App = () => {
                 <Route path="/mode" element={<Mode />} />
                 <Route path="/debt" element={<Debt />} />
                 <Route path='/tax-reminder' element={<TaxReminder />} />
+                <Route path="/income-dashboard" element={<IncomeDashboard />} />
+                <Route path="/expense-dashboard" element={<ExpenseDashboard />} />
             </Routes>
         </Router>
     );

@@ -1,0 +1,106 @@
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.income-display,
+.income-form-container {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.income-display h2,
+.income-form-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #2e2e2e;
+  font-weight: 600;
+  padding-bottom: 20px;
+  padding-top: 0px;
+}
+
+.income-form-container h2 {
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.income-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inc-amount {
+  background: #dcdcdc76;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.inc-category {
+  flex: 1;
+  text-align: left;
+}
+
+.inc-value {
+  flex: 0;
+  font-weight: 600;
+  color: #000000;
+}
+
+.no-data {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.income-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.input-field {
+  color: #000000;
+  background-color: #eeeeee7b;
+  border: 1px solid #a2a2a2;
+  border-radius: 5px;
+  padding: 10px;
+  flex: 1;
+  font-size: 1rem;
+}
+
+.category-field {
+  flex: 2;
+}
+
+.amount-field {
+  width: 120px;
+}
+
+.form-buttons {
+  display: block;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
