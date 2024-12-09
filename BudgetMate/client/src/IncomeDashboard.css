@@ -1,4 +1,3 @@
-
 .dashboard-container {
   display: flex;
   flex-direction: column;
@@ -16,6 +15,39 @@
   padding: 20px;
   margin-bottom: 30px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .income-display {
+  background-color: #22222252;
+  border-radius: 30px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(234, 234, 234, 0.384);
+}
+
+[data-theme="dark"] .income-form-container {
+  background-color: #22222252;
+  border-radius: 30px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(238, 238, 238, 0.345);
+}
+
+[data-theme="dark"] .income-display h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #fafafa;
+  font-weight: 600;
+  padding-bottom: 20px;
+  padding-top: 0px;
+}
+[data-theme="dark"] .income-form-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #fafafa;
+  font-weight: 600;
+  padding-bottom: 20px;
+  padding-top: 0px;
 }
 
 .income-display h2,
@@ -54,6 +86,18 @@
   color: #000000;
 }
 
+[data-theme="dark"] .inc-amount {
+    background: #4d4d4d8b;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #d9d9d9;
+}
+
 .inc-category {
   flex: 1;
   text-align: left;
@@ -63,6 +107,12 @@
   flex: 0;
   font-weight: 600;
   color: #000000;
+}
+
+[data-theme="dark"] .inc-value {
+  flex: 0;
+  font-weight: 600;
+  color: #ffffff;
 }
 
 .no-data {
@@ -89,6 +139,17 @@
   flex: 1;
   font-size: 1rem;
 }
+
+[data-theme="dark"] .input-field {
+  color: #e1e1e1;
+  background-color: #f3f3f3cd;
+  border: 1px solid #d0d0d0;
+  border-radius: 5px;
+  padding: 10px;
+  flex: 1;
+  font-size: 1rem;
+}
+
 
 .category-field {
   flex: 2;
