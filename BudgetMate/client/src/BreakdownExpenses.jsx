@@ -7,6 +7,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import './BreakdownExpenses.css';
 import Mode from './Mode';
 import { Link } from 'react-router-dom';
+import { fetchData} from './utils/CommonFunctions.jsx';
 
 // Register Chart.js components needed for charts
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement);
@@ -24,27 +25,15 @@ const BreakdownExpenses = () => {
 
     // useEffect hook to fetch income data, get the most recent income entry
     useEffect(() => {
-        const fetchIncome = async () => {
-            try {
-                const userId = 'user1';
-                const response = await axios.get(`http://localhost:8080/api/income/${userId}`);
-                const incomeEntries = response.data.incomeEntries;
-
-                // Log the income entries to verify what's being fetched
-                console.log("Fetched income entries:", incomeEntries);
-
-                // Find the most recent income entry based on the date
-                if (incomeEntries.length > 0) {
-                    const latestIncome = incomeEntries[0].amount; // Get the latest Income, which is the first and only income entry
-                    setRecentIncome(latestIncome);
-                    console.log("Latest income amount:", latestIncome);
-                }
-            } catch (error) {
-                console.error('Error fetching income:', error);
+        async function loadData() {
+            const incomeEntries = await fetchData('income', 'user1');
+            if (incomeEntries.length > 0) {
+                const latestIncome = incomeEntries[0].amount;
+                setRecentIncome(latestIncome);
+                console.log("Latest income amount:", latestIncome);
             }
-        };
-
-        fetchIncome();
+        }
+        loadData();
     }, []);
 
     // useEffect hook to fetch expenses data when component mounts
