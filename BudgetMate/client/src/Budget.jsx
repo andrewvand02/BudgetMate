@@ -149,7 +149,7 @@ const Budget = () => {
                 const remainingAmount = budgetedAmount - spentAmount;
                 const exceededBudget = spentAmount - budgetedAmount;
 
-                /* // Notify user if they execeed/reached the budget
+                /* // Notify user if they exceed/reached the budget
                 if (spentAmount > budgetedAmount) {
                     alert(`You have exceeded your budget for ${category}. You have spent $${exceededBudget} over.`)
                 };

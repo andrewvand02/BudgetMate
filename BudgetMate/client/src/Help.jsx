@@ -73,6 +73,9 @@ const Help = () => {
 
                     <li><strong>Issue:</strong> My expenses are not being saved.</li>
                     <li><strong>Solution:</strong> Check your internet connection and try again. If the problem persists, contact support.</li>
+
+                    <li><strong>Issue:</strong> I'm new to BudgetMate. How do I create an account?</li>
+                    <li><strong>Solution:</strong> Click on "Create an account" and you can create a username and password to save any important information entered into BudgetMate. If any issues arise, please contact support.</li>
                     </ul>
                 </section>
 
