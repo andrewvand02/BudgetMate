@@ -148,3 +148,4 @@ BudgetMate/server/node_modules/touch/LICENSE
 BudgetMate/server/node_modules/touch/package.json
 BudgetMate/server/node_modules/touch/README.md
 BudgetMate/server/node_modules/touch/bin/nodetouch.js
+BudgetMate/server/.env
