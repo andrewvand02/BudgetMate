@@ -372,6 +372,10 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-bottom: 10px;
 }
 
+[data-theme="dark"] input::placeholder {
+  color: #bebebead;
+}
+
 [data-theme="dark"] .pt_Cat input {
   color: #fafafa;
   border-radius: 10px;
