@@ -398,80 +398,6 @@ const ExpenseDashboard = () => {
     return (
         <div>
         <h1>Expenses Dashboard</h1>
-            <div className='expense-form-container'>
-
-                {/* ExpenseInput Section */}
-                <section>
-                    <h2 onClick={toggleForm} >Enter Your Expenses</h2>
-                    {/* Toggle button (optional) */}
-                    {showExpenseInput && (
-                    <form onSubmit={handleExpenseSubmit}>
-                        {expenseEntries.map((entry, index) => (
-                            <div key={index} style={{ marginBottom: '10px' }}>
-                                <div className='pt_Cat'>
-                                    <input
-                                        type="text"
-                                        placeholder="Expense Name"
-                                        value={entry.name}
-                                        onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-                                        required
-                                        className="input-field category-field"
-                                    />
-                                </div>
-                                <select
-                                    className='select-pt-Cat'
-                                    value={entry.frequency}
-                                    onChange={(e) => handleInputChange(index, 'frequency', e.target.value)}
-                                >
-                                    <option value="daily">Daily</option>
-                                    <option value="monthly">Monthly</option>
-                                </select>
-                                <select
-                                    className='select-pt-Cat'
-                                    value={entry.category}
-                                    onChange={(e) => handleInputChange(index, 'category', e.target.value)}
-                                    required
-                                >
-                                    <option value="">Select Category</option>
-                                    {categoryOptions[entry.frequency].map((category, idx) => (
-                                        <option key={idx} value={category}>{category}</option>
-                                    ))}
-                                </select>
-                                <div className='pt_Quant'>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        placeholder="Amount"
-                                        value={entry.amount}
-                                        onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
-                                        required
-                                        className="input-field amount-fields"
-                                    />
-                                </div>
-                                {expenseEntries.length > 1 && (
-                                    <button className="removeButton" type="button" onClick={() => handleRemoveEntry(index)}>
-                                        <span className='btn-txt' >Remove</span>
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                        <button className="button type1" type="button" onClick={handleAddEntry}>
-                            <span className="btn-txt">Add Expense</span>
-                        </button>
-                        <button className="button type1" type="submit">
-                            <span className="btn-txt">Submit Expenses</span>
-                        </button>
-                    </form>
-                    )}
-
-                    <button
-                        className='help-button'
-                        onClick={() => navigate('/help')}
-                    >
-                        <span className='btn-txt'>Help</span>
-                    </button>
-                </section>
-            </div>
 
             {/* FetchExpenses Section */}
             <section className="expense-container">
@@ -556,6 +482,81 @@ const ExpenseDashboard = () => {
                         )}
                     </div>
                 </div>
+
+                <div className='expense-form-container'>
+
+                {/* ExpenseInput Section */}
+                <section className='expense-input-section'>
+                    <h2 onClick={toggleForm} >Enter Your Expenses</h2>
+                    {/* Toggle button (optional) */}
+                    {showExpenseInput && (
+                    <form onSubmit={handleExpenseSubmit}>
+                        {expenseEntries.map((entry, index) => (
+                            <div key={index} style={{ marginBottom: '10px' }}>
+                                <div className='pt_Cat'>
+                                    <input
+                                        type="text"
+                                        placeholder="Expense Name"
+                                        value={entry.name}
+                                        onChange={(e) => handleInputChange(index, 'name', e.target.value)}
+                                        required
+                                        className="input-field category-field"
+                                    />
+                                </div>
+                                <select
+                                    className='select-pt-Cat'
+                                    value={entry.frequency}
+                                    onChange={(e) => handleInputChange(index, 'frequency', e.target.value)}
+                                >
+                                    <option value="daily">Daily</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                                <select
+                                    className='select-pt-Cat'
+                                    value={entry.category}
+                                    onChange={(e) => handleInputChange(index, 'category', e.target.value)}
+                                    required
+                                >
+                                    <option value="">Select Category</option>
+                                    {categoryOptions[entry.frequency].map((category, idx) => (
+                                        <option key={idx} value={category}>{category}</option>
+                                    ))}
+                                </select>
+                                <div className='pt_Quant'>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        placeholder="Amount"
+                                        value={entry.amount}
+                                        onChange={(e) => handleInputChange(index, 'amount', e.target.value)}
+                                        required
+                                        className="input-field amount-fields"
+                                    />
+                                </div>
+                                {expenseEntries.length > 1 && (
+                                    <button className="removeButton" type="button" onClick={() => handleRemoveEntry(index)}>
+                                        <span className='btn-txt' >Remove</span>
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                        <button className="button type1" type="button" onClick={handleAddEntry}>
+                            <span className="btn-txt">Add Expense</span>
+                        </button>
+                        <button className="button type1" type="submit">
+                            <span className="btn-txt">Submit Expenses</span>
+                        </button>
+                    </form>
+                    )}
+
+                    <button
+                        className='help-button'
+                        onClick={() => navigate('/help')}
+                    >
+                        <span className='btn-txt'>Help</span>
+                    </button>
+                </section>
+            </div>
 
                 <button
                     className='button type1'
