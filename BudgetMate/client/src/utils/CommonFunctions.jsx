@@ -15,7 +15,7 @@ export async function fetchData(requestedData, userId) {
     try {
         const response = await axios.get(`http://localhost:8080/api/${requestedData}/${userId}`);
         const dataToReturn = await response.data.requestedData;
-        console.log(`Fetched ${requestedData}:`, dataToReturn);
+        console.log(`_Fetched ${requestedData}:`, dataToReturn);
         return dataToReturn;
     } catch (error) {
         console.error(`Error fetching ${requestedData}:`, error)

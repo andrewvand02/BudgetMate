@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Mode from "./Mode"; // Ensure Mode component is available
 import "./IncomeDashboard.css";
+import { fetchData } from './utils/CommonFunctions.jsx';
 
 const IncomeDashboard = () => {
   const [incomeEntries, setIncomeEntries] = useState([]);
@@ -15,7 +16,7 @@ const IncomeDashboard = () => {
 
   // Fetch income data on mount
   useEffect(() => {
-    const fetchIncome = async () => {
+    /*const fetchIncome = async () => {
       try {
         const userId = "user1"; // Replace with actual user logic
         const response = await axios.get(
@@ -27,7 +28,11 @@ const IncomeDashboard = () => {
       }
     };
 
-    fetchIncome();
+    fetchIncome();*/
+    async function loadData() {
+      setIncomeEntries(fetchData('income', 'user1'));
+    }
+    loadData();
   }, []);
 
   // Handlers for form input (IncomeInput logic)
