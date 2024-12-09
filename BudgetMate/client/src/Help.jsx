@@ -47,13 +47,17 @@ const Help = () => {
                     <li><strong>Q:</strong> How can I contact support?</li>
                     <li><strong>A:</strong> Use the contact support form at the bottom of this page.</li>
                 
-                    {/* 
                     <li><strong>Q:</strong> How do I edit or delete an expense?</li>
                     <li><strong>A:</strong> Go to the "Input Expenses" section, find the expense you want to edit, and click on the "Edit" or "Delete" button.</li>
-                    */}
-
+  
                     <li><strong>Q:</strong> Can I set savings goals?</li>
                     <li><strong>A:</strong> Yes, you can set savings goals in the "Savings Goals" section to input and track your progress over time.</li>
+
+                    <li><strong>Q:</strong> How do I create a realistic budget?</li>
+                    <li><strong>A:</strong> Start by tracking your income and expenses for a month. As you track your income, input your income and expenses based on categories into BudgetMate and create a Budget that caters to you.</li>
+                    
+                    <li><strong>Q:</strong> How can I get out of debt faster?</li>
+                    <li><strong>A:</strong> Using the debt feature to track your debt will help you find ways to pay it off faster.</li> 
                     {/* 
                     <li><strong>Q:</strong> How can I export my data?</li>
                     <li><strong>A:</strong> Go to "Settings" and click on "Export Data" to download a CSV file of your transactions.</li>
