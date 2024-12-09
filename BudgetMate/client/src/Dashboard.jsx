@@ -74,14 +74,14 @@ const Dashboard = () => {
                     </Link>
                 </div>
                 <div className='items-box'>
-                    <div className='item income'>
+                    {/*<div className='item income'>
                         <DashboardIncome />
                         <Link to="/income-dashboard">
                             <button className='item-button'>
                                 View Income
                             </button>
                         </Link>
-                    </div>
+                    </div>*/}
                     <div className='item'>
                         <IncomeVsExpenses />
                         <Link to="/expense-dashboard">
@@ -130,14 +130,14 @@ const Dashboard = () => {
                             </button>
                         </Link>
                     </div>
-                    <div className='item savings'>
+                    {/*<div className='item savings'>
                         <DashboardSavings />
                         <Link to="/savings-goal">
                             <button className='item-button'>
                                 View Savings
                             </button>
                         </Link>
-                    </div>
+                    </div>*/}
                 </div>
             </div>
         </div>
