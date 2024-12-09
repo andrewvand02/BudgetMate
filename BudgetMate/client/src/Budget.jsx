@@ -126,7 +126,8 @@ const Budget = () => {
             {
                 label: 'Budget',
                 data: validBudgetEntries.map(entry => parseFloat(entry.amount)), // Use amounts for data points
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] // Define colors for each segment
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40',
+                '#9966FF', '#FFCD00', '#36B5A0', '#FF5733', '#4E73DF']
             },
         ],
     };

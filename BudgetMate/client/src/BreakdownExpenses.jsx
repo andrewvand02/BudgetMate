@@ -423,6 +423,13 @@ const BreakdownExpenses = () => {
                 </div>
             </div>
 
+            {/* Link to the expenses view page */}
+            <Link to="/fetch-expenses">
+                <button className="button type1">
+                    <span className="btn-txt">View Expenses</span>
+                </button>
+            </Link>
+
             {/* Button to navigate back to the main dashboard */}
             <button
                 className='button type1'
@@ -431,13 +438,7 @@ const BreakdownExpenses = () => {
                 style={{ marginTop: '20px' }}> {/* Adding margin to the button */}
                 <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
-
-            {/* Link to the expenses view page */}
-            <Link to="/fetch-expenses">
-                <button className="button type1">
-                    <span className="btn-txt">View Expenses</span>
-                </button>
-            </Link>
+            
             <Mode></Mode>
         </div>
     );

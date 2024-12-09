@@ -15,3 +15,86 @@ div {
     border: 2px solid rgb(255, 255, 255);
     box-sizing: border-box;
 }
+
+.dashboard-diplay-items {
+    border: solid 2px;
+    background-color: rgba(255, 255, 255, 0.172);
+    margin-top: 40px;
+}
+
+.items-box {
+    display: grid;
+    gap: 20px; /* Add spacing between grid items */
+    grid-template-columns: repeat(1, 1fr); /* Starts as a 1x1 grid by default */
+    justify-items: center;
+    padding: 20px;
+}
+
+.item {
+    border: solid 2px gray;
+}
+
+/* For larger screens or different layouts, 
+   you can use media queries to change the number of columns: */
+
+@media (min-width: 600px) {
+    .items-box {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 layout when viewport >= 600px */
+    }
+}
+
+.item {
+    position: relative; /* Needed for absolutely positioning overlay and button */
+    border: solid 2px gray;
+    overflow: hidden;   /* Ensures the pseudo-element doesn't overflow out of the item */
+    transition: transform 0.3s ease;
+    cursor: pointer;    /* Optional: show pointer on hover */
+}
+
+.income, .prediction, .savings {
+    border: none;
+}
+
+/* Create the blurry overlay using a pseudo-element */
+.item::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    backdrop-filter: blur(10px); /* Apply blur */
+    background: rgba(255, 255, 255, 0.3); /* A subtle white tint */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1; /* Ensure this sits above the item content but below the button */
+}
+
+/* Reveal the blur on hover */
+.item:hover::after {
+    opacity: 1;
+}
+
+/* Style the button that appears on hover */
+.item-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2; /* Above the blur */
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Show the button on hover */
+.item:hover .item-button {
+    opacity: 1;
+}
+
+.income, .prediction, .expenses {
+    border: none;
+}

@@ -35,7 +35,7 @@ const FetchIncome = () => {
 
     return (
         <div className="income-container"> {/* Main container for income component */}
-            <h1>Your Weekly Income Breakdown</h1> {/* Heading for income breakdown display */}
+            <h1>Monthly Income</h1> {/* Heading for income breakdown display */}
             {incomeEntries.length > 0 ? ( // Check if income entries are available
                 <ul> {/* Unordered list for displaying income entries */}
                     {incomeEntries.map((entry, index) => ( // Mapping over income entries array
@@ -47,6 +47,7 @@ const FetchIncome = () => {
             ) : (
                 <p>No income data available.</p> // Message displayed if no income entries are available
             )}
+
             <button onClick={goBackToDashboard} className='button type1'> {/* Button to go back to dashboard */}
             <span className="btn-txt">Dashboard</span> {/* Button label */}
             </button>
